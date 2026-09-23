@@ -11,8 +11,8 @@ from src.knowledge.evidence import EvidencePack
 from src.knowledge.resolver import KnowledgeResolver
 from src.knowledge.service import ingest_knowledge_base
 from src.llm.base import BaseLLMProvider, LLMGenerationError
+from src.llm.factory import get_llm_provider
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest
-from src.llm.provider import FlexibleLLMProvider
 from src.llm.validator import OutputValidator
 from src.retrieval.base import BaseRetriever
 from src.retrieval.bm25 import BM25Retriever
@@ -41,7 +41,7 @@ class AgentOrchestrator:
         self.knowledge_resolver = knowledge_resolver or KnowledgeResolver()
         self.order_repository = order_repository or get_order_repository()
         self.decision_engine = decision_engine or DecisionEngine()
-        self.llm_provider = llm_provider or FlexibleLLMProvider()
+        self.llm_provider = llm_provider or get_llm_provider()
 
         # Initialize default hybrid retriever if not injected
         if retriever is not None:
@@ -164,6 +164,10 @@ class AgentOrchestrator:
             "citations": response.citation_strings,
             "final_message": response.message,
         }
+
+        # Attach safe LLM fallback chain telemetry if available
+        if hasattr(self.llm_provider, "last_telemetry") and self.llm_provider.last_telemetry:
+            trace_data["llm_telemetry"] = dict(self.llm_provider.last_telemetry)
 
         # Attach safe knowledge retrieval metadata (No sensitive/internal fields)
         if evidence_pack:
