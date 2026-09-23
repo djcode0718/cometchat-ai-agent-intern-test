@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { sendMessage, resetSession } from './api';
 import './styles.css';
 
@@ -185,7 +186,21 @@ export default function App() {
                   </div>
                 )}
 
-                <div className="message-text">{msg.text}</div>
+                {msg.role === 'assistant' ? (
+                  <div className="message-text assistant-markdown">
+                    <ReactMarkdown
+                      components={{
+                        a: ({ node, ...props }) => (
+                          <a {...props} target="_blank" rel="noopener noreferrer" />
+                        ),
+                      }}
+                    >
+                      {msg.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <div className="message-text">{msg.text}</div>
+                )}
 
                 {/* Safe Order Details Card */}
                 {msg.safe_order && (

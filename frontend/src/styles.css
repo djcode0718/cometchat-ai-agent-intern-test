@@ -288,6 +288,90 @@ body {
   word-break: break-word;
 }
 
+.assistant-markdown {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.assistant-markdown p {
+  margin-bottom: 0.6em;
+}
+
+.assistant-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.assistant-markdown ul,
+.assistant-markdown ol {
+  margin-top: 0.4em;
+  margin-bottom: 0.6em;
+  padding-left: 1.25rem;
+}
+
+.assistant-markdown ul:last-child,
+.assistant-markdown ol:last-child {
+  margin-bottom: 0;
+}
+
+.assistant-markdown li {
+  margin-bottom: 0.25em;
+}
+
+.assistant-markdown li:last-child {
+  margin-bottom: 0;
+}
+
+.assistant-markdown li > p {
+  margin-bottom: 0.25em;
+}
+
+.assistant-markdown strong,
+.assistant-markdown b {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.assistant-markdown em,
+.assistant-markdown i {
+  font-style: italic;
+}
+
+.assistant-markdown code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  background-color: var(--bg-surface-secondary);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 5px;
+  border-radius: var(--radius-sm);
+}
+
+.assistant-markdown a {
+  color: var(--brand-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.assistant-markdown a:hover {
+  color: var(--brand-primary-hover);
+}
+
+.assistant-markdown h1,
+.assistant-markdown h2,
+.assistant-markdown h3,
+.assistant-markdown h4 {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 0.8em;
+  margin-bottom: 0.4em;
+}
+
+.assistant-markdown h1 { font-size: 1.15rem; }
+.assistant-markdown h2 { font-size: 1.05rem; }
+.assistant-markdown h3 { font-size: 0.95rem; }
+
 /* Badges & Meta */
 .message-meta {
   display: flex;
