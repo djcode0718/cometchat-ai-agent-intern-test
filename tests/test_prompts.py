@@ -38,7 +38,6 @@ def test_build_user_prompt_with_approved_evidence():
     )
     approved = ApprovedEvidence(
         chunk=chunk,
-        authority_score=1.0,
         retrieval_score=1.0,
         retrieval_rank=1,
         retrieval_strategy="hybrid",
@@ -146,7 +145,6 @@ def test_build_user_prompt_prompt_injection_in_corpus():
     )
     approved = ApprovedEvidence(
         chunk=chunk,
-        authority_score=1.0,
         retrieval_score=1.0,
         retrieval_rank=1,
         retrieval_strategy="hybrid",

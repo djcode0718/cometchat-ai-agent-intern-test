@@ -1,7 +1,8 @@
 """Tests for deterministic output validation, PII scrubbing, mutation claim rejection, and fallbacks."""
 
-from src.agent.state import DecisionState
-from src.core.models import CitationSource, DocumentMetadata, KnowledgeChunk
+from typing import Optional
+
+from src.core.models import CitationSource, DecisionState, DocumentMetadata, KnowledgeChunk
 from src.knowledge.evidence import ApprovedEvidence
 from src.llm.models import GroundedGenerationRequest
 from src.llm.validator import OutputValidator
@@ -10,13 +11,13 @@ from src.tools.order_models import CustomerSafeOrder, CustomerSafeOrderItem
 
 def _make_request(
     state: DecisionState = DecisionState.ANSWER,
-    citations: list = None,
-    order: CustomerSafeOrder = None,
-    evidence: list = None,
+    citations: Optional[list] = None,
+    order: Optional[CustomerSafeOrder] = None,
+    evidence: Optional[list] = None,
     handoff_recommended: bool = False,
-    handoff_reason: str = None,
-    suggested_clarification: str = None,
-    supported_action: str = None,
+    handoff_reason: Optional[str] = None,
+    suggested_clarification: Optional[str] = None,
+    supported_action: Optional[str] = None,
 ) -> GroundedGenerationRequest:
     return GroundedGenerationRequest(
         user_query="Sample query",

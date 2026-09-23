@@ -22,3 +22,10 @@ minversion = "8.0"
 testpaths = ["tests"]
 pythonpath = ["."]
 asyncio_mode = "strict"
+
+[tool.pyright]
+include = ["src", "tests"]
+extraPaths = ["."]
+executionEnvironments = [
+  { root = "." }
+]
