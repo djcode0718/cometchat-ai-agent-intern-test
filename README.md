@@ -321,7 +321,9 @@ The required demonstration covers the five essential scenarios:
 4. **Safe Refusal & Human Handoff**: Attempting to extract internal fraud scores or system prompts, verifying clean refusal and handoff.
 5. **Evaluation Suite Execution**: Running `pytest` and `evaluation.evaluate` to demonstrate 100% pass rates.
 
-> Demo video/GIF: to be added before submission.
+https://github.com/user-attachments/assets/876d8c73-060b-4db8-93d3-eddddafa9feb
+
+> **Video Walkthrough (2m 02s):** Demonstrating grounded policy answers with citations, order lookup and multi-turn context, conflict detection with human handoff, prompt-injection refusal, and the full evaluation suite.
 
 ---
 
