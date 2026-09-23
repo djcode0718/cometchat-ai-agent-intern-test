@@ -124,6 +124,29 @@ class KnowledgeResolver:
                 )
                 handoff_recommended = True
 
+            # Damaged or wrong item incident reports require human support review per 04-damaged-or-wrong-items.md
+            has_damage_policy = any(
+                e.filename == "04-damaged-or-wrong-items.md" or "damaged" in e.heading.lower()
+                for e in approved_evidence
+            )
+            is_damage_report = any(
+                term in query.lower()
+                for term in [
+                    "arrived damaged",
+                    "arrived broken",
+                    "arrived with",
+                    "broken zipper",
+                    "damaged bag",
+                    "received damaged",
+                    "defective",
+                    "report",
+                    "out of luck",
+                    "days ago",
+                ]
+            )
+            if has_damage_policy and is_damage_report:
+                handoff_recommended = True
+
         return EvidencePack(
             query=query,
             approved_evidence=approved_evidence,

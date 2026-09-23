@@ -63,6 +63,10 @@ class Router:
             (route, order_intent, extracted_order_id, active_order_id)
         """
         extracted_id = extract_candidate_order_id(query)
+        if not extracted_id:
+            conv_match = re.search(r"\border\s*(?:#|no\.?|id|number)?\s*(\d{4,})\b", query, re.IGNORECASE)
+            if conv_match:
+                extracted_id = f"ORD-{conv_match.group(1)}"
         session_active_id = session.active_order_id if session else None
 
         # 1. Explicit Order ID present in query -> ORDER route

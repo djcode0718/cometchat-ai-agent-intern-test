@@ -8,7 +8,7 @@ from src.knowledge.evidence import EvidencePack
 from src.tools.order_models import CustomerSafeOrder
 
 PRIVACY_VIOLATION_PATTERN = re.compile(
-    r"\b(email|address|shipping address|risk score|warehouse note|internal note|secret|prompt)\b",
+    r"\b(email|address|shipping address|risk score|fraud score|warehouse note|internal note|secret|prompt|system prompt|developer instruction|gift card|promo code|hash|pin|debug mode|api key|internal key)\b",
     re.IGNORECASE,
 )
 
@@ -25,20 +25,37 @@ class DecisionEngine:
         evidence_pack: Optional[EvidencePack] = state.evidence_pack
 
         # -------------------------------------------------------------------
-        # Rule 1: Privacy / Internal Data Disclosure Refusal
+        # Rule 1: Privacy / Internal Data Disclosure Refusal & Security Probes
         # -------------------------------------------------------------------
-        if PRIVACY_VIOLATION_PATTERN.search(query) and any(
-            req in query for req in ["give me", "show me", "tell me", "what is the customer", "reveal", "customer's", "internal"]
-        ):
-            # Check if this is asking for customer PII or internal notes
-            if any(term in query for term in ["email", "address", "risk score", "warehouse note", "internal note"]):
-                return AgentDecision(
-                    state=DecisionState.HANDOFF,
-                    reason="Customer personal data, internal notes, and risk scores are confidential and cannot be disclosed.",
-                    handoff_recommended=True,
-                    handoff_reason="Privacy request for confidential customer or internal data.",
-                    supported_action="order_lookup" if safe_order else None,
-                )
+        has_security_keyword = bool(PRIVACY_VIOLATION_PATTERN.search(query))
+        has_extraction_intent = any(
+            req in query
+            for req in [
+                "give me",
+                "show me",
+                "tell me",
+                "what is the customer",
+                "reveal",
+                "customer's",
+                "internal",
+                "output all",
+                "debug",
+                "system prompt",
+                "secret",
+                "keys",
+                "codes",
+                "pin",
+                "hash",
+            ]
+        )
+        if has_security_keyword and has_extraction_intent:
+            return AgentDecision(
+                state=DecisionState.HANDOFF,
+                reason="Customer personal data, internal notes, risk scores, and system security parameters are confidential and cannot be disclosed.",
+                handoff_recommended=True,
+                handoff_reason="Privacy/security request for confidential customer or internal data.",
+                supported_action="order_lookup" if safe_order else None,
+            )
 
         # -------------------------------------------------------------------
         # Rule 2: Genuine Knowledge Base Policy Conflict

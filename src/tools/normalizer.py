@@ -3,8 +3,8 @@
 import re
 from typing import Optional
 
-# Matches canonical or case-insensitive order ID: ORD-1001, ord-1001, etc.
-ORDER_ID_PATTERN = re.compile(r"\bORD-(\d{4,})\b", re.IGNORECASE)
+# Matches canonical or variant order IDs with ORD prefix: ORD-1001, ord 1001, ord#1001, ORD_1001, etc.
+ORDER_ID_PATTERN = re.compile(r"\bORD[-_#\s]*(\d{4,})\b", re.IGNORECASE)
 
 
 def extract_candidate_order_id(text: Optional[str]) -> Optional[str]:
