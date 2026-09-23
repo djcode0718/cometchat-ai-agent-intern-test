@@ -3,8 +3,7 @@
 import re
 from typing import List, Optional, Set, Tuple
 
-from src.agent.state import DecisionState
-from src.core.models import CitationSource
+from src.core.models import CitationSource, DecisionState
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest, ValidationResult
 
 # Regex patterns for safety scans
@@ -23,10 +22,33 @@ KNOWN_PII_TERMS = [
 ]
 
 UNSUPPORTED_MUTATION_PATTERNS = [
-    re.compile(r"\b(i have|i've|we have)\s+(cancelled|canceled)\b", re.IGNORECASE),
-    re.compile(r"\b(i have|i've|we have)\s+(processed|issued|approved)\s+(your|the)\s+(refund|return)\b", re.IGNORECASE),
-    re.compile(r"\b(i have|i've|we have)\s+(changed|updated)\s+(your|the)\s+address\b", re.IGNORECASE),
-    re.compile(r"\b(refund|cancellation)\s+(has been|is)\s+(completed|processed|approved|issued)\b", re.IGNORECASE),
+    # 1. Agent first-person claims of mutation: "I cancelled", "We processed", "I have updated", etc.
+    re.compile(
+        r"\b(i|we)\s+(have\s+|'ve\s+)?(cancelled|canceled|processed|issued|approved|changed|updated)\s+(your|the)\s+(order|refund|return|address|cancellation)\b",
+        re.IGNORECASE,
+    ),
+    # 2. Passive past-tense order/address mutation assertions: "your order was cancelled", "your address was updated", etc.
+    re.compile(
+        r"\b(your|the)\s+(order|address)\s+(was|has been|is now)\s+(cancelled|canceled|changed|updated)\b",
+        re.IGNORECASE,
+    ),
+    # 3. Customer-specific refund/return/cancellation completion: "your cancellation is complete", "your refund was processed", etc.
+    re.compile(
+        r"\byour\s+(cancellation|refund|return|address change)\s+(is|has been|was)\s+(complete|completed|processed|issued|approved|done)\b",
+        re.IGNORECASE,
+    ),
+    # 4. Specific refund issuance assertions: "the refund has been issued", "the refund was processed", etc.
+    re.compile(
+        r"\b(your|the)\s+refund\s+(has been|was)\s+(processed|issued|sent|approved|completed)\b",
+        re.IGNORECASE,
+    ),
+    # 5. Idiomatic completion: "your cancellation has gone through", "the refund has gone through", etc.
+    re.compile(
+        r"\b(your|the)\s+(cancellation|refund|return|address change)\s+has\s+gone\s+through\b",
+        re.IGNORECASE,
+    ),
+    # 6. Direct verb phrases: "I cancelled your order", "We changed your address"
+    re.compile(r"\b(i|we)\s+(cancelled|canceled|refunded)\s+(your|the)\s+order\b", re.IGNORECASE),
 ]
 
 
@@ -41,6 +63,21 @@ class OutputValidator:
     ) -> ValidationResult:
         """Validate generated text and produce a safe GeneratedResponse or trigger a fallback."""
         violations: List[str] = []
+
+        # -------------------------------------------------------------------
+        # 0. Empty / Whitespace-Only Output Check
+        # -------------------------------------------------------------------
+        if not raw_text or not raw_text.strip():
+            violations.append("Model returned empty or whitespace-only response.")
+            fallback = cls.build_fallback(
+                request, reason="Validation failed: Model returned empty or whitespace-only response."
+            )
+            return ValidationResult(
+                is_valid=False,
+                repaired_response=fallback,
+                violations=violations,
+            )
+
         text_lower = raw_text.lower()
 
         # -------------------------------------------------------------------

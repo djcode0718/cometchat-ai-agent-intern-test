@@ -1,6 +1,6 @@
 """Prompt templates and untrusted data boundary construction for grounded generation."""
 
-from src.agent.state import DecisionState
+from src.core.models import DecisionState
 from src.llm.models import GroundedGenerationRequest
 
 SYSTEM_PROMPT = """You are the official AI Customer Support Assistant for Aster & Row, an ecommerce company selling premium bags, drinkware, and travel accessories.

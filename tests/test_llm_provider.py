@@ -94,3 +94,58 @@ def test_mock_provider_custom_response_injection():
     resp = provider.generate(req)
 
     assert "injected mock response" in resp.message
+
+
+def test_flexible_provider_missing_api_key_raises_error():
+    """Verify FlexibleLLMProvider raises LLMGenerationError when no API key is set (no silent mock fallback)."""
+    import pytest
+    from src.llm.base import LLMGenerationError
+    from src.llm.provider import FlexibleLLMProvider
+
+    provider = FlexibleLLMProvider(api_key="")
+    req = make_sample_request(DecisionState.ANSWER)
+
+    with pytest.raises(LLMGenerationError) as exc_info:
+        provider.generate(req)
+
+    assert "No API key configured" in str(exc_info.value)
+
+
+def test_flexible_provider_api_failure_raises_error(monkeypatch):
+    """Verify FlexibleLLMProvider raises LLMGenerationError on network/API failure without silent mock."""
+    import pytest
+    from src.llm.base import LLMGenerationError
+    from src.llm.provider import FlexibleLLMProvider
+
+    provider = FlexibleLLMProvider(api_key="sk-test-key", base_url="http://invalid-url-for-testing.internal")
+    req = make_sample_request(DecisionState.ANSWER)
+
+    with pytest.raises(LLMGenerationError) as exc_info:
+        provider.generate(req)
+
+    assert "LLM API generation failed" in str(exc_info.value)
+
+
+def test_orchestrator_handles_provider_failure_with_safe_fallback_and_trace():
+    """Verify AgentOrchestrator catches provider error, triggers safe fallback, and logs generation_failed trace."""
+    from src.agent.orchestrator import AgentOrchestrator
+    from src.llm.base import BaseLLMProvider, LLMGenerationError
+
+    class FailingProvider(BaseLLMProvider):
+        @property
+        def provider_name(self) -> str:
+            return "failing-cloud-llm"
+
+        def generate(self, request):
+            raise LLMGenerationError("Simulated provider outage / timeout.")
+
+    orchestrator = AgentOrchestrator(llm_provider=FailingProvider())
+    state = orchestrator.process_turn("session_fail_1", "What is your standard return policy?")
+
+    assert state.response is not None
+    assert state.response.is_fallback is True
+    assert "Provider generation failed: LLMGenerationError" in state.response.fallback_reason
+    assert state.trace["generation_failed"] is True
+    assert state.trace["provider"] == "failing-cloud-llm"
+    assert state.trace["is_fallback"] is True
+    assert len(state.response.message.strip()) > 0

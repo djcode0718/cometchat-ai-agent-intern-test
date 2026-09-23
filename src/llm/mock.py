@@ -2,7 +2,7 @@
 
 from typing import Callable, Dict, Optional, Union
 
-from src.agent.state import DecisionState
+from src.core.models import DecisionState
 from src.llm.base import BaseLLMProvider
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest
 from src.llm.validator import OutputValidator

@@ -1,42 +1,38 @@
-"""Flexible LLM provider supporting standard API providers with automatic mock fallback."""
+"""Flexible LLM provider supporting standard API providers without silent mock fallback."""
 
 import os
 from typing import Optional
 
-from src.llm.base import BaseLLMProvider
-from src.llm.mock import MockLLMProvider
+from src.llm.base import BaseLLMProvider, LLMGenerationError
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest
 from src.llm.prompts import SYSTEM_PROMPT, build_user_prompt
 from src.llm.validator import OutputValidator
 
 
 class FlexibleLLMProvider(BaseLLMProvider):
-    """Production-ready LLM provider interface supporting API calls with safe offline mock fallback."""
+    """Production-ready LLM provider interface supporting external API models."""
 
     def __init__(
         self,
         api_key: Optional[str] = None,
         model_name: Optional[str] = None,
         base_url: Optional[str] = None,
-        fallback_provider: Optional[BaseLLMProvider] = None,
     ) -> None:
         self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY") or os.getenv("GEMINI_API_KEY")
         self.model_name = model_name or os.getenv("LLM_MODEL_NAME", "gpt-4o-mini")
         self.base_url = base_url or os.getenv("LLM_BASE_URL", "https://api.openai.com/v1")
-        self.mock_fallback = fallback_provider or MockLLMProvider()
 
     @property
     def provider_name(self) -> str:
-        if self.api_key:
-            return f"api-{self.model_name}"
-        return "mock"
+        return f"api-{self.model_name}"
 
     def generate(self, request: GroundedGenerationRequest) -> GeneratedResponse:
-        """Generate response via API if credentials exist, otherwise utilize deterministic mock."""
+        """Generate response via API. Raises LLMGenerationError on missing credentials or failure."""
         if not self.api_key:
-            return self.mock_fallback.generate(request)
+            raise LLMGenerationError(
+                f"No API key configured for provider '{self.provider_name}'. Set OPENAI_API_KEY, LLM_API_KEY, or GEMINI_API_KEY."
+            )
 
-        # Attempt API generation
         try:
             import httpx
 
@@ -65,5 +61,4 @@ class FlexibleLLMProvider(BaseLLMProvider):
             return validation.repaired_response or OutputValidator.build_fallback(request)
 
         except Exception as e:
-            # On any network or API failure, fallback gracefully to deterministic grounded response
-            return self.mock_fallback.generate(request)
+            raise LLMGenerationError(f"LLM API generation failed: {e}") from e

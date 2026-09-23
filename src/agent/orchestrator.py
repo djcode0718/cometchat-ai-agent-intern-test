@@ -9,9 +9,10 @@ from src.core.session import SessionManager
 from src.knowledge.evidence import EvidencePack
 from src.knowledge.resolver import KnowledgeResolver
 from src.knowledge.service import ingest_knowledge_base
-from src.llm.base import BaseLLMProvider
+from src.llm.base import BaseLLMProvider, LLMGenerationError
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest
 from src.llm.provider import FlexibleLLMProvider
+from src.llm.validator import OutputValidator
 from src.retrieval.base import BaseRetriever
 from src.retrieval.bm25 import BM25Retriever
 from src.retrieval.dense import DenseRetriever
@@ -117,7 +118,15 @@ class AgentOrchestrator:
         )
 
         # 6. Execute Grounded Generation and Output Validation
-        response: GeneratedResponse = self.llm_provider.generate(gen_request)
+        generation_failed = False
+        try:
+            response: GeneratedResponse = self.llm_provider.generate(gen_request)
+        except Exception as e:
+            generation_failed = True
+            response = OutputValidator.build_fallback(
+                gen_request, reason=f"Provider generation failed: {type(e).__name__}"
+            )
+
         state.response = response
 
         # 7. Build Observability Trace
@@ -134,6 +143,7 @@ class AgentOrchestrator:
             "handoff_reason": decision.handoff_reason,
             "supported_action": response.supported_action,
             "provider": self.llm_provider.provider_name,
+            "generation_failed": generation_failed,
             "is_fallback": response.is_fallback,
             "fallback_reason": response.fallback_reason,
             "citations": response.citation_strings,

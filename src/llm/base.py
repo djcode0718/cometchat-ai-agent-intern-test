@@ -4,6 +4,11 @@ from abc import ABC, abstractmethod
 from src.llm.models import GeneratedResponse, GroundedGenerationRequest
 
 
+class LLMGenerationError(Exception):
+    """Raised when an LLM provider fails to generate a response."""
+    pass
+
+
 class BaseLLMProvider(ABC):
     """Abstract interface for all language model providers."""
 

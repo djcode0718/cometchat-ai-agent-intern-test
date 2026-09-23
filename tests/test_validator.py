@@ -177,3 +177,91 @@ def test_validator_fallback_handoff_security():
     assert fallback.decision_state == DecisionState.HANDOFF
     assert fallback.handoff_recommended is True
     assert "confidential" in fallback.message.lower()
+
+
+def test_validator_empty_and_whitespace_output_rejected():
+    """Verify empty and whitespace-only outputs fail validation and trigger safe fallbacks."""
+    citation = CitationSource(filename="01-returns-policy-current.md", heading="Return Window")
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        citations=[citation],
+    )
+
+    empty_inputs = ["", " ", "   ", "\n", "\t", "\n\t  \n"]
+    for empty_text in empty_inputs:
+        result = OutputValidator.validate(empty_text, request)
+        assert result.is_valid is False, f"Failed to reject empty input: {repr(empty_text)}"
+        assert any("empty or whitespace" in v for v in result.violations)
+        assert result.repaired_response is not None
+        assert result.repaired_response.is_fallback is True
+        assert len(result.repaired_response.message.strip()) > 0
+
+
+def test_validator_strengthened_mutation_claims_rejected():
+    """Verify all direct past tense and noun-phrase mutation claims are rejected."""
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        supported_action="order_lookup",
+    )
+
+    rejected_claims = [
+        # Cancellation
+        "I cancelled your order.",
+        "We cancelled your order.",
+        "I canceled your order.",
+        "We canceled your order.",
+        "Your order was cancelled.",
+        "Your order was canceled.",
+        "Your cancellation has gone through.",
+        "Your cancellation is complete.",
+        "Your cancellation has been processed.",
+        # Refund
+        "I processed your refund.",
+        "We processed your refund.",
+        "I issued your refund.",
+        "We issued your refund.",
+        "Your refund was processed.",
+        "Your refund has been issued.",
+        "Your refund is complete.",
+        "Your refund has been completed.",
+        # Return
+        "I processed your return.",
+        "We processed your return.",
+        "Your return was processed.",
+        "Your return is complete.",
+        "Your return has been completed.",
+        # Address
+        "I changed your address.",
+        "We changed your address.",
+        "I updated your address.",
+        "We updated your address.",
+        "Your address was updated.",
+        "Your address change is complete.",
+    ]
+
+    for claim in rejected_claims:
+        result = OutputValidator.validate(claim, request)
+        assert result.is_valid is False, f"Failed to reject mutation claim: '{claim}'"
+        assert any("falsely claimed an action completion" in v for v in result.violations)
+        assert result.repaired_response.is_fallback is True
+
+
+def test_validator_informational_policy_statements_remain_valid():
+    """Verify general informational and policy statements are NOT falsely flagged as mutations."""
+    citation = CitationSource(filename="01-returns-policy-current.md", heading="Return Window")
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        citations=[citation],
+    )
+
+    valid_policy_statements = [
+        "Your order can be cancelled within 30 minutes [01-returns-policy-current.md > Return Window].",
+        "Refunds are generally processed after the return is approved [01-returns-policy-current.md > Return Window].",
+        "Returns can be completed within the applicable return window [01-returns-policy-current.md > Return Window].",
+        "Customers can update their address before shipment [01-returns-policy-current.md > Return Window].",
+    ]
+
+    for statement in valid_policy_statements:
+        result = OutputValidator.validate(statement, request)
+        assert result.is_valid is True, f"Incorrectly rejected valid statement: '{statement}'. Violations: {result.violations}"
+        assert result.repaired_response.is_fallback is False
