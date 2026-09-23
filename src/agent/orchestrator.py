@@ -1,4 +1,4 @@
-"""Agent orchestrator connecting session management, routing, tool execution, and decision making."""
+"""Agent orchestrator connecting session management, routing, tool execution, decision making, and grounded LLM generation."""
 
 from typing import Any, Dict, Optional
 
@@ -9,6 +9,9 @@ from src.core.session import SessionManager
 from src.knowledge.evidence import EvidencePack
 from src.knowledge.resolver import KnowledgeResolver
 from src.knowledge.service import ingest_knowledge_base
+from src.llm.base import BaseLLMProvider
+from src.llm.models import GeneratedResponse, GroundedGenerationRequest
+from src.llm.provider import FlexibleLLMProvider
 from src.retrieval.base import BaseRetriever
 from src.retrieval.bm25 import BM25Retriever
 from src.retrieval.dense import DenseRetriever
@@ -19,7 +22,7 @@ from src.tools.orders import OrderRepository, get_order_repository
 
 
 class AgentOrchestrator:
-    """Coordinates deterministic routing, knowledge/order retrieval, and decision generation for each turn."""
+    """Coordinates deterministic routing, knowledge/order retrieval, decision generation, and grounded LLM response."""
 
     def __init__(
         self,
@@ -29,12 +32,14 @@ class AgentOrchestrator:
         knowledge_resolver: Optional[KnowledgeResolver] = None,
         order_repository: Optional[OrderRepository] = None,
         decision_engine: Optional[DecisionEngine] = None,
+        llm_provider: Optional[BaseLLMProvider] = None,
     ) -> None:
         self.session_manager = session_manager or SessionManager()
         self.router = router or Router()
         self.knowledge_resolver = knowledge_resolver or KnowledgeResolver()
         self.order_repository = order_repository or get_order_repository()
         self.decision_engine = decision_engine or DecisionEngine()
+        self.llm_provider = llm_provider or FlexibleLLMProvider()
 
         # Initialize default hybrid retriever if not injected
         if retriever is not None:
@@ -49,7 +54,7 @@ class AgentOrchestrator:
             )
 
     def process_turn(self, session_id: str, query: str) -> AgentState:
-        """Process a single conversation turn and produce an authoritative AgentState."""
+        """Process a single conversation turn and produce an authoritative, validated AgentState."""
         session = self.session_manager.get_or_create_session(session_id)
         clean_query = query.strip()
         turn_id = len(session.messages) + 1
@@ -96,7 +101,26 @@ class AgentOrchestrator:
         state.handoff_recommended = decision.handoff_recommended
         state.handoff_reason = decision.handoff_reason
 
-        # 5. Build Observability Trace
+        # 5. Build Grounded Generation Request
+        gen_request = GroundedGenerationRequest(
+            user_query=clean_query,
+            decision_state=decision.state,
+            decision_reason=decision.reason,
+            approved_evidence=evidence_pack.approved_evidence if evidence_pack else [],
+            conflict_evidence=evidence_pack.conflict_evidence if evidence_pack else [],
+            customer_safe_order=safe_order,
+            suggested_clarification=decision.suggested_clarification,
+            handoff_recommended=decision.handoff_recommended,
+            handoff_reason=decision.handoff_reason,
+            supported_action=decision.supported_action,
+            citations=evidence_pack.citations if evidence_pack else [],
+        )
+
+        # 6. Execute Grounded Generation and Output Validation
+        response: GeneratedResponse = self.llm_provider.generate(gen_request)
+        state.response = response
+
+        # 7. Build Observability Trace
         state.trace = {
             "session_id": session_id,
             "turn_id": turn_id,
@@ -106,14 +130,19 @@ class AgentOrchestrator:
             "active_order_id": active_id,
             "decision_state": decision.state.value,
             "decision_reason": decision.reason,
-            "handoff_recommended": decision.handoff_recommended,
+            "handoff_recommended": response.handoff_recommended,
             "handoff_reason": decision.handoff_reason,
-            "supported_action": decision.supported_action,
-            "citations": evidence_pack.citation_strings if evidence_pack else [],
+            "supported_action": response.supported_action,
+            "provider": self.llm_provider.provider_name,
+            "is_fallback": response.is_fallback,
+            "fallback_reason": response.fallback_reason,
+            "citations": response.citation_strings,
+            "final_message": response.message,
             "order_status": safe_order.status if safe_order else None,
         }
 
-        # 6. Record turn in session history
+        # 8. Record user and assistant messages in session history
         session.add_message(role="user", content=clean_query)
+        session.add_message(role="assistant", content=response.message)
 
         return state

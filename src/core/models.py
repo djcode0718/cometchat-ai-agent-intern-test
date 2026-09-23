@@ -1,10 +1,21 @@
 """Domain models for Aster & Row support agent."""
 
 from datetime import date, datetime
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field, field_validator
+
+
+class DecisionState(str, Enum):
+    """Explicit decision states before response generation."""
+
+    ANSWER = "ANSWER"
+    CLARIFY = "CLARIFY"
+    ABSTAIN = "ABSTAIN"
+    CONFLICT = "CONFLICT"
+    HANDOFF = "HANDOFF"
 
 
 class DocumentMetadata(BaseModel):

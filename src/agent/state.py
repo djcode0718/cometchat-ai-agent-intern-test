@@ -4,7 +4,9 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
+from src.core.models import DecisionState
 from src.knowledge.evidence import EvidencePack
+from src.llm.models import GeneratedResponse
 from src.tools.order_models import CustomerSafeOrder
 
 
@@ -26,16 +28,6 @@ class OrderIntent(str, Enum):
     RETURN_REFUND = "RETURN_REFUND"
     DAMAGE_EXCEPTION = "DAMAGE_EXCEPTION"
     GENERAL = "GENERAL"
-
-
-class DecisionState(str, Enum):
-    """Explicit decision states before response generation."""
-
-    ANSWER = "ANSWER"
-    CLARIFY = "CLARIFY"
-    ABSTAIN = "ABSTAIN"
-    CONFLICT = "CONFLICT"
-    HANDOFF = "HANDOFF"
 
 
 class AgentDecision(BaseModel):
@@ -98,6 +90,11 @@ class AgentState(BaseModel):
     )
     handoff_reason: Optional[str] = Field(
         default=None, description="Top-level handoff reason if applicable"
+    )
+
+    # Final Grounded Response
+    response: Optional[GeneratedResponse] = Field(
+        default=None, description="Validated customer-facing response"
     )
 
     # Observability trace
