@@ -1,0 +1,49 @@
+{
+  "case_id": "final-sale-damaged-exception",
+  "input_query": "A final-sale bag arrived with a broken zipper yesterday. Am I completely out of luck?",
+  "expected": {
+    "decision_state": "ANSWER",
+    "handoff_recommended": true,
+    "concepts": [
+      "final sale does not block damaged-item review",
+      "report within 7 days",
+      "human review before approval"
+    ],
+    "required_sources": [
+      "03-final-sale-and-promotions.md",
+      "04-damaged-or-wrong-items.md"
+    ]
+  },
+  "actual": {
+    "route": "KNOWLEDGE",
+    "decision_state": "ANSWER",
+    "handoff_recommended": false,
+    "handoff_reason": null,
+    "public_response_message": "The final-sale restriction does not remove a customer\u2019s right to report an item that arrived damaged, defective, or different from what was ordered. Those cases follow the Damaged or Wrong Items Policy. [03-final-sale-and-promotions.md > Damaged or incorrect items]",
+    "citations": [
+      "[03-final-sale-and-promotions.md > Damaged or incorrect items]",
+      "[01-returns-policy-current.md > Exclusions and exceptions]",
+      "[04-damaged-or-wrong-items.md > Final-sale items]",
+      "[07-warranty.md > Final-sale products]"
+    ],
+    "retrieved_chunks": [
+      "RET-2026-02::damaged-or-incorrect-items",
+      "RET-2026-01::exclusions-and-exceptions",
+      "OPS-2026-04::final-sale-items",
+      "MIG-TEST-04::unapproved-legacy-copy",
+      "WAR-2026-01::final-sale-products"
+    ],
+    "approved_evidence": [
+      "RET-2026-02::damaged-or-incorrect-items",
+      "RET-2026-01::exclusions-and-exceptions",
+      "OPS-2026-04::final-sale-items",
+      "WAR-2026-01::final-sale-products"
+    ],
+    "evidence_sufficient": true,
+    "evidence_pack_handoff_recommended": false,
+    "evidence_pack_resolution_reason": "Authoritative evidence approved."
+  },
+  "reproduction_status": "REPRODUCED",
+  "suspected_root_layer": "DECISION_ENGINE / KNOWLEDGE_RESOLVER",
+  "root_cause_analysis": "1. Retrieval correctly returned chunks from both '03-final-sale-and-promotions.md' and '04-damaged-or-wrong-items.md'.\n2. KnowledgeResolver evaluated evidence_sufficient=True because both documents are active, official customer policies.\n3. However, KnowledgeResolver defaulted handoff_recommended to False because it only flags handoff for conflicts, insufficient evidence, or missing vegan keywords.\n4. DecisionEngine evaluated Rule 8 ('Sufficient Approved Knowledge Evidence') and returned state=ANSWER with handoff_recommended=evidence_pack.handoff_recommended (which was False).\n5. The policy in '04-damaged-or-wrong-items.md' explicitly mandates human support review ('All replacements/refunds require manual support agent review'), so an active customer report of an arrived damaged item requires handoff_recommended=True alongside the policy explanation."
+}
