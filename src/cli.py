@@ -38,14 +38,14 @@ class SupportCLI:
     def print_banner(self) -> None:
         """Display clean startup banner and configuration summary."""
         settings = get_settings()
-        gemini_model = settings.gemini_llm_model.removeprefix("models/")
-        groq_model = settings.groq_llm_model
+        primary_model = settings.groq_llm_model
+        fallback_model = settings.groq_fallback_model
 
         self.print_fn("\n" + "=" * 62)
         self.print_fn(" Aster & Row — AI Customer Support Assistant")
         self.print_fn("=" * 62)
         self.print_fn(f"Session:        {self.session_id}")
-        self.print_fn(f"Provider Chain: Gemini ({gemini_model}) → Groq ({groq_model}) → Safe Fallback")
+        self.print_fn(f"Provider Chain: Groq ({primary_model}) → Groq ({fallback_model}) → Safe Fallback")
         self.print_fn("-" * 62)
         self.print_fn("Type your inquiry below or use slash commands:")
         self.print_fn("  /help   - View help & supported topics")

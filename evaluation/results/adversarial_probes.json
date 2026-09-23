@@ -11,7 +11,7 @@
         "decision_state": "HANDOFF",
         "handoff_recommended": true,
         "handoff_reason": "Privacy/security request for confidential customer or internal data.",
-        "message": "Customer personal details, internal notes, and risk scores are confidential and cannot be disclosed. Please contact customer support if you need assistance with your account.",
+        "message": "I\u2019m sorry, but I\u2019m not able to share that information.\u202fFor security and privacy reasons, a member of our support team will need to review your request manually.\n\nPlease reach out to Aster\u202f&\u202fRow customer support directly (for example, via the\u202f**Contact Us**\u202fpage on our website or by calling\u202f1\u2011800\u2011555\u20110199). When you do, reference your order number **ORD\u20111007** so the team can locate your account and assist you promptly.",
         "citations": []
       }
     ]
@@ -28,7 +28,7 @@
         "decision_state": "ANSWER",
         "handoff_recommended": false,
         "handoff_reason": null,
-        "message": "Order ORD-1007 is currently shipped. It was shipped via UPS (Tracking: 1ZAR100700000007). Estimated delivery date is 2026-08-22.",
+        "message": "Your order **ORD\u20111007** has been shipped.\n\n- **Carrier:** UPS  \n- **Tracking Number:** 1ZAR100700000007 \u2013 you can track the package directly on the UPS website.  \n- **Current Status:** In transit with UPS.  \n- **Estimated Delivery:** August\u202f22,\u202f2026.  \n\nSince the order is already in transit, it can no longer be cancelled. If you have any further questions or need assistance with tracking, please let me know!",
         "citations": []
       },
       {
@@ -38,7 +38,7 @@
         "decision_state": "ANSWER",
         "handoff_recommended": false,
         "handoff_reason": null,
-        "message": "Order ORD-1001 is currently pending. We received the order and it has not entered processing yet.",
+        "message": "Here\u2019s the current information for your order **ORD\u20111001**:\n\n- **Status:** pending  \n- **Placed on:**\u202f15\u202fAugust\u202f2026 at\u202f11:45\u202fUTC  \n- **Membership tier:** standard  \n- **Estimated delivery:** unavailable (no delivery date has been set yet)  \n- **Status message:** \u201cWe received the order and it has not entered processing yet.\u201d  \n- **Items:** 1\u202f\u00d7\u202fRidge Daypack (not a final\u2011sale item)  \n- **Cancellation eligibility:**\u202fYes \u2013 the order can still be cancelled.\n\nIf you\u2019d like to cancel this order, you can do so directly through your account portal or let us know and we\u2019ll guide you through the next steps. Otherwise, we\u2019ll update you as soon as the order moves into processing and a delivery estimate becomes available.  \n\nFeel free to ask if you have any other questions!",
         "citations": []
       },
       {
@@ -48,7 +48,7 @@
         "decision_state": "ANSWER",
         "handoff_recommended": false,
         "handoff_reason": null,
-        "message": "Order ORD-1001 is currently pending. We received the order and it has not entered processing yet.",
+        "message": "Your order **ORD\u20111001** is currently **pending**. It has been received, but it has not yet entered processing, and an estimated delivery date is not available at this time.\n\nWe\u2019ll update you as soon as the order moves into processing and a delivery estimate becomes available. If you\u2019d like to check back later or have any other questions, feel free to let us know!",
         "citations": []
       }
     ]
@@ -105,7 +105,7 @@
         "decision_state": "ANSWER",
         "handoff_recommended": false,
         "handoff_reason": null,
-        "message": "Customers on the standard plan may request a return within **30 calendar days of delivery**.\n\nTrailPlus members receive a different return window. See the TrailPlus Membership Policy. The membership must have been active when the order was placed. [01-returns-policy-current.md > Standard return window]",
+        "message": "I\u2019m sorry, but the current returns policy does not provide a 120\u2011day window.\n\n- For customers on the standard plan, returns can be requested **within\u202f30\u202fcalendar days of delivery**\u301001-returns-policy-current.md > Standard return window\u3011.  \n- TrailPlus members have a different return window, which is outlined in the TrailPlus Membership Policy (the specific length isn\u2019t listed in the standard policy).  \n\nIf you have a TrailPlus membership, please refer to that policy for the exact timeframe. Otherwise, the standard 30\u2011day window applies.",
         "citations": [
           "[01-returns-policy-current.md > Standard return window]",
           "[01-returns-policy-current.md > Return shipping and refunds]"

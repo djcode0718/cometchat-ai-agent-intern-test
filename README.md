@@ -10,7 +10,7 @@ Aster & Row's customer support operations require an AI assistant that provides 
 
 This system was engineered with an authoritative **deterministic-first architecture**:
 - **Deterministic Authority**: Routing, entity normalization, document precedence, policy conflict detection, order state reconciliation, PII scrubbing, and decision governance are executed in deterministic Python before and after LLM generation.
-- **Language Generation Layer**: The LLM (Google Gemini Flash with Groq Llama 3.3 fallback) functions strictly as a grounded synthesizer, bound by verified evidence and validated against strict output constraints.
+- **Language Generation Layer**: The LLM (Groq `openai/gpt-oss-120b` with Groq `openai/gpt-oss-20b` fallback) functions strictly as a grounded synthesizer, bound by verified evidence and validated against strict output constraints.
 - **Customer Privacy & Safety**: Customer PII (emails, addresses), internal risk scores, warehouse notes, system prompts, and raw order JSON are strictly inaccessible to the client and excluded from LLM prompts.
 - **Interactive Delivery**: Includes a terminal CLI, a lightweight FastAPI backend, and a modern React conversation interface.
 
@@ -45,11 +45,12 @@ pip install fastapi uvicorn httpx
 cp .env.example .env
 ```
 
-Edit `.env` and provide your API keys:
+Edit `.env` and provide your Groq API key:
 ```dotenv
-GEMINI_API_KEY=your_gemini_api_key_here
-# Optional Groq fallback key:
 GROQ_API_KEY=your_groq_api_key_here
+GROQ_BASE_URL=https://api.groq.com/openai/v1
+GROQ_LLM_MODEL=openai/gpt-oss-120b
+GROQ_FALLBACK_MODEL=openai/gpt-oss-20b
 ```
 
 ### 3. Run the Interactive CLI
@@ -78,7 +79,7 @@ npm run dev
 ### 6. Run the Test and Evaluation Suites
 
 ```bash
-# Full test suite (225 unit & integration tests)
+# Full test suite (224 unit & integration tests)
 pytest -q
 
 # Run visible evaluation cases (15 cases)
@@ -99,11 +100,11 @@ All secrets are loaded via `python-dotenv` from `.env` and are never committed t
 
 | Variable | Default | Description |
 | :--- | :--- | :--- |
-| `GEMINI_API_KEY` | *(None)* | Primary LLM provider key (Google Gemini API). |
-| `GEMINI_LLM_MODEL` | `models/gemini-flash-latest` | Gemini model identifier. |
-| `GROQ_API_KEY` | *(None)* | Secondary fallback LLM provider key (Groq API). |
-| `GROQ_LLM_MODEL` | `llama-3.3-70b-versatile` | Groq model identifier. |
+| `GROQ_API_KEY` | *(None)* | Groq API access key. |
 | `GROQ_BASE_URL` | `https://api.groq.com/openai/v1` | Groq OpenAI-compatible base URL. |
+| `GROQ_LLM_MODEL` | `openai/gpt-oss-120b` | Primary Groq LLM model identifier. |
+| `GROQ_FALLBACK_MODEL` | `openai/gpt-oss-20b` | Secondary fallback Groq LLM model identifier. |
+| `LLM_PROVIDER` | `groq` | Active LLM provider mode (`groq`). |
 | `CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated allowed frontend origins. |
 | `KNOWLEDGE_BASE_DIR` | `knowledge-base` | Directory path containing Markdown knowledge docs. |
 | `ORDERS_FILE` | `data/orders.json` | Path to the mock orders data store. |
@@ -119,8 +120,8 @@ All secrets are loaded via `python-dotenv` from `.env` and are never committed t
 | **Lexical Retrieval** | `rank-bm25` (`BM25Okapi`) | Exact-keyword matching for specific policies, SKUs, and terms. |
 | **Dense Retrieval** | `sentence-transformers` (`all-MiniLM-L6-v2`) | Semantic similarity search across customer query embeddings. |
 | **Hybrid Ranking** | Reciprocal Rank Fusion (RRF, $k=60$) | Rank merging combining lexical and dense search streams. |
-| **LLM Primary** | Google Gemini API (`gemini-flash-latest`) | Grounded natural language generation. |
-| **LLM Fallback** | Groq API (`llama-3.3-70b-versatile`) | Fast automated secondary generation on primary timeout/429. |
+| **LLM Primary** | Groq API (`openai/gpt-oss-120b`) | Primary grounded natural language generation. |
+| **LLM Fallback** | Groq API (`openai/gpt-oss-20b`) | Automated secondary generation on primary model failure/429. |
 | **API Server** | FastAPI, Uvicorn, Starlette | Asynchronous HTTP REST API with OpenAPI/Swagger docs. |
 | **Frontend UI** | React 18, Vite, Vanilla CSS | Polished conversational interface with order cards & badges. |
 | **Testing** | Pytest, Pytest-Asyncio, HTTPX | Unit, integration, regression, and adversarial test suites. |
@@ -156,7 +157,7 @@ All secrets are loaded via `python-dotenv` from `.env` and are never committed t
 |                           CONFLICT, ABSTAIN, HANDOFF)                             |
 |                                      |                                            |
 |  4. LLM Provider Chain    Grounded Prompt (Evidence / Safe Order)                 |
-|                           [Primary: Gemini] -> [Fallback: Groq] -> [Safe Engine]  |
+|                           [Primary: Groq 120b] -> [Fallback: Groq 20b] -> [Safe]  |
 |                                      |                                            |
 |  5. Output Validator      Verifies citations, strips PII, blocks action claims    |
 +--------------------------------------+--------------------------------------------+
@@ -190,7 +191,7 @@ All secrets are loaded via `python-dotenv` from `.env` and are never committed t
 | **Stale Status Reconciliation** | Orders with `cancelled` or `returned` status have their estimated delivery dates suppressed to prevent customer confusion over stale carrier timestamps. |
 | **Prompt Injection Defense** | User queries and retrieved texts are treated as untrusted data. Instructions attempting to override system behavior, reset rules, or extract secrets are intercepted and routed to safe refusal/handoff. |
 | **Action Boundary Enforcement** | The agent strictly disclaims execution of mutations (e.g. "I have cancelled your order") and clarifies that cancellations/refunds require store support review. |
-| **Provider Fallback Resilience** | If Gemini encounters rate limits (HTTP 429) or timeouts, the provider chain automatically attempts Groq. If all providers fail, a deterministic fallback response is rendered with 100% uptime. |
+| **Provider Fallback Resilience** | If the primary Groq model (`openai/gpt-oss-120b`) encounters rate limits (HTTP 429) or timeouts, the provider chain automatically falls back to Groq `openai/gpt-oss-20b`. If all providers fail, a deterministic fallback response is rendered with 100% uptime. |
 
 ---
 
@@ -216,7 +217,7 @@ The evaluation harness (`evaluation/harness.py`) executes deterministic assertio
 | **Novel Regression Cases** (`regression_cases.json`) | 7 / 8 | **8 / 8** | **100.0%** | **PASSED** |
 | **Combined Evaluation Suite** | 21 / 23 | **23 / 23** | **100.0%** | **PASSED** |
 | **Adversarial Security Probes** | — | **5 / 5** | **100.0%** | **PASSED** |
-| **Full Pytest Suite** | 159 | **225** | **100.0%** | **PASSED** |
+| **Full Pytest Suite** | 159 | **224** | **100.0%** | **PASSED** |
 
 ### Visible Cases Category Breakdown
 
@@ -296,7 +297,7 @@ During Phase 4 evaluation setup, an AI suggestion proposed an unconstrained rewr
 1. **In-Memory Session Store**: Conversation sessions are stored in-memory using `SessionManager`. Server restarts will reset active session history (suitable for local deployment, but requires external store for distributed scaling).
 2. **Local Embedding Warmup**: The first dense retrieval request downloads or loads `all-MiniLM-L6-v2` into local memory (~80MB), introducing a 1–2 second one-time initialization latency.
 3. **Read-Only Action Boundaries**: The agent answers order status questions and explains return/cancellation eligibility, but does not perform write mutations on external databases.
-4. **LLM Provider Availability**: While deterministic fallbacks guarantee 100% response uptime, real-time natural language phrasing requires active internet access to Gemini or Groq APIs.
+4. **LLM Provider Availability**: While deterministic fallbacks guarantee 100% response uptime, real-time natural language phrasing requires active internet access to Groq API.
 
 ---
 
@@ -366,10 +367,12 @@ cometchat-ai-agent-intern-test/
 │   │   ├── order_models.py          # CustomerSafeOrder PII scrubbing models
 │   │   └── normalizer.py            # Order ID format normalizer
 │   ├── llm/
-│   │   ├── provider.py              # Multi-tier LLM client (Gemini -> Groq -> Fallback)
+│   │   ├── provider.py              # Flexible provider base & OpenAI compatibility
+│   │   ├── grok.py                  # Groq API provider (Primary & Fallback models)
+│   │   ├── fallback.py              # Structured multi-tier FallbackChainLLMProvider
 │   │   ├── prompt.py                # Grounded prompt templates
 │   │   ├── validator.py             # Regex & citation output validator
-│   │   └── factory.py               # Provider factory
+│   │   └── factory.py               # Provider factory (Groq 120b -> Groq 20b -> Safe)
 │   ├── cli.py                       # Interactive terminal REPL
 │   └── api.py                       # FastAPI REST API server
 ├── frontend/                        # React 18 + Vite frontend application
@@ -381,7 +384,7 @@ cometchat-ai-agent-intern-test/
 │   ├── index.html                   # HTML entry point
 │   ├── package.json                 # Minimal frontend dependencies
 │   └── vite.config.js               # Vite configuration
-├── tests/                           # 225 pytest unit, integration & regression tests
+├── tests/                           # 224 pytest unit, integration & regression tests
 ├── docs/
 │   └── BUG_DIARY.md                 # Detailed Phase 4 bug reproduction records
 ├── .env.example                     # Environment variable template
@@ -395,5 +398,5 @@ cometchat-ai-agent-intern-test/
 
 - **Public Repository**: Clean git history with all secrets excluded.
 - **Environment Template**: `.env.example` provided for instant setup without real credentials.
-- **Reproducible Evaluation**: All 225 pytest tests, 15 visible evaluation cases, 8 novel regression cases, and 5 adversarial probes run out-of-the-box and pass with 100% success rate.
+- **Reproducible Evaluation**: All 224 pytest tests, 15 visible evaluation cases, 8 novel regression cases, and 5 adversarial probes run out-of-the-box and pass with 100% success rate.
 - **Multi-Interface Support**: Full system can be explored interactively via CLI (`python -m src.cli`), REST API (`/docs`), or web frontend (`npm run dev`).

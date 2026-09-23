@@ -64,9 +64,9 @@ class Settings(BaseModel):
         default_factory=lambda: int(os.getenv("RRF_K", "60"))
     )
 
-    # LLM Provider Configuration (Phase 5)
+    # LLM Provider Configuration (Phase 5: Groq two-model fallback chain)
     llm_provider: str = Field(
-        default_factory=lambda: os.getenv("LLM_PROVIDER", "gemini")
+        default_factory=lambda: os.getenv("LLM_PROVIDER", "groq")
     )
     gemini_api_key: Optional[str] = Field(
         default_factory=lambda: os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
@@ -78,7 +78,10 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("GROQ_API_KEY") or os.getenv("GROK_API_KEY") or os.getenv("XAI_API_KEY")
     )
     groq_llm_model: str = Field(
-        default_factory=lambda: os.getenv("GROQ_LLM_MODEL") or os.getenv("GROK_MODEL", "llama-3.3-70b-versatile")
+        default_factory=lambda: os.getenv("GROQ_LLM_MODEL") or os.getenv("GROK_MODEL", "openai/gpt-oss-120b")
+    )
+    groq_fallback_model: str = Field(
+        default_factory=lambda: os.getenv("GROQ_FALLBACK_MODEL") or os.getenv("GROK_FALLBACK_MODEL", "openai/gpt-oss-20b")
     )
     groq_base_url: str = Field(
         default_factory=lambda: os.getenv("GROQ_BASE_URL") or os.getenv("GROK_BASE_URL", "https://api.groq.com/openai/v1")

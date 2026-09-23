@@ -1,4 +1,4 @@
-"""Unit and integration tests for Gemini, Grok, and FallbackChain LLM providers."""
+"""Unit and integration tests for Groq two-model fallback chain and safe LLM providers."""
 
 import json
 from unittest.mock import MagicMock, patch
@@ -75,38 +75,8 @@ def sample_order_request():
     )
 
 
-# 1. Test Gemini Success
-def test_gemini_provider_success(sample_knowledge_request):
-    mock_resp = MagicMock()
-    mock_resp.status_code = 200
-    mock_resp.json.return_value = {
-        "candidates": [
-            {
-                "content": {
-                    "parts": [
-                        {
-                            "text": "You have 30 days to return items in original condition. [01-returns-policy-current.md > Standard Returns]"
-                        }
-                    ]
-                }
-            }
-        ]
-    }
-
-    with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-gemini-key")
-        resp = provider.generate(sample_knowledge_request)
-
-        assert not resp.is_fallback
-        assert "30 days" in resp.message
-        assert len(resp.citations) == 1
-        assert resp.citations[0].filename == "01-returns-policy-current.md"
-        assert provider.last_latency_ms is not None
-        assert provider.provider_name.startswith("gemini-")
-
-
-# 2. Test Grok Success
-def test_grok_provider_success(sample_knowledge_request):
+# 1. Test Primary Groq Success
+def test_groq_primary_provider_success(sample_knowledge_request):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
@@ -120,7 +90,7 @@ def test_grok_provider_success(sample_knowledge_request):
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GrokLLMProvider(api_key="test-grok-key")
+        provider = GrokLLMProvider(api_key="test-groq-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(sample_knowledge_request)
 
         assert not resp.is_fallback
@@ -128,17 +98,43 @@ def test_grok_provider_success(sample_knowledge_request):
         assert len(resp.citations) == 1
         assert resp.citations[0].filename == "01-returns-policy-current.md"
         assert provider.last_latency_ms is not None
-        assert provider.provider_name.startswith(("groq-", "grok-"))
+        assert provider.provider_name == "groq-openai/gpt-oss-120b"
 
 
-# 3. Test Gemini Failure -> Grok Success Fallback
-def test_fallback_chain_gemini_fails_grok_succeeds(sample_knowledge_request):
-    gemini_resp = MagicMock()
-    gemini_resp.status_code = 500
+# 2. Test Fallback Groq Success
+def test_groq_fallback_provider_success(sample_knowledge_request):
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {
+        "choices": [
+            {
+                "message": {
+                    "content": "Aster & Row standard return window is 30 days. [01-returns-policy-current.md > Standard Returns]"
+                }
+            }
+        ]
+    }
 
-    grok_resp = MagicMock()
-    grok_resp.status_code = 200
-    grok_resp.json.return_value = {
+    with patch("httpx.Client.post", return_value=mock_resp):
+        provider = GrokLLMProvider(api_key="test-groq-key", model_name="openai/gpt-oss-20b")
+        resp = provider.generate(sample_knowledge_request)
+
+        assert not resp.is_fallback
+        assert "30 days" in resp.message
+        assert len(resp.citations) == 1
+        assert resp.citations[0].filename == "01-returns-policy-current.md"
+        assert provider.last_latency_ms is not None
+        assert provider.provider_name == "groq-openai/gpt-oss-20b"
+
+
+# 3. Test Groq Primary Failure -> Groq Fallback Success
+def test_fallback_chain_primary_fails_groq_fallback_succeeds(sample_knowledge_request):
+    primary_fail_resp = MagicMock()
+    primary_fail_resp.status_code = 500
+
+    fallback_success_resp = MagicMock()
+    fallback_success_resp.status_code = 200
+    fallback_success_resp.json.return_value = {
         "choices": [
             {
                 "message": {
@@ -148,15 +144,19 @@ def test_fallback_chain_gemini_fails_grok_succeeds(sample_knowledge_request):
         ]
     }
 
+    call_count = 0
+
     def mock_post(url, **kwargs):
-        if "generativelanguage.googleapis.com" in url:
-            return gemini_resp
-        return grok_resp
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            return primary_fail_resp
+        return fallback_success_resp
 
     with patch("httpx.Client.post", side_effect=mock_post):
-        gemini = GeminiLLMProvider(api_key="test-gemini-key")
-        grok = GrokLLMProvider(api_key="test-grok-key")
-        chain = FallbackChainLLMProvider(primary_provider=gemini, fallback_provider=grok)
+        primary_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
+        fallback_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-20b")
+        chain = FallbackChainLLMProvider(primary_provider=primary_groq, fallback_provider=fallback_groq)
 
         resp = chain.generate(sample_knowledge_request)
 
@@ -165,20 +165,20 @@ def test_fallback_chain_gemini_fails_grok_succeeds(sample_knowledge_request):
         assert chain.last_telemetry["primary_success"] is False
         assert chain.last_telemetry["fallback_used"] is True
         assert chain.last_telemetry["fallback_success"] is True
-        assert chain.last_telemetry["final_provider"].startswith(("groq-", "grok-"))
+        assert chain.last_telemetry["final_provider"] == "groq-openai/gpt-oss-20b"
 
 
-# 4. Test Gemini Failure -> Grok Failure -> Safe Fallback
+# 4. Test Groq Primary Failure -> Groq Fallback Failure -> Safe Deterministic Fallback
 def test_fallback_chain_both_fail_triggers_safe_fallback(sample_knowledge_request):
     err_resp = MagicMock()
     err_resp.status_code = 500
 
     with patch("httpx.Client.post", return_value=err_resp):
-        gemini = GeminiLLMProvider(api_key="test-gemini-key")
-        grok = GrokLLMProvider(api_key="test-grok-key")
+        primary_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
+        fallback_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-20b")
         chain = FallbackChainLLMProvider(
-            primary_provider=gemini,
-            fallback_provider=grok,
+            primary_provider=primary_groq,
+            fallback_provider=fallback_groq,
             deterministic_fallback_on_error=True,
         )
 
@@ -191,15 +191,7 @@ def test_fallback_chain_both_fail_triggers_safe_fallback(sample_knowledge_reques
         assert chain.last_telemetry["final_provider"] == "deterministic_fallback"
 
 
-# 5. Missing Gemini Key Error
-def test_gemini_missing_key_raises(sample_knowledge_request):
-    provider = GeminiLLMProvider(api_key="")
-    with pytest.raises(LLMGenerationError) as exc_info:
-        provider.generate(sample_knowledge_request)
-    assert "Gemini API key is not configured" in str(exc_info.value)
-
-
-# 6. Missing Grok Key Error
+# 5. Missing Grok Key Error
 def test_grok_missing_key_raises(sample_knowledge_request):
     provider = GrokLLMProvider(api_key="")
     with pytest.raises(LLMGenerationError) as exc_info:
@@ -207,11 +199,11 @@ def test_grok_missing_key_raises(sample_knowledge_request):
     assert "API key is not configured" in str(exc_info.value)
 
 
-# 7. Both Keys Missing in Fallback Chain
+# 6. Both Keys Missing in Fallback Chain
 def test_chain_both_keys_missing_triggers_error_or_fallback(sample_knowledge_request):
-    gemini = GeminiLLMProvider(api_key="")
-    grok = GrokLLMProvider(api_key="")
-    chain = FallbackChainLLMProvider(primary_provider=gemini, fallback_provider=grok)
+    primary_groq = GrokLLMProvider(api_key="")
+    fallback_groq = GrokLLMProvider(api_key="")
+    chain = FallbackChainLLMProvider(primary_provider=primary_groq, fallback_provider=fallback_groq)
 
     with pytest.raises(LLMGenerationError) as exc_info:
         chain.generate(sample_knowledge_request)
@@ -220,51 +212,51 @@ def test_chain_both_keys_missing_triggers_error_or_fallback(sample_knowledge_req
     assert chain.last_telemetry["final_provider"] == "deterministic_fallback"
 
 
-# 8. Rate limit handling
-def test_gemini_rate_limit_handled(sample_knowledge_request):
+# 7. Rate limit handling (429)
+def test_groq_rate_limit_handled(sample_knowledge_request):
     mock_resp = MagicMock()
     mock_resp.status_code = 429
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         with pytest.raises(LLMGenerationError) as exc_info:
             provider.generate(sample_knowledge_request)
         assert "rate limit" in str(exc_info.value).lower()
 
 
-# 9. Output validation: Empty/Whitespace Response from Provider
+# 8. Output validation: Empty/Whitespace Response from Provider
 def test_provider_empty_response_triggers_validation_fallback(sample_knowledge_request):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [{"content": {"parts": [{"text": "   "}]}}]
+        "choices": [{"message": {"content": "   "}}]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(sample_knowledge_request)
 
         assert resp.is_fallback is True
         assert "empty or whitespace" in (resp.fallback_reason or "").lower()
 
 
-# 10. Output validation: Mutation claims rejected
+# 9. Output validation: Mutation claims rejected
 def test_provider_mutation_claim_rejected(sample_knowledge_request):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [{"content": {"parts": [{"text": "I have cancelled your order and issued your refund."}]}}]
+        "choices": [{"message": {"content": "I have cancelled your order and issued your refund."}}]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(sample_knowledge_request)
 
         assert resp.is_fallback is True
         assert "validation failed" in (resp.fallback_reason or "").lower()
 
 
-# 11. Decision state preservation: CONFLICT
+# 10. Decision state preservation: CONFLICT
 def test_conflict_decision_preserved_with_provider():
     req = GroundedGenerationRequest(
         user_query="Can I wash my Breeze Tumbler in the dishwasher?",
@@ -278,28 +270,24 @@ def test_conflict_decision_preserved_with_provider():
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [
+        "choices": [
             {
-                "content": {
-                    "parts": [
-                        {
-                            "text": "Official Aster & Row guides conflict: the Product Care Guide states hand-wash [11-product-care.md > Breeze Tumbler], while the Product Card says dishwasher safe [12-breeze-tumbler-product-card.md > Cleaning]."
-                        }
-                    ]
+                "message": {
+                    "content": "Official Aster & Row guides conflict: the Product Care Guide states hand-wash [11-product-care.md > Breeze Tumbler], while the Product Card says dishwasher safe [12-breeze-tumbler-product-card.md > Cleaning]."
                 }
             }
         ]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(req)
 
         assert resp.decision_state == DecisionState.CONFLICT
         assert len(resp.citations) == 2
 
 
-# 12. Decision state preservation: ABSTAIN
+# 11. Decision state preservation: ABSTAIN
 def test_abstain_decision_preserved_with_provider():
     req = GroundedGenerationRequest(
         user_query="What fabric is used in the Nomad series?",
@@ -309,27 +297,23 @@ def test_abstain_decision_preserved_with_provider():
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [
+        "choices": [
             {
-                "content": {
-                    "parts": [
-                        {
-                            "text": "We do not have sufficient information in our official policies to confirm the fabrics for the Nomad series. Please contact support."
-                        }
-                    ]
+                "message": {
+                    "content": "We do not have sufficient information in our official policies to confirm the fabrics for the Nomad series. Please contact support."
                 }
             }
         ]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(req)
 
         assert resp.decision_state == DecisionState.ABSTAIN
 
 
-# 13. Decision state preservation: HANDOFF
+# 12. Decision state preservation: HANDOFF
 def test_handoff_decision_preserved_with_provider():
     req = GroundedGenerationRequest(
         user_query="Give me the internal fraud risk score.",
@@ -341,47 +325,39 @@ def test_handoff_decision_preserved_with_provider():
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [
+        "choices": [
             {
-                "content": {
-                    "parts": [
-                        {
-                            "text": "Customer personal details and risk scores are confidential. Please contact customer support for account assistance."
-                        }
-                    ]
+                "message": {
+                    "content": "Customer personal details and risk scores are confidential. Please contact customer support for account assistance."
                 }
             }
         ]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(req)
 
         assert resp.decision_state == DecisionState.HANDOFF
         assert resp.handoff_recommended is True
 
 
-# 14. Order lookup generation
+# 13. Order lookup generation
 def test_order_lookup_generation(sample_order_request):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
     mock_resp.json.return_value = {
-        "candidates": [
+        "choices": [
             {
-                "content": {
-                    "parts": [
-                        {
-                            "text": "Order ORD-1001 is shipped with FedEx (Tracking: TRK-987654). Estimated delivery is August 15, 2026."
-                        }
-                    ]
+                "message": {
+                    "content": "Order ORD-1001 is shipped with FedEx (Tracking: TRK-987654). Estimated delivery is August 15, 2026."
                 }
             }
         ]
     }
 
     with patch("httpx.Client.post", return_value=mock_resp):
-        provider = GeminiLLMProvider(api_key="test-key")
+        provider = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         resp = provider.generate(sample_order_request)
 
         assert not resp.is_fallback
@@ -390,29 +366,37 @@ def test_order_lookup_generation(sample_order_request):
         assert "TRK-987654" in resp.message
 
 
-# 15. Factory provider instantiation
+# 14. Factory provider instantiation and Gemini absence from default chain
 def test_get_llm_provider_factory():
     mock_p = get_llm_provider("mock")
     assert isinstance(mock_p, MockLLMProvider)
 
-    grok_p = get_llm_provider("grok")
-    assert isinstance(grok_p, GrokLLMProvider)
+    single_p = get_llm_provider("single_groq")
+    assert isinstance(single_p, GrokLLMProvider)
 
-    chain_p = get_llm_provider("gemini")
-    assert isinstance(chain_p, FallbackChainLLMProvider)
-    assert isinstance(chain_p.primary_provider, GeminiLLMProvider)
-    assert isinstance(chain_p.fallback_provider, GrokLLMProvider)
+    # Default provider chain must be Groq primary -> Groq fallback -> Deterministic
+    default_chain = get_llm_provider()
+    assert isinstance(default_chain, FallbackChainLLMProvider)
+    assert isinstance(default_chain.primary_provider, GrokLLMProvider)
+    assert isinstance(default_chain.fallback_provider, GrokLLMProvider)
+    assert default_chain.primary_provider.model_name == "openai/gpt-oss-120b"
+    assert default_chain.fallback_provider.model_name == "openai/gpt-oss-20b"
+    assert not isinstance(default_chain.primary_provider, GeminiLLMProvider)
+    assert not isinstance(default_chain.fallback_provider, GeminiLLMProvider)
 
 
-# 16. Orchestrator integration with fallback chain
-def test_orchestrator_integration_with_fallback_chain(sample_knowledge_request):
+# 15. Orchestrator integration with Groq fallback chain
+def test_orchestrator_integration_with_groq_fallback_chain(sample_knowledge_request):
     from src.agent.orchestrator import AgentOrchestrator
     from src.core.session import SessionManager
     from src.tools.orders import get_order_repository
 
-    grok_resp = MagicMock()
-    grok_resp.status_code = 200
-    grok_resp.json.return_value = {
+    primary_fail = MagicMock()
+    primary_fail.status_code = 503
+
+    fallback_success = MagicMock()
+    fallback_success.status_code = 200
+    fallback_success.json.return_value = {
         "choices": [
             {
                 "message": {
@@ -422,18 +406,19 @@ def test_orchestrator_integration_with_fallback_chain(sample_knowledge_request):
         ]
     }
 
-    gemini_resp = MagicMock()
-    gemini_resp.status_code = 503
+    call_count = 0
 
     def mock_post(url, **kwargs):
-        if "generativelanguage.googleapis.com" in url:
-            return gemini_resp
-        return grok_resp
+        nonlocal call_count
+        call_count += 1
+        if call_count == 1:
+            return primary_fail
+        return fallback_success
 
     with patch("httpx.Client.post", side_effect=mock_post):
-        gemini = GeminiLLMProvider(api_key="test-gemini")
-        grok = GrokLLMProvider(api_key="test-grok")
-        chain = FallbackChainLLMProvider(primary_provider=gemini, fallback_provider=grok)
+        primary_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
+        fallback_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-20b")
+        chain = FallbackChainLLMProvider(primary_provider=primary_groq, fallback_provider=fallback_groq)
 
         orch = AgentOrchestrator(
             session_manager=SessionManager(),
@@ -444,12 +429,14 @@ def test_orchestrator_integration_with_fallback_chain(sample_knowledge_request):
         state = orch.process_turn("s_chain", "How long do I have to return an unused item?")
         assert state.response is not None
         assert not state.response.is_fallback
+        assert state.trace["llm_telemetry"]["primary_success"] is False
         assert state.trace["llm_telemetry"]["fallback_used"] is True
-        assert state.trace["llm_telemetry"]["final_provider"].startswith(("groq-", "grok-"))
+        assert state.trace["llm_telemetry"]["fallback_success"] is True
+        assert state.trace["llm_telemetry"]["final_provider"] == "groq-openai/gpt-oss-20b"
 
 
-# 17. Orchestrator integration when both providers fail
-def test_orchestrator_integration_both_providers_fail():
+# 16. Orchestrator integration when both Groq models fail
+def test_orchestrator_integration_both_groq_models_fail():
     from src.agent.orchestrator import AgentOrchestrator
     from src.core.session import SessionManager
     from src.tools.orders import get_order_repository
@@ -458,9 +445,9 @@ def test_orchestrator_integration_both_providers_fail():
     err_resp.status_code = 500
 
     with patch("httpx.Client.post", return_value=err_resp):
-        gemini = GeminiLLMProvider(api_key="test-gemini")
-        grok = GrokLLMProvider(api_key="test-grok")
-        chain = FallbackChainLLMProvider(primary_provider=gemini, fallback_provider=grok)
+        primary_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
+        fallback_groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-20b")
+        chain = FallbackChainLLMProvider(primary_provider=primary_groq, fallback_provider=fallback_groq)
 
         orch = AgentOrchestrator(
             session_manager=SessionManager(),
@@ -475,18 +462,12 @@ def test_orchestrator_integration_both_providers_fail():
         assert "ORD-1001" in state.response.message
 
 
-# 18. Timeout exception handling
-def test_gemini_and_grok_timeout_handling(sample_knowledge_request):
+# 17. Timeout exception handling for Groq
+def test_groq_timeout_handling(sample_knowledge_request):
     import httpx
 
     with patch("httpx.Client.post", side_effect=httpx.TimeoutException("Network timed out")):
-        gemini = GeminiLLMProvider(api_key="test-key")
+        groq = GrokLLMProvider(api_key="test-key", model_name="openai/gpt-oss-120b")
         with pytest.raises(LLMGenerationError) as exc_info:
-            gemini.generate(sample_knowledge_request)
+            groq.generate(sample_knowledge_request)
         assert "timed out" in str(exc_info.value).lower()
-
-        grok = GrokLLMProvider(api_key="test-key")
-        with pytest.raises(LLMGenerationError) as exc_info2:
-            grok.generate(sample_knowledge_request)
-        assert "timed out" in str(exc_info2.value).lower()
-
