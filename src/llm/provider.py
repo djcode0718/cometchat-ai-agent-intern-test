@@ -18,7 +18,10 @@ class FlexibleLLMProvider(BaseLLMProvider):
         model_name: Optional[str] = None,
         base_url: Optional[str] = None,
     ) -> None:
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY") or os.getenv("GEMINI_API_KEY")
+        if api_key is not None:
+            self.api_key = api_key
+        else:
+            self.api_key = os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY") or os.getenv("GEMINI_API_KEY")
         self.model_name = model_name or os.getenv("LLM_MODEL_NAME", "gpt-4o-mini")
         self.base_url = base_url or os.getenv("LLM_BASE_URL", "https://api.openai.com/v1")
 
