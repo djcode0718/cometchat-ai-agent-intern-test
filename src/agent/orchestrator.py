@@ -1,5 +1,6 @@
 """Agent orchestrator connecting session management, routing, tool execution, decision making, and grounded LLM generation."""
 
+import time
 from typing import Any, Dict, Optional
 
 from src.agent.decision import DecisionEngine
@@ -68,19 +69,29 @@ class AgentOrchestrator:
         safe_order: Optional[CustomerSafeOrder] = None
         evidence_pack: Optional[EvidencePack] = None
 
-        # 2. Tool / Evidence Execution
-        if route == RouteType.ORDER:
-            if active_id:
-                safe_order = self.order_repository.lookup_order(active_id)
-                if safe_order:
-                    # Persist active order ID to session
-                    session.active_order_id = active_id
-            else:
-                safe_order = None
+        # 2. Tool / Evidence Execution with graceful error boundaries
+        try:
+            if route == RouteType.ORDER:
+                if active_id:
+                    safe_order = self.order_repository.lookup_order(active_id)
+                    if safe_order:
+                        # Persist active order ID to session
+                        session.active_order_id = active_id
+                else:
+                    safe_order = None
 
-        elif route == RouteType.KNOWLEDGE:
-            raw_candidates = self.retriever.retrieve(clean_query, top_k=5)
-            evidence_pack = self.knowledge_resolver.resolve(clean_query, raw_candidates)
+            elif route == RouteType.KNOWLEDGE:
+                raw_candidates = self.retriever.retrieve(clean_query, top_k=5)
+                evidence_pack = self.knowledge_resolver.resolve(clean_query, raw_candidates)
+        except Exception as e:
+            # Fallback evidence pack on tool/retrieval error
+            evidence_pack = EvidencePack(
+                query=clean_query,
+                approved_evidence=[],
+                evidence_sufficient=False,
+                resolution_reason=f"Tool/retrieval failure encountered: {type(e).__name__}",
+                handoff_recommended=True,
+            )
 
         # 3. Construct Initial Agent State
         state = AgentState(
@@ -117,8 +128,9 @@ class AgentOrchestrator:
             citations=evidence_pack.citations if evidence_pack else [],
         )
 
-        # 6. Execute Grounded Generation and Output Validation
+        # 6. Execute Grounded Generation and Output Validation with timing
         generation_failed = False
+        start_time = time.perf_counter()
         try:
             response: GeneratedResponse = self.llm_provider.generate(gen_request)
         except Exception as e:
@@ -126,13 +138,15 @@ class AgentOrchestrator:
             response = OutputValidator.build_fallback(
                 gen_request, reason=f"Provider generation failed: {type(e).__name__}"
             )
+        generation_latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
         state.response = response
 
-        # 7. Build Observability Trace
-        state.trace = {
+        # 7. Build Comprehensive, PII-Free Observability Trace
+        trace_data: Dict[str, Any] = {
             "session_id": session_id,
             "turn_id": turn_id,
+            "query": clean_query,
             "route": route.value,
             "order_intent": order_intent.value if order_intent else None,
             "extracted_order_id": extracted_id,
@@ -144,12 +158,36 @@ class AgentOrchestrator:
             "supported_action": response.supported_action,
             "provider": self.llm_provider.provider_name,
             "generation_failed": generation_failed,
+            "generation_latency_ms": generation_latency_ms,
             "is_fallback": response.is_fallback,
             "fallback_reason": response.fallback_reason,
             "citations": response.citation_strings,
             "final_message": response.message,
-            "order_status": safe_order.status if safe_order else None,
         }
+
+        # Attach safe knowledge retrieval metadata (No sensitive/internal fields)
+        if evidence_pack:
+            trace_data["retrieval"] = {
+                "approved_chunks": [e.chunk_id for e in evidence_pack.approved_evidence],
+                "approved_count": len(evidence_pack.approved_evidence),
+                "excluded_count": len(evidence_pack.excluded_evidence),
+                "excluded_reasons": [ex.reason.value for ex in evidence_pack.excluded_evidence],
+                "conflict_detected": evidence_pack.conflict_detected,
+                "evidence_sufficient": evidence_pack.evidence_sufficient,
+            }
+
+        # Attach sanitized order summary (Strictly no customer name, email, address, notes, risk score)
+        if safe_order:
+            trace_data["safe_order"] = {
+                "order_id": safe_order.order_id,
+                "status": safe_order.status,
+                "carrier": safe_order.carrier,
+                "tracking_number": safe_order.tracking_number,
+                "estimated_delivery": safe_order.estimated_delivery,
+                "is_cancellable": safe_order.is_cancellable,
+            }
+
+        state.trace = trace_data
 
         # 8. Record user and assistant messages in session history
         session.add_message(role="user", content=clean_query)

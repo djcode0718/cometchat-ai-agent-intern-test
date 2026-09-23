@@ -50,6 +50,21 @@ class AgentDecision(BaseModel):
     )
 
 
+class PublicAgentResponse(BaseModel):
+    """Clean public customer-facing response contract."""
+
+    session_id: str = Field(..., description="Unique session ID")
+    turn_id: int = Field(..., description="1-indexed turn ID in session")
+    message: str = Field(..., description="Customer response message")
+    decision_state: DecisionState = Field(..., description="Deterministic decision state")
+    citations: List[str] = Field(default_factory=list, description="Validated citations formatted [doc > heading]")
+    handoff_recommended: bool = Field(default=False, description="Whether human support is recommended")
+    handoff_reason: Optional[str] = Field(default=None, description="Human handoff reason if applicable")
+    supported_action: Optional[str] = Field(default=None, description="Read-only action performed if any")
+    is_fallback: bool = Field(default=False, description="True if response was produced by deterministic fallback")
+    fallback_reason: Optional[str] = Field(default=None, description="Reason why fallback was triggered")
+
+
 class AgentState(BaseModel):
     """State of a single conversation turn."""
 
@@ -101,3 +116,33 @@ class AgentState(BaseModel):
     trace: Dict[str, Any] = Field(
         default_factory=dict, description="Structured audit trace for observability"
     )
+
+    @property
+    def response_message(self) -> str:
+        """Return final validated message string."""
+        return self.response.message if self.response else ""
+
+    @property
+    def citation_strings(self) -> List[str]:
+        """Return list of citation strings."""
+        return self.response.citation_strings if self.response else []
+
+    @property
+    def is_fallback(self) -> bool:
+        """Return whether response was generated via deterministic fallback."""
+        return self.response.is_fallback if self.response else False
+
+    def to_public_response(self) -> PublicAgentResponse:
+        """Produce clean public response object without exposing internal models."""
+        return PublicAgentResponse(
+            session_id=self.session_id,
+            turn_id=self.turn_id,
+            message=self.response_message,
+            decision_state=self.decision.state if self.decision else DecisionState.HANDOFF,
+            citations=self.citation_strings,
+            handoff_recommended=self.handoff_recommended,
+            handoff_reason=self.handoff_reason,
+            supported_action=self.response.supported_action if self.response else None,
+            is_fallback=self.is_fallback,
+            fallback_reason=self.response.fallback_reason if self.response else None,
+        )

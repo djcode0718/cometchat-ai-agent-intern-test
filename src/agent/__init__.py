@@ -8,6 +8,7 @@ from src.agent.state import (
     AgentState,
     DecisionState,
     OrderIntent,
+    PublicAgentResponse,
     RouteType,
 )
 
@@ -17,6 +18,7 @@ __all__ = [
     "DecisionState",
     "AgentDecision",
     "AgentState",
+    "PublicAgentResponse",
     "Router",
     "DecisionEngine",
     "AgentOrchestrator",
