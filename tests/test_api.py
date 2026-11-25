@@ -339,6 +339,7 @@ def test_response_contains_only_public_fields(client):
         "is_fallback",
         "fallback_reason",
         "safe_order",
+        "proposal",
     }
     assert set(data.keys()).issubset(allowed_keys)
     assert "internal_secret" not in data

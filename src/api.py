@@ -5,7 +5,7 @@ import uuid
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
@@ -15,6 +15,17 @@ load_dotenv()
 
 from src.agent.orchestrator import AgentOrchestrator
 from src.agent.state import DecisionState, PublicAgentResponse
+from src.approvals import get_approval_service
+from src.approvals.auth import authenticate_reviewer
+from src.approvals.models import ActionType, ProposalStatus
+from src.approvals.schemas import (
+    ApproveProposalRequest,
+    AuditEventResponse,
+    ProposalResponse,
+    RejectProposalRequest,
+)
+from src.approvals.service import ConcurrencyConflictError, ProposalNotFoundError
+from src.approvals.state_machine import InvalidTransition
 from src.core.config import get_settings
 from src.observability.integrations import init_sentry
 from src.observability.logging import configure_logging, get_logger
@@ -79,6 +90,7 @@ class ChatResponse(BaseModel):
     is_fallback: bool = Field(default=False, description="Whether deterministic fallback was used")
     fallback_reason: Optional[str] = Field(default=None, description="Reason fallback was triggered")
     safe_order: Optional[Dict[str, Any]] = Field(default=None, description="Customer-safe order details if available")
+    proposal: Optional[Dict[str, Any]] = Field(default=None, description="Optional proposal summary if action was submitted for review")
 
 
 class ResetResponse(BaseModel):
@@ -277,6 +289,7 @@ def chat_endpoint(request: ChatRequest) -> ChatResponse:
         is_fallback=public_resp.is_fallback,
         fallback_reason=public_resp.fallback_reason,
         safe_order=safe_order,
+        proposal=public_resp.proposal,
     )
 
 
@@ -302,3 +315,183 @@ def reset_session_endpoint(session_id: str) -> ResetResponse:
 def get_session_trace_endpoint(session_id: str) -> TraceResponse:
     trace = _session_traces.get(session_id)
     return TraceResponse(session_id=session_id, trace=trace)
+
+
+# ---------------------------------------------------------------------------
+# Human-in-the-Loop (HITL) Reviewer & Customer Proposal Endpoints
+# ---------------------------------------------------------------------------
+
+def _to_proposal_response(proposal, request_id: Optional[str] = None) -> ProposalResponse:
+    """Helper converting ProposedActionModel to ProposalResponse without PII."""
+    return ProposalResponse(
+        id=proposal.id,
+        order_id=proposal.order_id,
+        session_id=proposal.session_id,
+        action_type=proposal.action_type,
+        status=proposal.status,
+        version=proposal.version,
+        created_at=proposal.created_at,
+        expires_at=proposal.expires_at,
+        decided_by=proposal.decided_by,
+        decided_at=proposal.decided_at,
+        decision_reason=proposal.decision_reason,
+        evidence_snapshot=proposal.evidence_snapshot or {},
+        request_id=request_id,
+    )
+
+
+@app.get(
+    "/sessions/{session_id}/proposal",
+    response_model=Optional[ProposalResponse],
+    summary="Get active proposal for customer session",
+    description="Returns the active proposal bound strictly to the calling customer's session_id.",
+)
+def get_customer_session_proposal(session_id: str, request: Request) -> Optional[ProposalResponse]:
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
+    approval_service = get_approval_service()
+    proposals = approval_service.list(session_id=session_id, limit=1)
+    if not proposals:
+        raise HTTPException(status_code=404, detail="No proposal found for this session.")
+    return _to_proposal_response(proposals[0], request_id=request_id)
+
+
+@app.get(
+    "/reviewer/proposals",
+    response_model=List[ProposalResponse],
+    summary="List proposals for human review",
+    description="Lists customer action proposals filtered by status, with pagination.",
+)
+def list_reviewer_proposals(
+    request: Request,
+    status: Optional[ProposalStatus] = None,
+    order_id: Optional[str] = None,
+    limit: int = 50,
+    offset: int = 0,
+    reviewer_id: str = Depends(authenticate_reviewer),
+) -> List[ProposalResponse]:
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
+    approval_service = get_approval_service()
+    proposals = approval_service.list(status=status, order_id=order_id, limit=limit, offset=offset)
+    return [_to_proposal_response(p, request_id=request_id) for p in proposals]
+
+
+@app.get(
+    "/reviewer/proposals/{proposal_id}",
+    response_model=ProposalResponse,
+    summary="Get detailed proposal for review",
+    description="Fetches a specific proposed action by ID. Lazily checks expiration.",
+)
+def get_reviewer_proposal(
+    proposal_id: str,
+    request: Request,
+    reviewer_id: str = Depends(authenticate_reviewer),
+) -> ProposalResponse:
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
+    approval_service = get_approval_service()
+    proposal = approval_service.get(proposal_id)
+    if not proposal:
+        raise HTTPException(status_code=404, detail=f"Proposal {proposal_id} not found.")
+    return _to_proposal_response(proposal, request_id=request_id)
+
+
+@app.post(
+    "/reviewer/proposals/{proposal_id}/approve",
+    response_model=ProposalResponse,
+    summary="Approve and execute a proposed action",
+    description="Approve and atomically execute proposed action. Re-verifies order eligibility and enforces optimistic locking.",
+)
+def approve_reviewer_proposal(
+    proposal_id: str,
+    req_body: ApproveProposalRequest,
+    request: Request,
+    reviewer_id: str = Depends(authenticate_reviewer),
+) -> ProposalResponse:
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
+    approval_service = get_approval_service()
+    try:
+        proposal = approval_service.approve(
+            proposal_id=proposal_id,
+            reviewer_id=reviewer_id,
+            expected_version=req_body.version,
+            reason=req_body.note,
+            request_id=request_id,
+        )
+        return _to_proposal_response(proposal, request_id=request_id)
+    except ProposalNotFoundError:
+        raise HTTPException(status_code=404, detail=f"Proposal {proposal_id} not found.")
+    except ConcurrencyConflictError as cce:
+        raise HTTPException(status_code=409, detail=str(cce))
+    except InvalidTransition as it:
+        raise HTTPException(status_code=400, detail=str(it))
+
+
+@app.post(
+    "/reviewer/proposals/{proposal_id}/reject",
+    response_model=ProposalResponse,
+    summary="Reject a proposed action",
+    description="Reject a proposed action. Requires a reason between 10 and 500 characters.",
+)
+def reject_reviewer_proposal(
+    proposal_id: str,
+    req_body: RejectProposalRequest,
+    request: Request,
+    reviewer_id: str = Depends(authenticate_reviewer),
+) -> ProposalResponse:
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
+    approval_service = get_approval_service()
+    try:
+        proposal = approval_service.reject(
+            proposal_id=proposal_id,
+            reviewer_id=reviewer_id,
+            reason=req_body.reason,
+            expected_version=req_body.version,
+            request_id=request_id,
+        )
+        return _to_proposal_response(proposal, request_id=request_id)
+    except ProposalNotFoundError:
+        raise HTTPException(status_code=404, detail=f"Proposal {proposal_id} not found.")
+    except ConcurrencyConflictError as cce:
+        raise HTTPException(status_code=409, detail=str(cce))
+    except InvalidTransition as it:
+        raise HTTPException(status_code=400, detail=str(it))
+    except ValueError as ve:
+        raise HTTPException(status_code=422, detail=str(ve))
+
+
+@app.get(
+    "/reviewer/audit",
+    response_model=List[AuditEventResponse],
+    summary="List immutable audit trail",
+    description="Lists append-only audit events for compliance and security auditing.",
+)
+def get_reviewer_audit(
+    request: Request,
+    order_id: Optional[str] = None,
+    proposal_id: Optional[str] = None,
+    limit: int = 100,
+    offset: int = 0,
+    reviewer_id: str = Depends(authenticate_reviewer),
+) -> List[AuditEventResponse]:
+    approval_service = get_approval_service()
+    events = approval_service.audit_repo.list_events(
+        order_id=order_id,
+        proposal_id=proposal_id,
+        limit=limit,
+        offset=offset,
+    )
+    return [
+        AuditEventResponse(
+            id=ev.id,
+            order_id=ev.order_id,
+            proposal_id=ev.proposal_id,
+            action=ev.action,
+            from_state=ev.from_state,
+            to_state=ev.to_state,
+            decided_by=ev.decided_by,
+            reason=ev.reason,
+            request_id=ev.request_id,
+            timestamp=ev.timestamp,
+        )
+        for ev in events
+    ]
+

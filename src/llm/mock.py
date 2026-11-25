@@ -78,6 +78,16 @@ class MockLLMProvider(BaseLLMProvider):
             )
 
         # state == DecisionState.ANSWER
+        if request.proposal_info:
+            prop_status = request.proposal_info.get("status")
+            prop_id = request.proposal_info.get("id")
+            if prop_status == "EXECUTED":
+                return f"Your request has been approved and executed. Order {request.customer_safe_order.order_id if request.customer_safe_order else ''} is cancelled."
+            return (
+                f"Your cancellation request for order {request.customer_safe_order.order_id if request.customer_safe_order else ''} "
+                f"has been submitted for review (reference: {prop_id}). A support reviewer will inspect and confirm the request."
+            )
+
         if request.customer_safe_order:
             order = request.customer_safe_order
             if order.status == "cancelled":

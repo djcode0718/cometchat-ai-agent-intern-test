@@ -35,6 +35,9 @@ class GroundedGenerationRequest(BaseModel):
     supported_action: Optional[str] = Field(
         default=None, description="Read-only action performed (e.g. 'order_lookup'). Never a mutation."
     )
+    proposal_info: Optional[dict] = Field(
+        default=None, description="Optional proposal summary (id, status) if action was submitted for review"
+    )
     citations: List[CitationSource] = Field(
         default_factory=list, description="Approved list of citation sources"
     )

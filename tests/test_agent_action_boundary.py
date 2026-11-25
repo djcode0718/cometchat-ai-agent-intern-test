@@ -11,8 +11,8 @@ def test_cancellation_query_never_claims_mutation():
     state = orchestrator.process_turn("session-action-1", "Can I cancel ORD-1001?")
 
     assert state.decision.state == DecisionState.ANSWER
-    # Supported action must strictly be read-only lookup, never mutation
-    assert state.decision.supported_action == "order_lookup"
+    # Supported action must strictly be read-only lookup or submitted proposal, never mutation
+    assert state.decision.supported_action in ("order_lookup", "cancellation_request_submitted")
     assert state.decision.supported_action != "cancel_order"
     assert state.customer_safe_order.is_cancellable is True
 
@@ -34,5 +34,5 @@ def test_address_change_query_never_claims_mutation():
     # Customer asking to change shipping address
     state = orchestrator.process_turn("session-action-3", "Change the shipping address for ORD-1001 to California")
 
-    assert state.decision.supported_action in ("order_lookup", None)
+    assert state.decision.supported_action in ("order_lookup", "cancellation_request_submitted", None)
     assert state.decision.supported_action != "change_address"

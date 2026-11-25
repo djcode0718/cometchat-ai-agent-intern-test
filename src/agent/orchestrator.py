@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from typing import Any, Dict, Generator, Optional
 
 from src.agent.decision import DecisionEngine
-from src.agent.router import Router
+from src.agent.router import OrderIntent, Router
 from src.agent.state import AgentDecision, AgentState, RouteType
 from src.core.config import get_settings
 from src.core.session import SessionManager
@@ -30,6 +30,8 @@ from src.retrieval.embeddings import LocalEmbeddingService
 from src.retrieval.hybrid import HybridRetriever
 from src.tools.order_models import CustomerSafeOrder
 from src.tools.orders import OrderRepository, get_order_repository
+from src.approvals.models import ActionType
+from src.approvals import get_approval_service
 
 logger = get_logger("orchestrator")
 
@@ -145,6 +147,39 @@ class AgentOrchestrator:
             state.handoff_recommended = decision.handoff_recommended
             state.handoff_reason = decision.handoff_reason
 
+        # 4b. HITL Proposal Hook: If cancellation or address change requested and order is cancellable
+        proposal_info = None
+        is_address_change_req = "address" in clean_query.lower() and ("change" in clean_query.lower() or "update" in clean_query.lower())
+        if (
+            safe_order is not None
+            and safe_order.is_cancellable
+            and (order_intent == OrderIntent.CANCELLATION or is_address_change_req)
+        ):
+            try:
+                approval_service = get_approval_service()
+                action_type = (
+                    ActionType.CANCELLATION
+                    if order_intent == OrderIntent.CANCELLATION
+                    else ActionType.ADDRESS_CHANGE
+                )
+                safe_snapshot = {
+                    "order_id": safe_order.order_id,
+                    "status": safe_order.status,
+                    "is_cancellable": safe_order.is_cancellable,
+                    "membership_tier": safe_order.membership_tier,
+                }
+                proposal = approval_service.create_proposal(
+                    order_id=safe_order.order_id,
+                    session_id=session_id,
+                    action_type=action_type,
+                    evidence_snapshot=safe_snapshot,
+                )
+                proposal_info = {"id": proposal.id, "status": proposal.status.value}
+                # Keep decision_state ANSWER and supported_action cancellation_request_submitted
+                decision.supported_action = "cancellation_request_submitted"
+            except Exception as prop_err:
+                logger.warning("hitl_proposal_creation_error", error=str(prop_err))
+
         # 5. Build Grounded Generation Request
         gen_request = GroundedGenerationRequest(
             user_query=clean_query,
@@ -157,6 +192,7 @@ class AgentOrchestrator:
             handoff_recommended=decision.handoff_recommended,
             handoff_reason=decision.handoff_reason,
             supported_action=decision.supported_action,
+            proposal_info=proposal_info,
             citations=evidence_pack.citations if evidence_pack else [],
         )
 
@@ -248,6 +284,7 @@ class AgentOrchestrator:
             "is_fallback": response.is_fallback,
             "fallback_reason": response.fallback_reason,
             "citations": response.citation_strings,
+            "proposal": proposal_info,
             "final_message": response.message,
         }
 

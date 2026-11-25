@@ -49,6 +49,8 @@ UNSUPPORTED_MUTATION_PATTERNS = [
     ),
     # 6. Direct verb phrases: "I cancelled your order", "We changed your address"
     re.compile(r"\b(i|we)\s+(cancelled|canceled|refunded)\s+(your|the)\s+order\b", re.IGNORECASE),
+    # 7. Premature cancellation claims before review execution:
+    re.compile(r"\b(order|cancellation)\s+(has been|is)\s+(cancelled|canceled|processed)\b", re.IGNORECASE),
 ]
 
 

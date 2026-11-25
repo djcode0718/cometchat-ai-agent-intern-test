@@ -1,0 +1,130 @@
+{
+  "dataset_name": "aster_row_demo_orders",
+  "snapshot_at": "2026-03-01T12:00:00Z",
+  "orders": [
+    {
+      "order_id": "ORD-1001",
+      "customer_id": "CUST-001",
+      "status": "pending",
+      "created_at": "2026-03-01T11:00:00Z",
+      "updated_at": "2026-03-01T11:00:00Z",
+      "items": [
+        {"sku": "SKU-BREEZE-01", "name": "Breeze Tumbler", "quantity": 1, "unit_price": 38.0}
+      ],
+      "shipping_address": {
+        "street": "100 Pine Street",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98101"
+      },
+      "raw_data": {
+        "order_id": "ORD-1001",
+        "customer_id": "CUST-001",
+        "status": "pending",
+        "placed_at": "2026-03-01T11:00:00Z",
+        "is_cancellable": true,
+        "is_address_change_allowed": true
+      }
+    },
+    {
+      "order_id": "ORD-1002",
+      "customer_id": "CUST-002",
+      "status": "processing",
+      "created_at": "2026-03-01T10:30:00Z",
+      "updated_at": "2026-03-01T10:30:00Z",
+      "items": [
+        {"sku": "SKU-ROAM-02", "name": "Roam Packable Tote", "quantity": 1, "unit_price": 54.0}
+      ],
+      "shipping_address": {
+        "street": "200 Oak Ave",
+        "city": "Denver",
+        "state": "CO",
+        "zip": "80202"
+      },
+      "raw_data": {
+        "order_id": "ORD-1002",
+        "customer_id": "CUST-002",
+        "status": "processing",
+        "placed_at": "2026-03-01T10:30:00Z",
+        "is_cancellable": true,
+        "is_address_change_allowed": true
+      }
+    },
+    {
+      "order_id": "ORD-1003",
+      "customer_id": "CUST-003",
+      "status": "shipped",
+      "created_at": "2026-02-28T09:00:00Z",
+      "updated_at": "2026-03-01T08:00:00Z",
+      "items": [
+        {"sku": "SKU-APEX-01", "name": "Apex Duffle", "quantity": 1, "unit_price": 145.0}
+      ],
+      "shipping_address": {
+        "street": "300 Elm St",
+        "city": "Austin",
+        "state": "TX",
+        "zip": "78701"
+      },
+      "raw_data": {
+        "order_id": "ORD-1003",
+        "customer_id": "CUST-003",
+        "status": "shipped",
+        "placed_at": "2026-02-28T09:00:00Z",
+        "is_cancellable": false,
+        "is_address_change_allowed": false,
+        "tracking_number": "TRK987654321",
+        "carrier": "UPS"
+      }
+    },
+    {
+      "order_id": "ORD-1004",
+      "customer_id": "CUST-004",
+      "status": "delivered",
+      "created_at": "2026-02-20T14:00:00Z",
+      "updated_at": "2026-02-24T16:00:00Z",
+      "items": [
+        {"sku": "SKU-CROSS-01", "name": "Crossbody Sling", "quantity": 2, "unit_price": 42.0}
+      ],
+      "shipping_address": {
+        "street": "400 Maple Dr",
+        "city": "Portland",
+        "state": "OR",
+        "zip": "97201"
+      },
+      "raw_data": {
+        "order_id": "ORD-1004",
+        "customer_id": "CUST-004",
+        "status": "delivered",
+        "placed_at": "2026-02-20T14:00:00Z",
+        "delivered_at": "2026-02-24T16:00:00Z",
+        "is_cancellable": false,
+        "is_address_change_allowed": false
+      }
+    },
+    {
+      "order_id": "ORD-1005",
+      "customer_id": "CUST-005",
+      "status": "pending",
+      "created_at": "2026-02-25T10:00:00Z",
+      "updated_at": "2026-02-25T10:00:00Z",
+      "items": [
+        {"sku": "SKU-LUNCH-01", "name": "Insulated Lunch Box", "quantity": 1, "unit_price": 32.0}
+      ],
+      "shipping_address": {
+        "street": "500 Cedar Way",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60601"
+      },
+      "raw_data": {
+        "order_id": "ORD-1005",
+        "customer_id": "CUST-005",
+        "status": "pending",
+        "placed_at": "2026-02-25T10:00:00Z",
+        "is_cancellable": false,
+        "is_address_change_allowed": false,
+        "order_age_hours": 146.0
+      }
+    }
+  ]
+}
