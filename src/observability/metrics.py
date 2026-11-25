@@ -51,3 +51,10 @@ LLM_FALLBACK_TOTAL = Counter(
     "Total count of deterministic fallbacks triggered by failure reason.",
     ["reason"],
 )
+
+# Security metrics
+SECURITY_INJECTIONS_BLOCKED_TOTAL = Counter(
+    "security_injections_blocked_total",
+    "Total count of prompt injection, role-play, or approval-spoofing attempts blocked by input guards.",
+    ["category"],
+)

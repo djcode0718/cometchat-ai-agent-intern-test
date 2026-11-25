@@ -6,7 +6,7 @@ from typing import Any, Dict, Generator, Optional
 
 from src.agent.decision import DecisionEngine
 from src.agent.router import OrderIntent, Router
-from src.agent.state import AgentDecision, AgentState, RouteType
+from src.agent.state import AgentDecision, AgentState, DecisionState, RouteType
 from src.core.config import get_settings
 from src.core.session import SessionManager
 from src.knowledge.evidence import EvidencePack
@@ -22,7 +22,9 @@ from src.observability.metrics import (
     AGENT_TURNS_TOTAL,
     LLM_CALLS_TOTAL,
     LLM_FALLBACK_TOTAL,
+    SECURITY_INJECTIONS_BLOCKED_TOTAL,
 )
+from src.agent.security_guard import evaluate_input_guard, REFUSAL_MESSAGE
 from src.retrieval.base import BaseRetriever
 from src.retrieval.bm25 import BM25Retriever
 from src.retrieval.dense import DenseRetriever
@@ -90,6 +92,46 @@ class AgentOrchestrator:
         clean_query = query.strip()
         turn_id = len(session.messages) + 1
         stage_timings_ms: Dict[str, float] = {}
+
+        # 0. Deterministic Pre-Retrieval Input Security Guard
+        is_attack, guard_category = evaluate_input_guard(clean_query)
+        if is_attack:
+            logger.warning(
+                "security_guard_triggered",
+                guard_category=guard_category,
+                query_length=len(clean_query),
+            )
+            try:
+                SECURITY_INJECTIONS_BLOCKED_TOTAL.labels(category=guard_category).inc()
+            except Exception:
+                pass
+
+            decision = AgentDecision(
+                state=DecisionState.HANDOFF,
+                reason="Adversarial input pattern neutralized by deterministic security guard.",
+                handoff_recommended=True,
+                handoff_reason="Security guard triggered: Adversarial instruction override or exfiltration attempt.",
+            )
+            resp = GeneratedResponse(
+                message=REFUSAL_MESSAGE,
+                decision_state=DecisionState.HANDOFF,
+                citations=[],
+                handoff_recommended=True,
+                is_fallback=False,
+            )
+            state = AgentState(
+                session_id=session_id,
+                turn_id=turn_id,
+                raw_query=query,
+                normalized_query=clean_query,
+                route=RouteType.UNSUPPORTED,
+                decision=decision,
+                response=resp,
+                handoff_recommended=True,
+                handoff_reason=decision.handoff_reason,
+            )
+            session.messages.append(state)
+            return state
 
         # 1. Routing & Entity Resolution
         with self._time_stage("routing", stage_timings_ms):
