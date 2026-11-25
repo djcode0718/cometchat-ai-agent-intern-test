@@ -94,6 +94,10 @@ class CustomerSafeOrder(BaseModel):
         default=False,
         description="Whether order is currently eligible for cancellation request",
     )
+    is_address_change_allowed: bool = Field(
+        default=False,
+        description="Whether address change is allowed on order",
+    )
     cancellation_ineligibility_reason: Optional[str] = Field(
         default=None,
         description="Reason why cancellation is not possible (e.g. status or window expired)",

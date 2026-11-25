@@ -1,0 +1,13 @@
+Scenario_ID,Scenario_Name,Customer_ID,Order_ID,Initial_Order_Status,Customer_Action,Agent_Decision,Proposal_Created,Proposal_Type,Reviewer_Action,Final_Proposal_Status,Final_Order_Status,Audit_Events_Count,Result
+J01,Eligible cancellation happy path,CUST-401,ORD-1001,pending,Cancel order within window,ANSWER (cancellation_request_submitted),TRUE,CANCELLATION,Approve,EXECUTED,cancelled,3,PASSED
+J02,Ineligible cancellation - already shipped,CUST-402,ORD-1003,shipped,Cancel shipped order,ANSWER (order_lookup),FALSE,NONE,N/A,NONE,shipped,0,PASSED
+J03,Ineligible cancellation - already delivered,CUST-403,ORD-1004,delivered,Cancel delivered order,ANSWER (order_lookup),FALSE,NONE,N/A,NONE,delivered,0,PASSED
+J04,Ineligible cancellation - final sale item,CUST-404,ORD-1002,processing,Cancel final sale item,ANSWER (order_lookup),FALSE,NONE,N/A,NONE,processing,0,PASSED
+J05,Ineligible cancellation - already cancelled,CUST-405,ORD-1005,cancelled,Cancel cancelled order,ANSWER (order_lookup),FALSE,NONE,N/A,NONE,cancelled,0,PASSED
+J06,Ineligible cancellation - window expired,CUST-406,ORD-1005,pending,Cancel old order (>60m),ANSWER (order_lookup),FALSE,NONE,N/A,NONE,pending,0,PASSED
+J07,Reviewer rejection journey,CUST-401,ORD-1001,pending,Cancel order within window,ANSWER (cancellation_request_submitted),TRUE,CANCELLATION,Reject (security suspicion),REJECTED,pending,2,PASSED
+J08,Reviewer TTL expiration journey,CUST-401,ORD-1001,pending,Cancel order within window,ANSWER (cancellation_request_submitted),TRUE,CANCELLATION,No action for >24h (lazy expiry),EXPIRED,pending,2,PASSED
+J09,Address change request journey,CUST-401,ORD-1001,pending,Change shipping address,ANSWER (address_change_request_submitted),TRUE,ADDRESS_CHANGE,Approve,EXECUTED,pending,3,PASSED
+J10,Multi-turn policy discovery then cancellation,CUST-401,ORD-1001,pending,Inquire policy then cancel,ANSWER (cancellation_request_submitted),TRUE,CANCELLATION,Approve,EXECUTED,cancelled,3,PASSED
+J11,Idempotent duplicate cancellation requests,CUST-401,ORD-1001,pending,Request cancellation twice,ANSWER (idempotent proposal returned),TRUE,CANCELLATION,Approve,EXECUTED,cancelled,3,PASSED
+J12,Warehouse fulfillment race condition,CUST-401,ORD-1001,pending,Cancel while warehouse ships,ANSWER (cancellation_request_submitted),TRUE,CANCELLATION,Approve (re-validation detects shipped),FAILED,shipped,3,PASSED

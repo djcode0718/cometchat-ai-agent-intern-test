@@ -1,0 +1,142 @@
+{
+  "evaluation_timestamp": "2026-11-26T04:06:15Z",
+  "test_suite": "tests/test_journey_expanded.py",
+  "total_scenarios": 12,
+  "passed_scenarios": 12,
+  "failed_scenarios": 0,
+  "pass_rate_pct": 100.0,
+  "scenarios": [
+    {
+      "id": "J01",
+      "name": "Eligible cancellation happy path",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "APPROVE",
+      "final_proposal_status": "EXECUTED",
+      "final_order_status": "cancelled",
+      "result": "PASSED"
+    },
+    {
+      "id": "J02",
+      "name": "Ineligible cancellation - already shipped",
+      "order_id": "ORD-1003",
+      "proposal_created": false,
+      "proposal_type": null,
+      "reviewer_action": null,
+      "final_proposal_status": null,
+      "final_order_status": "shipped",
+      "result": "PASSED"
+    },
+    {
+      "id": "J03",
+      "name": "Ineligible cancellation - already delivered",
+      "order_id": "ORD-1004",
+      "proposal_created": false,
+      "proposal_type": null,
+      "reviewer_action": null,
+      "final_proposal_status": null,
+      "final_order_status": "delivered",
+      "result": "PASSED"
+    },
+    {
+      "id": "J04",
+      "name": "Ineligible cancellation - final sale item",
+      "order_id": "ORD-1002",
+      "proposal_created": false,
+      "proposal_type": null,
+      "reviewer_action": null,
+      "final_proposal_status": null,
+      "final_order_status": "processing",
+      "result": "PASSED"
+    },
+    {
+      "id": "J05",
+      "name": "Ineligible cancellation - already cancelled",
+      "order_id": "ORD-1005",
+      "proposal_created": false,
+      "proposal_type": null,
+      "reviewer_action": null,
+      "final_proposal_status": null,
+      "final_order_status": "cancelled",
+      "result": "PASSED"
+    },
+    {
+      "id": "J06",
+      "name": "Ineligible cancellation - window expired",
+      "order_id": "ORD-1005",
+      "proposal_created": false,
+      "proposal_type": null,
+      "reviewer_action": null,
+      "final_proposal_status": null,
+      "final_order_status": "pending",
+      "result": "PASSED"
+    },
+    {
+      "id": "J07",
+      "name": "Reviewer rejection journey",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "REJECT",
+      "final_proposal_status": "REJECTED",
+      "final_order_status": "pending",
+      "result": "PASSED"
+    },
+    {
+      "id": "J08",
+      "name": "Reviewer TTL expiration journey",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "EXPIRE_TTL",
+      "final_proposal_status": "EXPIRED",
+      "final_order_status": "pending",
+      "result": "PASSED"
+    },
+    {
+      "id": "J09",
+      "name": "Address change request journey",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "ADDRESS_CHANGE",
+      "reviewer_action": "APPROVE",
+      "final_proposal_status": "EXECUTED",
+      "final_order_status": "pending",
+      "result": "PASSED"
+    },
+    {
+      "id": "J10",
+      "name": "Multi-turn policy discovery then cancellation",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "APPROVE",
+      "final_proposal_status": "EXECUTED",
+      "final_order_status": "cancelled",
+      "result": "PASSED"
+    },
+    {
+      "id": "J11",
+      "name": "Idempotent duplicate cancellation requests",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "APPROVE",
+      "final_proposal_status": "EXECUTED",
+      "final_order_status": "cancelled",
+      "result": "PASSED"
+    },
+    {
+      "id": "J12",
+      "name": "Warehouse fulfillment race condition",
+      "order_id": "ORD-1001",
+      "proposal_created": true,
+      "proposal_type": "CANCELLATION",
+      "reviewer_action": "APPROVE_FAILED_REVALIDATION",
+      "final_proposal_status": "FAILED",
+      "final_order_status": "shipped",
+      "result": "PASSED"
+    }
+  ]
+}

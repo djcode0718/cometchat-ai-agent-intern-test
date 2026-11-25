@@ -36,6 +36,7 @@ class StatusReconciler:
         requires_human_handoff = False
         handoff_reason = None
         is_cancellable = False
+        is_address_change_allowed = status in ("pending", "processing")
         cancellation_ineligibility_reason = None
 
         # -------------------------------------------------------------------
@@ -100,6 +101,7 @@ class StatusReconciler:
             estimated_delivery=estimated_delivery,
             customer_safe_message=sanitized_data["customer_safe_message"],
             is_cancellable=is_cancellable,
+            is_address_change_allowed=is_address_change_allowed,
             cancellation_ineligibility_reason=cancellation_ineligibility_reason,
             requires_human_handoff=requires_human_handoff,
             handoff_reason=handoff_reason,

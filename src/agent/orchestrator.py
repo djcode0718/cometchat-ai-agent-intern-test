@@ -226,8 +226,11 @@ class AgentOrchestrator:
                     request_id=request_id,
                 )
                 proposal_info = {"id": proposal.id, "status": proposal.status.value}
-                # Keep decision_state ANSWER and supported_action cancellation_request_submitted
-                decision.supported_action = "cancellation_request_submitted"
+                decision.supported_action = (
+                    "cancellation_request_submitted"
+                    if action_type == ActionType.CANCELLATION
+                    else "address_change_request_submitted"
+                )
             except Exception as prop_err:
                 logger.warning("hitl_proposal_creation_error", error=str(prop_err))
 
