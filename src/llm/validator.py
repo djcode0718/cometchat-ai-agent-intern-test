@@ -257,72 +257,79 @@ class OutputValidator:
                 fallback_reason=reason,
             )
 
-        # Knowledge answer fallback: emit multiple approved chunks bounded to 1,500 characters
+        # Knowledge answer fallback: query-relevant sentence extraction that keeps citations
         if request.approved_evidence:
             MAX_FALLBACK_CHARS = 1500
-            emitted_parts: List[str] = []
-            emitted_citations: List[CitationSource] = []
-            seen_chunk_ids: Set[str] = set()
-            seen_contents: Set[int] = set()
-            current_len = 0
+            stopwords = {
+                "the", "a", "an", "and", "or", "is", "are", "was", "were", "to", "for",
+                "of", "in", "on", "with", "at", "by", "from", "what", "how", "when",
+                "where", "who", "which", "why", "can", "does", "do", "my", "your", "it",
+                "item", "i", "me", "we", "our", "you", "this", "that", "these", "those"
+            }
+            q_tokens = (
+                set(re.findall(r"\b[a-z]{3,}\b", request.user_query.lower()))
+                - stopwords
+            )
+
+            scored_candidates: List[Tuple[float, str, str, CitationSource]] = []
+            seen_sentences: Set[str] = set()
 
             for chunk in request.approved_evidence:
-                chunk_id = getattr(chunk, "chunk_id", None) or f"{chunk.filename}::{chunk.heading}"
-                content_text = chunk.content.strip() if hasattr(chunk, "content") and chunk.content else ""
-                if not content_text:
-                    continue
+                inner_chunk = getattr(chunk, "chunk", chunk)
+                content = getattr(inner_chunk, "content", "") or getattr(chunk, "content", "") or ""
+                filename = getattr(inner_chunk, "filename", "") or getattr(chunk, "filename", "") or "policy.md"
+                heading = getattr(inner_chunk, "heading", "") or getattr(chunk, "heading", "") or "General"
+                cit_str = getattr(chunk, "citation_str", None) or getattr(inner_chunk, "citation_str", None) or f"[{filename} > {heading}]"
+                cit_source = getattr(chunk, "citation_source", None) or getattr(inner_chunk, "citation_source", None) or CitationSource(
+                    filename=filename, heading=heading
+                )
 
-                content_hash = hash(content_text)
-                if chunk_id in seen_chunk_ids or content_hash in seen_contents:
-                    continue
+                # Split into sentences or cohesive paragraphs
+                raw_splits = re.split(r"(?<=[.!?])\s+|\n+", content.strip())
+                for idx, sentence in enumerate(raw_splits):
+                    s_clean = sentence.strip()
+                    if len(s_clean) < 15 or s_clean in seen_sentences:
+                        continue
+                    seen_sentences.add(s_clean)
 
-                heading_text = chunk.heading.strip() if hasattr(chunk, "heading") and chunk.heading else ""
-                citation_str = chunk.citation_str if hasattr(chunk, "citation_str") else f"[{chunk.filename} > {heading_text}]"
+                    s_tokens = set(re.findall(r"\b[a-z]{3,}\b", s_clean.lower()))
+                    overlap = len(q_tokens & s_tokens)
 
-                if heading_text:
-                    formatted_chunk = f"### {heading_text}\n{content_text} {citation_str}"
-                else:
-                    formatted_chunk = f"{content_text} {citation_str}"
+                    boost = 0.0
+                    if any(term in s_clean.lower() for term in ["day", "window", "free", "$", "%", "fee", "return", "exchange", "warranty", "ship", "delivery", "refund", "condition", "carrier", "tag"]):
+                        boost += 1.5
+                    if idx == 0:
+                        boost += 0.5  # Leading topic sentence
 
-                sep_len = 2 if emitted_parts else 0  # "\n\n"
-                additional_len = sep_len + len(formatted_chunk)
+                    score = overlap + boost
+                    if score > 0.5:
+                        scored_candidates.append((score, s_clean, cit_str, cit_source))
 
-                if current_len + additional_len <= MAX_FALLBACK_CHARS:
-                    emitted_parts.append(formatted_chunk)
-                    seen_chunk_ids.add(chunk_id)
-                    seen_contents.add(content_hash)
-                    current_len += additional_len
+            # Sort descending by score
+            scored_candidates.sort(key=lambda x: x[0], reverse=True)
 
-                    cit_source = getattr(chunk, "citation_source", None) or CitationSource(
-                        filename=chunk.filename, heading=heading_text
-                    )
+            emitted_parts: List[str] = []
+            emitted_citations: List[CitationSource] = []
+            current_len = 0
+
+            for score, s_clean, cit_str, cit_source in scored_candidates:
+                formatted = f"{s_clean} {cit_str}"
+                sep_len = 2 if emitted_parts else 0
+                if current_len + sep_len + len(formatted) <= MAX_FALLBACK_CHARS:
+                    emitted_parts.append(formatted)
+                    current_len += sep_len + len(formatted)
                     if cit_source not in emitted_citations:
                         emitted_citations.append(cit_source)
-                elif not emitted_parts:
-                    # First chunk alone exceeds 1,500 characters: safely truncate content
-                    available_content_len = (
-                        MAX_FALLBACK_CHARS
-                        - len(citation_str)
-                        - (len(f"### {heading_text}\n") if heading_text else 0)
-                        - 6
-                    )
-                    if available_content_len > 50:
-                        truncated_content = content_text[:available_content_len].rstrip() + "..."
-                        if heading_text:
-                            formatted_chunk = f"### {heading_text}\n{truncated_content} {citation_str}"
-                        else:
-                            formatted_chunk = f"{truncated_content} {citation_str}"
-                        emitted_parts.append(formatted_chunk)
-                        seen_chunk_ids.add(chunk_id)
-                        seen_contents.add(content_hash)
-                        cit_source = getattr(chunk, "citation_source", None) or CitationSource(
-                            filename=chunk.filename, heading=heading_text
-                        )
-                        emitted_citations.append(cit_source)
-                    break
-                else:
-                    # Next chunk exceeds budget; stop to avoid exceeding limit or emitting malformed content
-                    break
+
+            # If no scored candidates fit, fall back to whole chunk
+            if not emitted_parts and request.approved_evidence:
+                c0 = request.approved_evidence[0]
+                cit_str = getattr(c0, "citation_str", None) or f"[{c0.filename} > {c0.heading}]"
+                cit_source = getattr(c0, "citation_source", None) or CitationSource(
+                    filename=c0.filename, heading=c0.heading
+                )
+                emitted_parts.append(f"{c0.content[:MAX_FALLBACK_CHARS].strip()} {cit_str}")
+                emitted_citations.append(cit_source)
 
             if emitted_parts:
                 msg = "\n\n".join(emitted_parts)

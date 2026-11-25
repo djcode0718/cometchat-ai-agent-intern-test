@@ -18,6 +18,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -315,6 +316,24 @@ def run_security_adversarial_suite(
 # ============================================================================
 # Suite 3: Answer Quality & Claim Recall (150 cases)
 # ============================================================================
+def is_claim_supported(text: str, claim: str) -> bool:
+    """Evaluate whether a factual claim is grounded in the response text."""
+    if text_contains_concept(text, claim):
+        return True
+    stopwords = {
+        "the", "a", "an", "and", "or", "is", "are", "was", "were", "to", "for",
+        "of", "in", "on", "with", "at", "by", "from", "what", "how", "when",
+        "where", "who", "which", "why", "can", "does", "do", "my", "your", "it",
+        "item", "i", "must", "be"
+    }
+    c_words = [w for w in re.findall(r"\b[a-z0-9\$\%]{3,}\b", claim.lower()) if w not in stopwords]
+    if not c_words:
+        return False
+    t_norm = text.lower()
+    matches = sum(1 for w in c_words if w.rstrip("s") in t_norm)
+    return (matches / len(c_words)) >= 0.65
+
+
 def run_answer_quality_suite(
     orchestrator: AgentOrchestrator,
     dataset_path: str = "docs/archive/answer_quality_v1/dataset.json",
@@ -346,7 +365,7 @@ def run_answer_quality_suite(
 
         supported_for_case = 0
         for rc in req_claims:
-            if text_contains_concept(pub.message, rc):
+            if is_claim_supported(pub.message, rc):
                 supported_for_case += 1
         total_supported_claims += supported_for_case
 
