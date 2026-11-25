@@ -1,0 +1,68 @@
+{
+  "manifest_version": "1.0",
+  "generated_at": "2026-11-25T16:16:30Z",
+  "git": {
+    "baseline_commit": "a4cfc0d54665d567d0a1be7158190769db1562e7",
+    "branch": "master",
+    "production_files_modified": false
+  },
+  "environment": {
+    "os": "macOS Darwin arm64",
+    "python_version": "3.11.18",
+    "python_executable": "/Users/sj/miniforge3/envs/cometchat-env/bin/python",
+    "pytest_version": "9.2.0",
+    "coverage_version": "7.17.5"
+  },
+  "benchmarks": {
+    "standard_50": {
+      "path": "evaluation/answer_quality_v1/stage3_standard_50_answerable.json",
+      "sha256": "f28541dbc415ae820615a067cd0e99021f8cf317226fccdfdbdaf1c94073aa00",
+      "scenarios_evaluated": 50,
+      "status": "intact_unmodified"
+    },
+    "difficult_50": {
+      "path": "evaluation/answer_quality_v1/stage3_difficult_50_answerable.json",
+      "sha256": "ceb7e55f884cc053dec3409161b8c94db2de3ab11099c04db36ddf457f52d4ad",
+      "scenarios_evaluated": 50,
+      "status": "intact_unmodified"
+    }
+  },
+  "safety_configuration": {
+    "live_llm_tests": 0,
+    "live_llm_max_requests": 0,
+    "live_llm_max_spend_usd": 0.0,
+    "load_test_live_provider": 0,
+    "paid_credits_consumed_usd": 0.0,
+    "external_network_calls_blocked": true
+  },
+  "test_execution_summary": {
+    "total_tests_collected": 302,
+    "passed": 301,
+    "failed": 0,
+    "skipped": 1,
+    "errors": 0,
+    "overall_coverage_pct": 87.88,
+    "total_statements": 2368,
+    "covered_statements": 2081,
+    "command": "PYTHONPATH=. pytest --cov=src --cov-report=json:evaluation/testing/coverage.json"
+  },
+  "artifacts_manifest": [
+    "evaluation/testing/test_coverage_matrix.md",
+    "evaluation/testing/e2e_results.json",
+    "evaluation/testing/provider_results.json",
+    "evaluation/testing/retrieval_metrics.json",
+    "evaluation/testing/retrieval_analysis.md",
+    "evaluation/testing/adversarial_results.json",
+    "evaluation/testing/adversarial_analysis.md",
+    "evaluation/testing/api_reliability_results.json",
+    "evaluation/testing/performance_results.json",
+    "evaluation/testing/performance_report.md",
+    "evaluation/testing/knowledge_lifecycle_results.json",
+    "evaluation/testing/knowledge_lifecycle_report.md",
+    "evaluation/testing/regression_report.md",
+    "evaluation/testing/coverage.json",
+    "evaluation/testing/coverage_report.md",
+    "evaluation/testing/test_campaign_summary.md",
+    "evaluation/testing/reproducibility_manifest.json"
+  ]
+}

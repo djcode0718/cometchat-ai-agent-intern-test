@@ -1,0 +1,171 @@
+{
+  "total_e2e_tests": 10,
+  "passed": 10,
+  "failed": 0,
+  "tests": [
+    {
+      "test_id": "E2E-001",
+      "name": "Standard factual question",
+      "query": "How many days do customers have to request a return under the standard returns policy?",
+      "status": "PASS",
+      "latency_ms": 17.48,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Standard return window\nCustomers on the standard plan may request a return within **30 calendar days of delivery**.\n",
+        "citations": [
+          "[01-returns-policy-current.md > Standard return window]",
+          "[01-returns-policy-current.md > Return shipping and refunds]",
+          "[04-damaged-or-wrong-items.md > Reports after seven days]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-002",
+      "name": "Standard procedural question",
+      "query": "How do I clean my Aster & Row fabric bag or backpack?",
+      "status": "PASS",
+      "latency_ms": 7.78,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Bags and backpacks\nSpot-clean fabric bags with mild soap and cool water. Do not machine wash, bleach, dry-clean, or ",
+        "citations": [
+          "[11-product-care.md > Bags and backpacks]",
+          "[06-international-shipping.md > Duties and taxes]",
+          "[07-warranty.md > Warranty periods]",
+          "[04-damaged-or-wrong-items.md > Available resolutions]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-003",
+      "name": "Multi-part question",
+      "query": "What is the warranty period for backpacks, and what is the warranty period for drinkware?",
+      "status": "PASS",
+      "latency_ms": 6.31,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from th",
+        "citations": [
+          "[07-warranty.md > Warranty periods]",
+          "[11-product-care.md > Warranty and care]",
+          "[07-warranty.md > What is not covered]",
+          "[07-warranty.md > What is covered]",
+          "[07-warranty.md > Final-sale products]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-004",
+      "name": "Policy exception",
+      "query": "Is the return shipping fee waived if an item arrives damaged?",
+      "status": "PASS",
+      "latency_ms": 7.74,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic return",
+        "citations": [
+          "[01-returns-policy-current.md > Return shipping and refunds]",
+          "[04-damaged-or-wrong-items.md > Available resolutions]",
+          "[03-final-sale-and-promotions.md > Damaged or incorrect items]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-005",
+      "name": "Unknown question",
+      "query": "What is Aster & Row's corporate pet policy for bringing dogs to the retail headquarters?",
+      "status": "PASS",
+      "latency_ms": 5.36,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Duties and taxes\nImport duties, taxes, and brokerage charges are not prepaid by Aster & Row. The recipient is respon",
+        "citations": [
+          "[06-international-shipping.md > Duties and taxes]",
+          "[08-order-changes-and-cancellations.md > Address changes]",
+          "[06-international-shipping.md > Canadian returns]",
+          "[06-international-shipping.md > Supported destinations]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-006",
+      "name": "Provider failure fallback",
+      "query": "What is the return window for standard orders?",
+      "status": "PASS",
+      "latency_ms": 2855.01,
+      "error": null,
+      "details": {
+        "message_preview": "For a standard (non\u2011TrailPlus) order, you may request a return **within\u202f30\u202fcalendar days of the delivery date**.\u202f\u301001-ret",
+        "is_fallback": false,
+        "citations": [
+          "[01-returns-policy-current.md > Standard return window]",
+          "[09-trailplus-membership.md > Return window]",
+          "[01-returns-policy-current.md > Return shipping and refunds]",
+          "[06-international-shipping.md > Canadian returns]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-007",
+      "name": "All providers unavailable",
+      "query": "What is the standard warranty period for bags?",
+      "status": "PASS",
+      "latency_ms": 1902.48,
+      "error": null,
+      "details": {
+        "message_preview": "### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from th",
+        "is_fallback": true
+      }
+    },
+    {
+      "test_id": "E2E-008",
+      "name": "Citation validation failure",
+      "query": "What is the return window?",
+      "status": "PASS",
+      "latency_ms": 0.04,
+      "error": null,
+      "details": {
+        "citations_after_repair": []
+      }
+    },
+    {
+      "test_id": "E2E-009",
+      "name": "Empty retrieval",
+      "query": "xyzzyqwerty12345nonexistenttoken9999",
+      "status": "PASS",
+      "latency_ms": 8.77,
+      "error": null,
+      "details": {
+        "http_status": 200,
+        "decision_state": "ANSWER",
+        "message_preview": "### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day",
+        "citations": [
+          "[09-trailplus-membership.md > Return window]",
+          "[05-domestic-shipping.md > Delivery problems]"
+        ]
+      }
+    },
+    {
+      "test_id": "E2E-010",
+      "name": "Repeated request consistency",
+      "query": "How long does order processing take before an order is dispatched?",
+      "status": "PASS",
+      "latency_ms": 16.22,
+      "error": null,
+      "details": {
+        "idempotent_match": true,
+        "message_preview": "### Processing time\nMost orders require **1\u20132 business days** for processing before they are dispatched. Business days e"
+      }
+    }
+  ]
+}
