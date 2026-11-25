@@ -10,6 +10,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel, Field, field_validator
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
 
 load_dotenv()
 
@@ -120,6 +124,39 @@ app = FastAPI(
 # 1. Request Context & Observability Middleware (First in chain)
 app.add_middleware(RequestContextMiddleware)
 
+# Rate Limiter setup
+limiter = Limiter(key_func=get_remote_address, default_limits=["120/minute"])
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
+# Security Headers & Request Body Size Limit Middleware
+MAX_REQUEST_BODY_BYTES = int(os.getenv("MAX_REQUEST_BODY_BYTES", "1048576"))  # 1MB default
+
+
+@app.middleware("http")
+async def security_and_size_middleware(request: Request, call_next):
+    # Enforce request payload size limit
+    content_length = request.headers.get("content-length")
+    if content_length:
+        try:
+            if int(content_length) > MAX_REQUEST_BODY_BYTES:
+                return JSONResponse(
+                    status_code=413,
+                    content={"detail": "Request payload exceeds maximum allowed size (1MB)."},
+                )
+        except ValueError:
+            pass
+
+    response = await call_next(request)
+
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Content-Security-Policy"] = "default-src 'self'; frame-ancestors 'none';"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
+
 # 2. Configure CORS
 cors_origins_raw = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000,http://localhost:4173,http://127.0.0.1:4173")
 allowed_origins = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
@@ -128,7 +165,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -253,17 +290,18 @@ def metrics_endpoint() -> Response:
     summary="Process customer support conversation turn",
     description="Processes a multi-turn support query via deterministic policy authority and LLM generation.",
 )
-def chat_endpoint(request: ChatRequest) -> ChatResponse:
+@limiter.limit(os.getenv("RATE_LIMIT_CHAT", "60/minute"))
+def chat_endpoint(request: Request, chat_req: ChatRequest) -> ChatResponse:
     orchestrator = get_orchestrator()
 
     session_id = (
-        request.session_id.strip()
-        if request.session_id and request.session_id.strip()
+        chat_req.session_id.strip()
+        if chat_req.session_id and chat_req.session_id.strip()
         else f"session-{uuid.uuid4().hex[:8]}"
     )
 
     try:
-        state = orchestrator.process_turn(session_id, request.message)
+        state = orchestrator.process_turn(session_id, chat_req.message)
     except Exception as exc:
         raise exc
     _session_traces.set(session_id, state.trace)
@@ -361,6 +399,7 @@ def get_customer_session_proposal(session_id: str, request: Request) -> Optional
     summary="List proposals for human review",
     description="Lists customer action proposals filtered by status, with pagination.",
 )
+@limiter.limit(os.getenv("RATE_LIMIT_REVIEWER", "60/minute"))
 def list_reviewer_proposals(
     request: Request,
     status: Optional[ProposalStatus] = None,
@@ -400,6 +439,7 @@ def get_reviewer_proposal(
     summary="Approve and execute a proposed action",
     description="Approve and atomically execute proposed action. Re-verifies order eligibility and enforces optimistic locking.",
 )
+@limiter.limit(os.getenv("RATE_LIMIT_REVIEWER", "60/minute"))
 def approve_reviewer_proposal(
     proposal_id: str,
     req_body: ApproveProposalRequest,
@@ -431,6 +471,7 @@ def approve_reviewer_proposal(
     summary="Reject a proposed action",
     description="Reject a proposed action. Requires a reason between 10 and 500 characters.",
 )
+@limiter.limit(os.getenv("RATE_LIMIT_REVIEWER", "60/minute"))
 def reject_reviewer_proposal(
     proposal_id: str,
     req_body: RejectProposalRequest,
