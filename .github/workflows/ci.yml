@@ -52,6 +52,17 @@ jobs:
         run: |
           PYTHONPATH=. pytest --cov=src --cov-report=term --cov-report=xml -q
 
+      - name: Run security dependency audit (pip-audit)
+        run: |
+          pip-audit -r requirements.txt
+
+      - name: Run evaluation regression gate against thresholds
+        env:
+          APP_ENV: test
+          LLM_PROVIDER: mock
+        run: |
+          PYTHONPATH=. python evaluation/run_suite.py --output-name ci_eval_run --check-thresholds
+
   frontend-accessibility:
     runs-on: ubuntu-latest
     defaults:
@@ -70,6 +81,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run npm security audit
+        run: npm audit --omit=dev
 
       - name: Check jsx-a11y lint rules
         run: npx eslint src/

@@ -583,6 +583,52 @@ def format_markdown_table(manifest: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def verify_against_thresholds(manifest: Dict[str, Any], thresholds_path: str = "evaluation/thresholds.json") -> bool:
+    """Validate manifest metrics against thresholds.json. Returns True if all pass, False otherwise."""
+    t_file = Path(thresholds_path)
+    if not t_file.exists():
+        print(f"[Thresholds] Warning: {thresholds_path} not found, skipping check.")
+        return True
+
+    with open(t_file, "r", encoding="utf-8") as f:
+        config = json.load(f)
+
+    thresholds = config.get("thresholds", {})
+    suites = manifest.get("suites", {})
+    all_passed = True
+    print("\n=======================================================")
+    print("VERIFYING RESULTS AGAINST REGRESSION THRESHOLDS")
+    print("=======================================================")
+
+    for key, spec in thresholds.items():
+        suite_name = spec.get("suite", "")
+        metric_name = spec.get("metric", "")
+        target = spec.get("threshold", 0.0)
+
+        suite_data = suites.get(suite_name, {})
+        val = suite_data.get(metric_name)
+
+        if val is None:
+            print(f"[FAIL] {key} ({suite_name}.{metric_name}): Missing from run results (expected >={target})")
+            all_passed = False
+            continue
+
+        if key in ("security_pii_disclosures_max", "security_secret_disclosures_max", "hitl_adversarial_unauthorized_mutations"):
+            passed = val <= target
+            status = "PASS" if passed else "FAIL"
+            print(f"[{status}] {key} ({suite_name}): measured={val}, max_allowed={target}")
+        else:
+            passed = val >= target
+            status = "PASS" if passed else "FAIL"
+            print(f"[{status}] {key} ({suite_name}): measured={val:.4f}, required>={target:.4f}")
+
+        if not passed:
+            all_passed = False
+
+    print("=======================================================\n")
+    return all_passed
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run Aster & Row evaluation benchmark suites.")
     parser.add_argument(
@@ -602,6 +648,11 @@ def main() -> None:
         "--output-name",
         default="baseline_v2",
         help="Output file stem under docs/results/ (e.g. baseline_v2 or final_v2).",
+    )
+    parser.add_argument(
+        "--check-thresholds",
+        action="store_true",
+        help="Check results against evaluation/thresholds.json and exit non-zero if failing.",
     )
     args = parser.parse_args()
 
@@ -624,6 +675,13 @@ def main() -> None:
     print(f"\n[DONE] Results written to:")
     print(f"  - {json_file}")
     print(f"  - {md_file}\n")
+
+    if args.check_thresholds:
+        passed = verify_against_thresholds(manifest)
+        if not passed:
+            print("[ERROR] Evaluation regression gate failed!")
+            sys.exit(1)
+        print("[SUCCESS] All evaluation regression thresholds passed.")
 
 
 if __name__ == "__main__":
