@@ -52,7 +52,7 @@ class Settings(BaseModel):
 
     # Retrieval Configuration Placeholders (for Phase 2+)
     retrieval_top_k: int = Field(
-        default_factory=lambda: int(os.getenv("RETRIEVAL_TOP_K", "5"))
+        default_factory=lambda: int(os.getenv("RETRIEVAL_TOP_K", "8"))
     )
     bm25_k1: float = Field(
         default_factory=lambda: float(os.getenv("BM25_K1", "1.5"))
@@ -64,10 +64,44 @@ class Settings(BaseModel):
         default_factory=lambda: int(os.getenv("RRF_K", "60"))
     )
 
-    # LLM Provider Configuration (Phase 5: Groq two-model fallback chain)
+    # LLM Provider Configuration
     llm_provider: str = Field(
-        default_factory=lambda: os.getenv("LLM_PROVIDER", "groq")
+        default_factory=lambda: os.getenv("LLM_PROVIDER", "openrouter")
     )
+
+    # OpenRouter Configuration (Multi-model fallback chain)
+    openrouter_api_key: Optional[str] = Field(
+        default_factory=lambda: os.getenv("OPENROUTER_API_KEY")
+    )
+    openrouter_base_url: str = Field(
+        default_factory=lambda: os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    )
+    openrouter_primary_model: str = Field(
+        default_factory=lambda: os.getenv(
+            "OPENROUTER_PRIMARY_MODEL", "meta-llama/llama-3.3-70b-instruct"
+        )
+    )
+    openrouter_secondary_model: str = Field(
+        default_factory=lambda: os.getenv(
+            "OPENROUTER_SECONDARY_MODEL", "openai/gpt-4o-mini"
+        )
+    )
+    openrouter_tertiary_model: str = Field(
+        default_factory=lambda: os.getenv(
+            "OPENROUTER_TERTIARY_MODEL", "mistralai/mistral-small-24b-instruct-2501"
+        )
+    )
+    openrouter_timeout_seconds: float = Field(
+        default_factory=lambda: float(os.getenv("OPENROUTER_TIMEOUT_SECONDS", "30.0"))
+    )
+    openrouter_max_retries: int = Field(
+        default_factory=lambda: int(os.getenv("OPENROUTER_MAX_RETRIES", "2"))
+    )
+    openrouter_max_cost_usd: float = Field(
+        default_factory=lambda: float(os.getenv("OPENROUTER_MAX_COST_USD", "3.00"))
+    )
+
+    # Groq Provider Configuration
     gemini_api_key: Optional[str] = Field(
         default_factory=lambda: os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     )

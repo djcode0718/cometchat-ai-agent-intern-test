@@ -9,6 +9,8 @@ from src.llm.fallback import FallbackChainLLMProvider
 from src.llm.gemini import GeminiLLMProvider
 from src.llm.grok import GrokLLMProvider
 from src.llm.mock import MockLLMProvider
+from src.llm.openrouter import OpenRouterLLMProvider
+from src.llm.openrouter_chain import OpenRouterFallbackChainProvider
 from src.llm.provider import FlexibleLLMProvider
 
 
@@ -19,17 +21,35 @@ def get_llm_provider(
     fallback_model: Optional[str] = None,
     gemini_api_key: Optional[str] = None,
     grok_api_key: Optional[str] = None,
+    openrouter_api_key: Optional[str] = None,
+    tertiary_model: Optional[str] = None,
 ) -> BaseLLMProvider:
     """Instantiate and return the configured LLM provider or fallback chain."""
     settings = get_settings()
     ptype = (
         provider_type
         or settings.llm_provider
-        or os.getenv("LLM_PROVIDER", "groq")
+        or os.getenv("LLM_PROVIDER", "openrouter")
     ).lower()
 
     if ptype in ("mock", "test", "offline"):
         return MockLLMProvider()
+
+    if ptype in ("openrouter", "openrouter_chain", "open_router"):
+        return OpenRouterFallbackChainProvider(
+            primary_model=primary_model or settings.openrouter_primary_model,
+            secondary_model=fallback_model or settings.openrouter_secondary_model,
+            tertiary_model=tertiary_model or settings.openrouter_tertiary_model,
+            openrouter_api_key=openrouter_api_key or settings.openrouter_api_key,
+            groq_api_key=groq_api_key or grok_api_key or settings.groq_api_key,
+            deterministic_fallback_on_error=True,
+        )
+
+    if ptype in ("single_openrouter",):
+        return OpenRouterLLMProvider(
+            api_key=openrouter_api_key or settings.openrouter_api_key,
+            model_name=primary_model or settings.openrouter_primary_model,
+        )
 
     if ptype in ("single_groq", "single_grok"):
         return GrokLLMProvider(
