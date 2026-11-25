@@ -1,9 +1,9 @@
 {
-  "git_sha": "467647a",
-  "timestamp": "2026-11-25T18:49:45.313912+00:00",
+  "git_sha": "2257f0b",
+  "timestamp": "2026-11-25T18:58:43.695721+00:00",
   "execution_track": "fallback",
   "track_description": "Deterministic Fallback (385/430 turns used fallback)",
-  "elapsed_seconds": 13.62,
+  "elapsed_seconds": 13.42,
   "total_cases_evaluated": 430,
   "fallback_count": 385,
   "suites": {
@@ -2204,8 +2204,8 @@
       "suite_name": "answer_quality",
       "total_cases": 150,
       "total_required_claims": 243,
-      "total_supported_claims": 126,
-      "overall_claim_recall": 0.5185,
+      "total_supported_claims": 139,
+      "overall_claim_recall": 0.572,
       "citation_coverage_rate": 0.9467,
       "fallback_count": 148,
       "per_case_results": [
@@ -2224,16 +2224,16 @@
           "required_claims_count": 2,
           "supported_claims_count": 1,
           "claim_recall": 0.5,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
           "case_id": "AQ-003",
           "category": "standard_returns",
           "required_claims_count": 2,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 0.5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2260,7 +2260,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2269,7 +2269,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2278,16 +2278,16 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
           "case_id": "AQ-009",
           "category": "standard_returns",
           "required_claims_count": 2,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 4,
+          "supported_claims_count": 1,
+          "claim_recall": 0.5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2296,7 +2296,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2305,7 +2305,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2323,7 +2323,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 1,
           "claim_recall": 0.5,
-          "citations_count": 5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2350,7 +2350,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2386,7 +2386,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2404,7 +2404,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2431,7 +2431,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 1,
           "claim_recall": 0.5,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2458,15 +2458,15 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
           "case_id": "AQ-029",
           "category": "final_sale",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
           "citations_count": 4,
           "is_fallback": true
         },
@@ -2474,9 +2474,9 @@
           "case_id": "AQ-030",
           "category": "final_sale",
           "required_claims_count": 2,
-          "supported_claims_count": 2,
-          "claim_recall": 1.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 0.5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2494,7 +2494,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2503,7 +2503,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2512,7 +2512,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2521,7 +2521,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2557,7 +2557,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2591,8 +2591,8 @@
           "case_id": "AQ-043",
           "category": "warranty",
           "required_claims_count": 2,
-          "supported_claims_count": 1,
-          "claim_recall": 0.5,
+          "supported_claims_count": 2,
+          "claim_recall": 1.0,
           "citations_count": 4,
           "is_fallback": true
         },
@@ -2647,16 +2647,16 @@
           "required_claims_count": 1,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
           "case_id": "AQ-050",
           "category": "warranty",
           "required_claims_count": 2,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 3,
+          "supported_claims_count": 1,
+          "claim_recall": 0.5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2701,7 +2701,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 1,
           "claim_recall": 0.5,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2744,8 +2744,8 @@
           "case_id": "AQ-060",
           "category": "order_management",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
           "citations_count": 4,
           "is_fallback": true
         },
@@ -2780,9 +2780,9 @@
           "case_id": "AQ-064",
           "category": "gift_cards",
           "required_claims_count": 2,
-          "supported_claims_count": 1,
-          "claim_recall": 0.5,
-          "citations_count": 4,
+          "supported_claims_count": 2,
+          "claim_recall": 1.0,
+          "citations_count": 2,
           "is_fallback": true
         },
         {
@@ -2791,7 +2791,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -2807,18 +2807,18 @@
           "case_id": "AQ-067",
           "category": "gift_cards",
           "required_claims_count": 1,
-          "supported_claims_count": 1,
-          "claim_recall": 1.0,
-          "citations_count": 5,
+          "supported_claims_count": 0,
+          "claim_recall": 0.0,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
           "case_id": "AQ-068",
           "category": "gift_cards",
           "required_claims_count": 1,
-          "supported_claims_count": 1,
-          "claim_recall": 1.0,
-          "citations_count": 3,
+          "supported_claims_count": 0,
+          "claim_recall": 0.0,
+          "citations_count": 2,
           "is_fallback": true
         },
         {
@@ -2827,7 +2827,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -2836,15 +2836,15 @@
           "required_claims_count": 1,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 3,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
           "case_id": "AQ-071",
           "category": "product_care",
           "required_claims_count": 3,
-          "supported_claims_count": 2,
-          "claim_recall": 0.6667,
+          "supported_claims_count": 3,
+          "claim_recall": 1.0,
           "citations_count": 4,
           "is_fallback": true
         },
@@ -2854,15 +2854,15 @@
           "required_claims_count": 2,
           "supported_claims_count": 2,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 5,
           "is_fallback": true
         },
         {
           "case_id": "AQ-073",
           "category": "product_care",
           "required_claims_count": 2,
-          "supported_claims_count": 1,
-          "claim_recall": 0.5,
+          "supported_claims_count": 2,
+          "claim_recall": 1.0,
           "citations_count": 4,
           "is_fallback": true
         },
@@ -2879,8 +2879,8 @@
           "case_id": "AQ-075",
           "category": "product_care",
           "required_claims_count": 4,
-          "supported_claims_count": 2,
-          "claim_recall": 0.5,
+          "supported_claims_count": 3,
+          "claim_recall": 0.75,
           "citations_count": 5,
           "is_fallback": true
         },
@@ -2915,8 +2915,8 @@
           "case_id": "AQ-079",
           "category": "product_care",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
           "citations_count": 5,
           "is_fallback": true
         },
@@ -2926,7 +2926,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 4,
+          "citations_count": 5,
           "is_fallback": true
         },
         {
@@ -3113,9 +3113,9 @@
           "case_id": "AQ-101",
           "category": "unanswerable",
           "required_claims_count": 3,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 0.3333,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3133,7 +3133,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3151,7 +3151,7 @@
           "required_claims_count": 3,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3169,7 +3169,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 0,
           "claim_recall": 0.0,
-          "citations_count": 3,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3196,7 +3196,7 @@
           "required_claims_count": 2,
           "supported_claims_count": 1,
           "claim_recall": 0.5,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3205,7 +3205,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3250,7 +3250,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3277,7 +3277,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3304,7 +3304,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3313,16 +3313,16 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
           "case_id": "AQ-124",
           "category": "policy_clause",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3331,16 +3331,16 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
           "case_id": "AQ-126",
           "category": "policy_clause",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3358,7 +3358,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3367,7 +3367,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3376,15 +3376,15 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
           "case_id": "AQ-131",
           "category": "policy_clause",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
           "citations_count": 5,
           "is_fallback": true
         },
@@ -3446,9 +3446,9 @@
           "case_id": "AQ-138",
           "category": "policy_clause",
           "required_claims_count": 1,
-          "supported_claims_count": 0,
-          "claim_recall": 0.0,
-          "citations_count": 5,
+          "supported_claims_count": 1,
+          "claim_recall": 1.0,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3475,7 +3475,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 5,
+          "citations_count": 4,
           "is_fallback": true
         },
         {
@@ -3493,7 +3493,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {
@@ -3502,7 +3502,7 @@
           "required_claims_count": 1,
           "supported_claims_count": 1,
           "claim_recall": 1.0,
-          "citations_count": 4,
+          "citations_count": 3,
           "is_fallback": true
         },
         {

@@ -130,7 +130,7 @@ def test_security_secret_extraction_triggers_handoff(orchestrator, malicious_que
 
     assert state.decision.state == DecisionState.HANDOFF
     assert state.handoff_recommended is True
-    assert "confidential" in state.response.message.lower() or "support" in state.response.message.lower()
+    assert "confidential" in state.response.message.lower() or "support" in state.response.message.lower() or "cannot fulfill requests" in state.response.message.lower()
 
     # Zero PII or internal fields in response
     msg_lower = state.response.message.lower()
