@@ -1,0 +1,4054 @@
+{
+  "summary": {
+    "evaluation_name": "generation_only_evaluation",
+    "model_configured": "meta-llama/llama-3.3-70b-instruct",
+    "total_questions": 50,
+    "successfully_executed_questions": 50,
+    "non_empty_responses_generated": 50,
+    "responses_generated_by_llm": 22,
+    "responses_generated_by_deterministic_fallback": 28,
+    "llm_success_rate": 0.44,
+    "total_required_claims": 204,
+    "total_supported_claims": 146,
+    "overall_claim_recall": 0.7157,
+    "fully_complete_answers": 19,
+    "fully_complete_answer_rate": 0.38,
+    "composite_mean_score_out_of_4": 2.969,
+    "dimension_averages": {
+      "factual_correctness": 2.8,
+      "groundedness": 2.66,
+      "citation_precision": 1.0,
+      "citation_completeness": 3.52,
+      "completeness": 2.8,
+      "abstention_quality": 4.0,
+      "conflict_handling": 4.0
+    },
+    "citation_audit": {
+      "total_citations_analyzed": 159,
+      "valid_doc_rate": 1.0,
+      "valid_heading_rate": 1.0,
+      "superseded_citation_rate": 0.0,
+      "auto_attached_rate": 0.761
+    },
+    "hallucination_cases": 3,
+    "hallucination_rate": 0.06,
+    "total_contradictions": 0,
+    "latency_metrics": {
+      "mean_latency_ms": 3997.37,
+      "median_latency_ms": 623.78
+    },
+    "total_estimated_api_cost_usd": 0.00128,
+    "execution_duration_seconds": 202.79,
+    "category_breakdown": {
+      "multi_policy_or_document": {
+        "count": 10,
+        "required_claims": 46,
+        "supported_claims": 30,
+        "claim_recall": 0.6522,
+        "fully_complete_count": 2,
+        "fully_complete_rate": 0.2,
+        "dimension_averages": {
+          "factual_correctness": 2.6,
+          "groundedness": 2.3,
+          "citation_precision": 1.0,
+          "citation_completeness": 3.6,
+          "completeness": 2.6,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 2.871
+      },
+      "exception_eligibility_conditional": {
+        "count": 10,
+        "required_claims": 40,
+        "supported_claims": 22,
+        "claim_recall": 0.55,
+        "fully_complete_count": 0,
+        "fully_complete_rate": 0.0,
+        "dimension_averages": {
+          "factual_correctness": 2.1,
+          "groundedness": 2.7,
+          "citation_precision": 1.0,
+          "citation_completeness": 3.1,
+          "completeness": 2.1,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 2.714
+      },
+      "date_sensitive_or_supersession": {
+        "count": 8,
+        "required_claims": 29,
+        "supported_claims": 13,
+        "claim_recall": 0.4483,
+        "fully_complete_count": 0,
+        "fully_complete_rate": 0.0,
+        "dimension_averages": {
+          "factual_correctness": 1.625,
+          "groundedness": 2.5,
+          "citation_precision": 1.0,
+          "citation_completeness": 3.375,
+          "completeness": 1.625,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 2.589
+      },
+      "multi_part_factual": {
+        "count": 8,
+        "required_claims": 33,
+        "supported_claims": 33,
+        "claim_recall": 1.0,
+        "fully_complete_count": 8,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.0,
+          "citation_precision": 1.0,
+          "citation_completeness": 4.0,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.429
+      },
+      "distinguishing_similar_policies": {
+        "count": 7,
+        "required_claims": 31,
+        "supported_claims": 25,
+        "claim_recall": 0.8065,
+        "fully_complete_count": 3,
+        "fully_complete_rate": 0.4286,
+        "dimension_averages": {
+          "factual_correctness": 3.286,
+          "groundedness": 3.0,
+          "citation_precision": 1.0,
+          "citation_completeness": 3.143,
+          "completeness": 3.286,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.102
+      },
+      "difficult_precise_factual": {
+        "count": 7,
+        "required_claims": 25,
+        "supported_claims": 23,
+        "claim_recall": 0.92,
+        "fully_complete_count": 6,
+        "fully_complete_rate": 0.8571,
+        "dimension_averages": {
+          "factual_correctness": 3.571,
+          "groundedness": 2.571,
+          "citation_precision": 1.0,
+          "citation_completeness": 4.0,
+          "completeness": 3.571,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.245
+      }
+    }
+  },
+  "records": [
+    {
+      "case_id": "AQ50-001",
+      "category": "multi_policy_or_document",
+      "query": "I bought a fleece jacket marked final sale, but when it arrived the main zipper was broken and wouldn't zip at all. Can I get a replacement or refund even though it was final sale, and will I have to pay the $6.95 return shipping fee?",
+      "latency_ms": 67660.27,
+      "is_fallback": false,
+      "model_used": "meta-llama/llama-3.3-70b-instruct",
+      "fallback_occurred": false,
+      "response_text": "I'm here to help you with your concern about the fleece jacket. According to our policy on damaged or wrong items [04-damaged-or-wrong-items.md > Available resolutions], if an item arrives damaged, Aster & Row may offer a replacement, refund, or another appropriate resolution, depending on stock availability.\n\nSince the fleece jacket was marked as final sale, it's essential to note that the final-sale restriction does not remove your right to report an item that arrived damaged [03-final-sale-and-promotions.md > Damaged or incorrect items]. In this case, you can still qualify for assistance under the Damaged or Wrong Items Policy.\n\nRegarding the return shipping fee, our policy states that a return shipping fee is not charged when Aster & Row confirms that the item arrived damaged [04-damaged-or-wrong-items.md > Available resolutions] or when the wrong item was sent [01-returns-policy-current.md > Return shipping and refunds]. Since the main zipper of your fleece jacket was broken and wouldn't zip, this would be considered a damaged item. Therefore, you will not be charged the $6.95 return shipping fee.\n\nIf you would like to proceed with a replacement or refund, please let us know, and we will guide you through the next steps. Please note that refunds are issued to the original payment method after the return is inspected, and you should allow 5\u20137 business days after inspection for the refund to appear [01-returns-policy-current.md > Return shipping and refunds]. \n\nTo initiate the process, could you please provide your Order ID (e.g., ORD-1007) so we can look into this further and provide a more personalized solution?",
+      "citations": [
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[03-final-sale-and-promotions.md > Damaged or incorrect items]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 3,
+        "required_claims_missing": 2,
+        "claim_recall": 0.6,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6471,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Damaged or incorrect items",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-002",
+      "category": "multi_policy_or_document",
+      "query": "I am an active TrailPlus member living in the United States and want to return an unused backpack that cost $120. Do I get free return shipping because of my membership, and how long do I have to return it?",
+      "latency_ms": 3536.06,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "As an active TrailPlus member in the United States, you are eligible for a 45-calendar-day return window from the date of delivery for your unused backpack [09-trailplus-membership.md > Return window]. However, TrailPlus membership does not cover return shipping costs. You will be responsible for the return postage [09-trailplus-membership.md > Shipping benefit].",
+      "citations": [
+        "[09-trailplus-membership.md > Return window]",
+        "[09-trailplus-membership.md > Shipping benefit]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 2,
+        "required_claims_missing": 3,
+        "claim_recall": 0.4,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-003",
+      "category": "multi_policy_or_document",
+      "query": "I bought a promotional bundle containing a backpack and a water bottle, but only the water bottle arrived cracked and leaking. Can I return just the cracked bottle or must I send back the whole bundle, and how quickly do I need to report it?",
+      "latency_ms": 22268.88,
+      "is_fallback": false,
+      "model_used": "meta-llama/llama-3.3-70b-instruct",
+      "fallback_occurred": false,
+      "response_text": "Thank you for reaching out to us about the issue with your promotional bundle. According to our policy on bundles [03-final-sale-and-promotions.md > Bundles], a promotional bundle must be returned as a complete bundle unless a component arrived damaged or incorrect. However, since the water bottle arrived cracked and leaking, you may be eligible to return just the damaged component.\n\nTo initiate the return process, please report the issue to us within **7 calendar days of delivery** [04-damaged-or-wrong-items.md > Reporting window]. When reporting, please provide your order ID, a short description of the issue, and clear photographs of the damaged water bottle and its packaging, if reasonably possible.\n\nIt's essential to note that our final-sale restriction does not remove your right to report damaged or defective items [03-final-sale-and-promotions.md > Damaged or incorrect items]. Our support team will be happy to assist you with the return process and provide further guidance.\n\nPlease ensure you have your order ID ready, which we will need to look into this matter further. If you have any other questions or concerns, feel free to ask, and we'll do our best to help.",
+      "citations": [
+        "[03-final-sale-and-promotions.md > Bundles]",
+        "[04-damaged-or-wrong-items.md > Reporting window]",
+        "[03-final-sale-and-promotions.md > Damaged or incorrect items]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 3,
+        "required_claims_missing": 2,
+        "claim_recall": 0.6,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.4167,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Bundles",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Reporting window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Damaged or incorrect items",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-004",
+      "category": "multi_policy_or_document",
+      "query": "I live in Vancouver, Canada and received a travel bag that arrived with a torn seam. If I want a resolution, does Aster & Row cover Canadian return shipping in this case, and can Aster & Row send a direct exchange?",
+      "latency_ms": 34327.93,
+      "is_fallback": false,
+      "model_used": "meta-llama/llama-3.3-70b-instruct",
+      "fallback_occurred": false,
+      "response_text": "Dear valued customer,\n\nThank you for reaching out to us about the issue with your travel bag. We apologize for the inconvenience caused by the torn seam. According to our policy on damaged or wrong items [OPS-2026-04 > Available resolutions], if we confirm that the item arrived damaged, we will provide an appropriate resolution without charging an ordinary return fee. This includes covering the return shipping cost.\n\nIn your case, since the travel bag arrived with a torn seam, we will cover the return shipping cost once we confirm the damage. Please contact our support team so we can guide you through the process and provide a suitable resolution.\n\nRegarding your request for a direct exchange, our policy for Canadian orders [SHIP-2026-INTL > Canadian returns] states that direct exchanges are not offered. However, you may return the item and place a new order for the desired product. We will work with you to ensure a smooth return process and provide assistance with your new order.\n\nPlease note that our warranty period for travel accessories, including packing cubes, is 1 year from the purchase date [WAR-2026-01 > Warranty periods]. If your purchase is within this timeframe, we will be happy to provide a resolution under our limited product warranty.\n\nTo proceed with the return and resolution process, please contact our support team with your order details, including your Order ID, so we can assist you further.\n\nThank you for your patience and cooperation.\n\nSincerely,\nAster & Row Support Team",
+      "citations": [
+        "[06-international-shipping.md > Canadian returns]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[06-international-shipping.md > Supported destinations]",
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.4,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Supported destinations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-005",
+      "category": "multi_policy_or_document",
+      "query": "If I purchase a travel backpack on clearance clearly marked 'FINAL SALE' and a structural seam splits after 8 months of normal use, does the final sale status void the 2-year warranty?",
+      "latency_ms": 11253.95,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "The final sale status does not void the 2-year warranty for your travel backpack. The limited warranty covers manufacturing defects in materials or workmanship under normal use, such as a seam that separates without misuse [07-warranty.md > What is covered]. Since your backpack was purchased on clearance and marked 'FINAL SALE', it is still covered under the 2-year warranty for manufacturing defects [07-warranty.md > Final-sale products].",
+      "citations": [
+        "[07-warranty.md > What is covered]",
+        "[07-warranty.md > Final-sale products]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "07-warranty.md",
+            "heading": "What is covered",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Final-sale products",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-006",
+      "category": "multi_policy_or_document",
+      "query": "Can I use an Aster & Row gift card to purchase another gift card, and if I change my mind after buying a gift card, can I return it for cash?",
+      "latency_ms": 2411.77,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "Aster & Row gift cards cannot be used to purchase another gift card. Additionally, gift cards are final sale and cannot be returned or exchanged for cash, except where required by law [10-gift-cards-and-price-adjustments.md > Gift cards].",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Gift cards",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-007",
+      "category": "multi_policy_or_document",
+      "query": "I want to clean my fabric backpack and packing cubes by throwing them in my washing machine on cold and drying them in a tumble dryer. Is this recommended by Aster & Row, and will the limited warranty cover them if they shrink or tear?",
+      "latency_ms": 7797.56,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "For your fabric backpack, Aster & Row recommends spot-cleaning with mild soap and cool water, and air-drying completely before storage. Machine washing, bleaching, dry-cleaning, or tumble drying is not recommended [11-product-care.md > Bags and backpacks].\n\nFor your packing cubes, Aster & Row recommends hand-washing in cool water with mild detergent and air-drying. High heat should not be used [11-product-care.md > Packing cubes].\n\nDamage caused by cleaning methods that conflict with the provided care guide is not covered by the limited warranty [11-product-care.md > Warranty and care].\n\nThe limited warranty for Aster & Row bags and backpacks is 2 years from the purchase date, and for packing cubes, it is 1 year from the purchase date [07-warranty.md > Warranty periods]. The warranty covers manufacturing defects in materials or workmanship under normal use, but does not cover damage from improper cleaning methods [07-warranty.md > What is covered].",
+      "citations": [
+        "[11-product-care.md > Bags and backpacks]",
+        "[11-product-care.md > Packing cubes]",
+        "[11-product-care.md > Warranty and care]",
+        "[07-warranty.md > Warranty periods]",
+        "[07-warranty.md > What is covered]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 4,
+        "required_claims_missing": 1,
+        "claim_recall": 0.8,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.5833,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "11-product-care.md",
+            "heading": "Bags and backpacks",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Packing cubes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Warranty and care",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "What is covered",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-008",
+      "category": "multi_policy_or_document",
+      "query": "I am a non-member domestic customer ordering items totaling $90 before discounts. I applied a $20 promotional discount code, bringing my subtotal to $70 before tax. Did I qualify for free standard shipping, and what is the processing and contiguous US delivery timeframe?",
+      "latency_ms": 4826.55,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "Based on your order details, you did not qualify for free standard shipping. The free shipping threshold of $75 applies to the order total after discounts and before tax. Since your order total after the discount is $70, it does not meet the $75 minimum for free shipping.\n\nYour order will require 1\u20132 business days for processing before it is dispatched. After dispatch, the delivery timeframe for standard shipping within the contiguous United States is typically 3\u20137 business days. Therefore, the total timeframe from order placement to delivery can be up to 9 business days, depending on when your order is processed and shipped. [SHIP-2026-US > Processing time, SHIP-2026-US > Shipping charges]",
+      "citations": [
+        "[05-domestic-shipping.md > Shipping charges]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[09-trailplus-membership.md > Shipping benefit]",
+        "[05-domestic-shipping.md > Processing time]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 2,
+        "required_claims_missing": 3,
+        "claim_recall": 0.4,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7143,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Processing time",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-009",
+      "category": "multi_policy_or_document",
+      "query": "I placed an order 15 minutes ago and the order status is currently 'pending'. I realized I selected the wrong color backpack. Can customer support modify the color on my order, or can I cancel and reorder?",
+      "latency_ms": 1951.47,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "I\u2019m sorry you selected the wrong color.\u202fBecause the order is still **pending** and it\u2019s only 15\u202fminutes old, you have two options under our policy:\n\n1. **Cancel the order** \u2013 You may request a cancellation within\u202f30\u202fminutes of placing the order while the status is still *pending*\u301008-order-changes-and-cancellations.md > Cancellation window\u3011. A human\u2011support specialist will need to process the cancellation for you. Once the cancellation is confirmed, you can place a new order with the correct color.\n\n2. **Edit the item** \u2013 After checkout, the items, colors, or quantities cannot be edited\u301008-order-changes-and-cancellations.md > Product or quantity changes\u3011. The only way to get the desired color is to cancel the current order (if still within the 30\u2011minute window) and then reorder the correct product.\n\nSo, while we can\u2019t change the color directly, you can request a cancellation now and submit a new order for the correct backpack. If you\u2019d like to proceed, please let us know and we\u2019ll guide you on how to submit the cancellation request to a support specialist.",
+      "citations": [
+        "[08-order-changes-and-cancellations.md > Agent limitations]",
+        "[08-order-changes-and-cancellations.md > Cancellation window]",
+        "[08-order-changes-and-cancellations.md > Address changes]",
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]",
+        "[08-order-changes-and-cancellations.md > Product or quantity changes]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6364,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Agent limitations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Cancellation window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Price adjustments",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Product or quantity changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-010",
+      "category": "multi_policy_or_document",
+      "query": "I purchased a regular jacket for $150 four days ago. Today Aster & Row publicly lowered the price of the exact same size and color to $120. Am I eligible for a price adjustment, or would returning and repurchasing make more sense under your return policy?",
+      "latency_ms": 1945.53,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "Yes\u2014you are eligible for a price\u2011adjustment.\n\n**Why you qualify**\n\n- The public price of the exact same jacket (same size and color) dropped **within 7\u202fcalendar days** of your purchase.  \n- The policy allows **one price adjustment per order** under those conditions.  \n- The item is not a clearance, final\u2011sale, flash\u2011sale, or a third\u2011party price, so none of the exclusions apply.  \n\n(Reference: **[10-gift-cards-and-price-adjustments.md > Price adjustments]**)\n\n**What to do**\n\n1. Contact a member of our support team and request the price adjustment.  \n2. A human specialist will review the request, confirm eligibility, and process the credit if approved.  \n   - The agent can explain why you\u2019re eligible but cannot promise that the credit has already been issued.\n\n**Why returning and repurchasing isn\u2019t the better option**\n\n- A standard domestic return incurs a **$6.95 return\u2011shipping fee** that is deducted from your refund.  \n- The original outbound shipping charge is **not refundable** unless the item was wrong or damaged (which it isn\u2019t).  \n- You would then need to place a new order at the lower price, paying the original shipping cost again.\n\n(Reference: **[01-returns-policy-current.md > Return shipping and refunds]**)\n\n**Bottom line**\n\nRequesting the price adjustment is the most cost\u2011effective route. It avoids the $6.95 return\u2011shipping fee and the loss of your original shipping charge. If you need help initiating the adjustment, just let us know and we\u2019ll guide you to the appropriate support channel.",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]",
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 4,
+        "required_claims_missing": 1,
+        "claim_recall": 0.8,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7143,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Price adjustments",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-011",
+      "category": "exception_eligibility_conditional",
+      "query": "I tried on a pair of hiking pants indoors on my carpet to check the waist fit, but kept all tags attached and put them back in the original bag. Does trying an item on indoors make it ineligible for a return?",
+      "latency_ms": 3167.86,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "Trying an item on indoors for fit does not by itself make it ineligible for a return. As long as the hiking pants are unused, unwashed, and in resalable condition with all original tags, accessories, and packaging included, you should be able to return them. Just ensure there is no visible wear, odors, stains, or alterations [01-returns-policy-current.md > Item condition].",
+      "citations": [
+        "[01-returns-policy-current.md > Item condition]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Item condition",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-012",
+      "category": "exception_eligibility_conditional",
+      "query": "I bought a travel tote using a 25% sitewide promotional code. The product page and confirmation did not mention final sale anywhere. Does receiving a promotional discount make an item final sale?",
+      "latency_ms": 3406.09,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "The promotional discount you received does not automatically make the travel tote a final sale item. An item is only considered final sale if the product page, cart, or order confirmation explicitly labels it as **FINAL SALE**. Since your order confirmation did not mention final sale, the travel tote is not a final sale item [03-final-sale-and-promotions.md > What counts as final sale].",
+      "citations": [
+        "[03-final-sale-and-promotions.md > What counts as final sale]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "What counts as final sale",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-013",
+      "category": "exception_eligibility_conditional",
+      "query": "My order arrived 10 days ago and I just opened the shipping box today to discover that the tumbler lid arrived cracked in half. Can I still file an arrival damage claim for a free replacement under the Damaged Items policy?",
+      "latency_ms": 2070.96,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "Yes\u2014you can still report the cracked tumbler lid even though you opened the box\u202f10\u202fdays after delivery.  \n\nOur policy states that a manufacturing defect reported **after the seven\u2011day arrival window may be considered under the Warranty Policy** rather than the standard \u201carrival\u2011damage\u201d window\u301004-damaged-or-wrong-items.md > Reports after seven days\u3011. Because the lid arrived cracked, it is treated as a defect, not as normal wear or accidental damage, so it qualifies for review.\n\nIf our team confirms that the item was damaged on arrival, the following applies:\n\n* **Replacement, refund, or another appropriate resolution** may be offered, depending on stock availability\u301004-damaged-or-wrong-items.md > Available resolutions\u3011.  \n* **No return\u2011shipping fee** will be charged when we verify the damage\u301001-returns-policy-current.md > Return shipping and refunds\u3011.  \n\nTo start the claim, please:\n\n1. Reply with clear photos of the cracked lid and the packaging.  \n2. Include your order number (e.g.,\u202fORD\u2011XXXX) so we can locate the purchase.  \n3. Briefly describe when you received the order and when you discovered the damage.\n\nA member of our support team will review the information, verify the defect, and let you know which resolution (replacement, refund, etc.) is available. We cannot guarantee approval until that review is completed, but the fee\u2011waiver and warranty\u2011claim options are in place for situations like yours.",
+      "citations": [
+        "[04-damaged-or-wrong-items.md > Reports after seven days]",
+        "[03-final-sale-and-promotions.md > Damaged or incorrect items]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[01-returns-policy-current.md > Exclusions and exceptions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 1,
+        "required_claims_missing": 3,
+        "claim_recall": 0.25,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.4375,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Reports after seven days",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Damaged or incorrect items",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Exclusions and exceptions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-014",
+      "category": "exception_eligibility_conditional",
+      "query": "I ordered an Aster & Row jacket 5 days ago as a standard customer, and I joined TrailPlus this morning. Does my new TrailPlus membership extend the return window for that jacket from 30 days to 45 days?",
+      "latency_ms": 3016.77,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "Your new TrailPlus membership does not extend the return window for the jacket you ordered 5 days ago. The return window for that order is governed by the standard return policy, which is **30 calendar days from delivery** [01-returns-policy-current.md > Standard return window]. Joining TrailPlus after placing an order does not extend that order\u2019s return window [09-trailplus-membership.md > Return window].",
+      "citations": [
+        "[01-returns-policy-current.md > Standard return window]",
+        "[09-trailplus-membership.md > Return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 1,
+        "required_claims_missing": 2,
+        "claim_recall": 0.3333,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Standard return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-015",
+      "category": "exception_eligibility_conditional",
+      "query": "Under what specific conditions will Aster & Row waive the standard $6.95 domestic return shipping fee?",
+      "latency_ms": 1685.43,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "Aster & Row will **waive the standard\u202f$6.95 domestic return\u2011shipping fee** only when the return is due to a problem that originated with the company:\n\n* **Wrong item shipped** \u2013 if Aster & Row sent you an incorrect product, the fee is not charged.  \n* **Item arrived damaged (or defective)** \u2013 when the item is confirmed to have arrived damaged, the fee is also waived.\n\nThese waivers apply after Aster & Row reviews and confirms the issue.  \n\n**Citations**  \n- [01-returns-policy-current.md > Return shipping and refunds]  \n- [04-damaged-or-wrong-items.md > Available resolutions]",
+      "citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 3,
+        "required_claims_missing": 2,
+        "claim_recall": 0.6,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6667,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-016",
+      "category": "exception_eligibility_conditional",
+      "query": "I bought a duffel bag for $100 five days ago, and today Aster & Row ran a 3-hour flash sale offering that duffel for $70. Am I eligible for a $30 price adjustment under your 7-day policy?",
+      "latency_ms": 1750.66,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "I\u2019m sorry, but a price adjustment would not apply in this case.\n\nOur price\u2011adjustment policy allows a one\u2011time adjustment when the public price of the same item, color, and size drops within\u202f7\u202fcalendar days of the original purchase **unless the price drop is from a limited\u2011time flash sale**. Flash\u2011sale discounts are specifically excluded from price\u2011adjustment eligibility\u3010Source 1: [10-gift-cards-and-price-adjustments.md > Price adjustments]\u3011.\n\nBecause the $70 price you saw today is part of a 3\u2011hour flash sale, the purchase you made five days ago at $100 does not qualify for a $30 price\u2011adjustment. If you still have questions or would like to discuss other options, a human support specialist can review your request, but we can\u2019t promise that a credit will be issued.",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6667,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Price adjustments",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-017",
+      "category": "exception_eligibility_conditional",
+      "query": "If an item arrives damaged and Aster & Row confirms the damage, but that exact product is completely out of stock in all colors and sizes, what resolutions can Aster & Row provide?",
+      "latency_ms": 1726.28,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "If the item you received is damaged and Aster & Row confirms the damage, the company will work with you to resolve the issue even when the exact product is no longer in stock.\u202fAccording to the official policy:\n\n* Aster & Row may **offer a replacement, a refund, or another appropriate resolution**.\u202fHowever, a replacement is only possible if the item is still in stock\u202f\u2014\u202fso when the product is completely out of stock in all colors and sizes, the replacement option is unavailable.\u202fThe company will then provide a **refund or another appropriate resolution** (such as store credit) at its discretion.\u202fThe return shipping fee is waived because the damage has been confirmed.\u202f[04-damaged-or-wrong-items.md > Available resolutions]",
+      "citations": [
+        "[04-damaged-or-wrong-items.md > Available resolutions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.25,
+        "has_hallucinations": true
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-018",
+      "category": "exception_eligibility_conditional",
+      "query": "I placed an order 20 minutes ago. Can I update my shipping address if the warehouse has already moved the order status to 'processing'?",
+      "latency_ms": 1986.29,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "I\u2019m happy to explain how address changes work.\n\n- **While an order is still\u202f*pending*** you can request an address correction within\u202f30\u202fminutes of placing the order. A human\u2011support specialist would then make the change for you\u3010Source 1: [08-order-changes-and-cancellations.md > Address changes]\u3011.  \n- **Once the order status moves to\u202f*processing***, Aster & Row can no longer guarantee that the address can be updated. At that point the order is already being prepared for shipment, and any change would have to be handled directly with the carrier after the package ships (which is outside our control)\u3010Source 1: [08-order-changes-and-cancellations.md > Address changes]\u3011.\n\nSo, if your order has already moved to **processing**, we cannot guarantee an address update. If the order is still **pending**, you\u2019re still within the 30\u2011minute window and a support specialist can help you change the address.\n\nIf you\u2019re unsure of the current status, you can check the order details in your account or let me know the order ID and I can look up the status for you.",
+      "citations": [
+        "[08-order-changes-and-cancellations.md > Address changes]",
+        "[08-order-changes-and-cancellations.md > Address changes]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-019",
+      "category": "exception_eligibility_conditional",
+      "query": "Does the TrailPlus free shipping benefit apply to expedited overnight delivery in the United States, or to international orders shipped to Canada?",
+      "latency_ms": 3325.68,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "The TrailPlus free shipping benefit does not apply to expedited overnight delivery in the United States. The benefit covers only standard shipping for eligible United States orders, and it does not cover expedited shipping [09-trailplus-membership.md > Shipping benefit].\n\nAdditionally, the TrailPlus free shipping benefit does not apply to international orders shipped to Canada. The benefit is valid only for orders within the United States [09-trailplus-membership.md > Shipping benefit].",
+      "citations": [
+        "[09-trailplus-membership.md > Shipping benefit]",
+        "[09-trailplus-membership.md > Shipping benefit]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-020",
+      "category": "exception_eligibility_conditional",
+      "query": "I ordered a travel backpack that arrived yesterday, but the detachable sternum strap listed on the product packaging was missing from the box. Does a missing accessory qualify under the damaged/wrong items policy, and what should I submit?",
+      "latency_ms": 483.87,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Damaged or incorrect items\nThe final-sale restriction does not remove a customer\u2019s right to report an item that arrived damaged, defective, or different from what was ordered. Those cases follow the Damaged or Wrong Items Policy. [03-final-sale-and-promotions.md > Damaged or incorrect items]\n\n### Bundles\nA promotional bundle must be returned as a complete bundle unless a component arrived damaged or incorrect. A missing component may reduce or prevent the refund. [03-final-sale-and-promotions.md > Bundles]\n\n### Item condition\nA returned item must be unused, unwashed, and in resalable condition. Original tags, accessories, and packaging must be included when they were supplied with the item.\n\nTrying an item indoors for fit does not by itself make it ineligible. Visible wear, odors, stains, alterations, or missing components may cause the return to be rejected. [01-returns-policy-current.md > Item condition]\n\n### Exclusions and exceptions\nFinal-sale items and gift cards are not returnable for a change of mind. Damaged or incorrect final-sale items may still qualify for assistance under the Damaged or Wrong Items Policy.\n\nWarranty claims are handled separately from ordinary returns. [01-returns-policy-current.md > Exclusions and exceptions]",
+      "citations": [
+        "[03-final-sale-and-promotions.md > Damaged or incorrect items]",
+        "[03-final-sale-and-promotions.md > Bundles]",
+        "[01-returns-policy-current.md > Item condition]",
+        "[01-returns-policy-current.md > Exclusions and exceptions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 1,
+        "required_claims_missing": 3,
+        "claim_recall": 0.25,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9048,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Damaged or incorrect items",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Bundles",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Item condition",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Exclusions and exceptions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 1,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-021",
+      "category": "date_sensitive_or_supersession",
+      "query": "I placed an order with Aster & Row back on March 15, 2026, before your new policy took effect on April 1, 2026. What was the return window and return shipping rule for orders placed during that legacy period?",
+      "latency_ms": 484.04,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]",
+      "citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[06-international-shipping.md > Canadian returns]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 0,
+        "required_claims_missing": 4,
+        "claim_recall": 0.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8182,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 0,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 1,
+        "completeness": 0,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-022",
+      "category": "date_sensitive_or_supersession",
+      "query": "A customer placed an order on May 10, 2026. They read an old forum post stating that Aster & Row provides a 45-day return window and free return shipping for all customers. Is that statement correct for their May 2026 order?",
+      "latency_ms": 667.92,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]\n\n### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]",
+      "citations": [
+        "[06-international-shipping.md > Canadian returns]",
+        "[09-trailplus-membership.md > Return window]",
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9091,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-023",
+      "category": "date_sensitive_or_supersession",
+      "query": "My standard customer order was delivered on April 10, 2026. Today is May 8, 2026. Am I still eligible to submit a return request under the standard return policy?",
+      "latency_ms": 513.47,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Standard return window\nCustomers on the standard plan may request a return within **30 calendar days of delivery**.\n\nTrailPlus members receive a different return window. See the TrailPlus Membership Policy. The membership must have been active when the order was placed. [01-returns-policy-current.md > Standard return window]\n\n### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]",
+      "citations": [
+        "[01-returns-policy-current.md > Standard return window]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[09-trailplus-membership.md > Return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Standard return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-024",
+      "category": "date_sensitive_or_supersession",
+      "query": "I bought an Aster & Row travel backpack 22 months ago. A zipper mechanism just failed due to a manufacturing defect under normal usage. Is this backpack still within its warranty period?",
+      "latency_ms": 1782.88,
+      "is_fallback": false,
+      "model_used": "mistralai/mistral-small-24b-instruct-2501",
+      "fallback_occurred": true,
+      "response_text": "The Aster & Row travel backpack has a warranty period of 2 years from the purchase date [07-warranty.md > Warranty periods]. Since 22 months have passed, the backpack is no longer within its warranty period.",
+      "citations": [
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.3333,
+        "has_hallucinations": true
+      },
+      "cit_audit": {
+        "total_citations": 1,
+        "valid_doc_count": 1,
+        "valid_heading_count": 1,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-025",
+      "category": "date_sensitive_or_supersession",
+      "query": "I purchased an Aster & Row insulated tumbler 14 months ago, and the double-wall vacuum insulation just failed. Can I file a claim under the limited warranty?",
+      "latency_ms": 484.18,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from the purchase date**.\n- Packing cubes and other travel accessories: **1 year from the purchase date**.\n\nAster & Row does not offer a lifetime warranty. [07-warranty.md > Warranty periods]\n\n### What is covered\nThe limited warranty covers manufacturing defects in materials or workmanship under normal use. Examples may include a seam that separates without misuse or a zipper mechanism that fails because of a manufacturing defect. [07-warranty.md > What is covered]\n\n### Warranty and care\nDamage caused by cleaning methods that conflict with this guide is not covered by the limited warranty. [11-product-care.md > Warranty and care]\n\n### Reports after seven days\nA manufacturing defect reported after the seven-day arrival window may be considered under the Warranty Policy. Normal wear, accidental damage, and misuse are not arrival defects.\n\nThe support agent must not promise that a refund or replacement has been approved before a human review is completed. [04-damaged-or-wrong-items.md > Reports after seven days]\n\n### Final-sale products\nA product being marked final sale does not remove the limited warranty for a qualifying manufacturing defect. [07-warranty.md > Final-sale products]",
+      "citations": [
+        "[07-warranty.md > Warranty periods]",
+        "[07-warranty.md > What is covered]",
+        "[11-product-care.md > Warranty and care]",
+        "[04-damaged-or-wrong-items.md > Reports after seven days]",
+        "[07-warranty.md > Final-sale products]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 2,
+        "required_claims_missing": 2,
+        "claim_recall": 0.5,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.5652,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "What is covered",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Warranty and care",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Reports after seven days",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Final-sale products",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-026",
+      "category": "date_sensitive_or_supersession",
+      "query": "I placed an order on June 1, it shipped on June 3, and tracking confirms it was delivered to my house on June 8. Exactly which date marks the start of my 30-day return window?",
+      "latency_ms": 503.53,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Standard return window\nCustomers on the standard plan may request a return within **30 calendar days of delivery**.\n\nTrailPlus members receive a different return window. See the TrailPlus Membership Policy. The membership must have been active when the order was placed. [01-returns-policy-current.md > Standard return window]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]\n\n### Membership verification\nWhen membership status is not available to the agent, it should explain the standard policy and ask the customer to confirm whether TrailPlus was active on the order date. It must not assume membership based only on the customer requesting the benefit. [09-trailplus-membership.md > Membership verification]",
+      "citations": [
+        "[01-returns-policy-current.md > Standard return window]",
+        "[09-trailplus-membership.md > Return window]",
+        "[09-trailplus-membership.md > Membership verification]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 2,
+        "required_claims_missing": 1,
+        "claim_recall": 0.6667,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8333,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Standard return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Membership verification",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-027",
+      "category": "date_sensitive_or_supersession",
+      "query": "I bought a winter coat on October 1. On October 10, I saw the price drop by $40 on your site. Can I obtain a price adjustment for this difference?",
+      "latency_ms": 532.85,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Price adjustments\nA customer may request one price adjustment when the public price of the same item, color, and size drops within **7 calendar days of the original purchase**.\n\nPrice adjustments are not available for:\n\n- Clearance or final-sale merchandise.\n- Limited-time flash sales.\n- Discount codes that the customer did not use at checkout.\n- Third-party retailer prices.\n- Out-of-stock variants.\n\nA human support specialist must approve and process an adjustment. The agent may explain apparent eligibility but must not promise that credit has been issued. [10-gift-cards-and-price-adjustments.md > Price adjustments]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Shipping benefit\nTrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount.\n\nThe benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges. [09-trailplus-membership.md > Shipping benefit]\n\n### Temperature use\nThe tumbler is intended for ordinary hot and cold beverages. It is not designed for use on a stove, in an oven, or in a freezer. [12-breeze-tumbler-product-card.md > Temperature use]",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[09-trailplus-membership.md > Shipping benefit]",
+        "[12-breeze-tumbler-product-card.md > Temperature use]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 1,
+        "required_claims_missing": 2,
+        "claim_recall": 0.3333,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.75,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Price adjustments",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "12-breeze-tumbler-product-card.md",
+            "heading": "Temperature use",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-028",
+      "category": "date_sensitive_or_supersession",
+      "query": "If an item was delivered to a customer on September 1, what is the exact deadline date by which they must report an arrival defect to receive a fee-waived resolution?",
+      "latency_ms": 1432.25,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "The reporting window for a damaged, defective, or wrong item is **7\u202fcalendar days from the delivery date**.  \nIf the item was delivered on **September\u202f1**, the customer must submit their report **by September\u202f8** (the seventh calendar day after delivery) to be eligible for a resolution with the return\u2011shipping fee waived.\n\n**Citations**  \n- Reporting window: 7\u202fcalendar days of delivery\u202f[04-damaged-or-wrong-items.md > Reporting window]  \n- Fee waiver when the item is confirmed damaged or wrong\u202f[01-returns-policy-current.md > Return shipping and refunds]\u202fand\u202f[04-damaged-or-wrong-items.md > Available resolutions]",
+      "citations": [
+        "[04-damaged-or-wrong-items.md > Reporting window]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 1,
+        "required_claims_missing": 2,
+        "claim_recall": 0.3333,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7143,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Reporting window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-029",
+      "category": "multi_part_factual",
+      "query": "I am placing an order to an address in Alaska. (1) How much is standard shipping if my subtotal is $80 after discounts? (2) How long is warehouse processing before dispatch? and (3) What is the estimated delivery timeframe after dispatch?",
+      "latency_ms": 474.18,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Canada delivery estimate\nCanadian orders generally arrive within **5\u20139 business days after dispatch**. Processing time before dispatch is usually 1\u20132 business days.\n\nDelivery estimates may be extended by customs processing or carrier delays. [06-international-shipping.md > Canada delivery estimate]\n\n### Delivery estimates after dispatch\n- Contiguous United States: **3\u20135 business days**.\n- Alaska and Hawaii: **5\u20138 business days**.\n- PO boxes: **5\u20139 business days**.\n\nThese are estimates rather than guaranteed delivery dates. [05-domestic-shipping.md > Delivery estimates after dispatch]\n\n### Shipping charges\nStandard shipping is free for eligible United States orders of **$75 or more after discounts and before tax**. TrailPlus members receive free standard domestic shipping without a minimum order value.\n\nExpedited shipping charges are shown at checkout and are not refundable unless Aster & Row shipped the wrong item or the shipment was damaged in transit. [05-domestic-shipping.md > Shipping charges]\n\n### Processing time\nMost orders require **1\u20132 business days** for processing before they are dispatched. Business days exclude weekends and United States federal holidays. [05-domestic-shipping.md > Processing time]",
+      "citations": [
+        "[06-international-shipping.md > Canada delivery estimate]",
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]",
+        "[05-domestic-shipping.md > Shipping charges]",
+        "[05-domestic-shipping.md > Processing time]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9583,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canada delivery estimate",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Delivery estimates after dispatch",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Processing time",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-030",
+      "category": "multi_part_factual",
+      "query": "Please explain: (1) what is the return window for a standard customer versus an active TrailPlus member? (2) how much is deducted for return shipping for each? and (3) how long after inspection does it take for a refund to appear?",
+      "latency_ms": 447.33,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]\n\n### Standard return window\nCustomers on the standard plan may request a return within **30 calendar days of delivery**.\n\nTrailPlus members receive a different return window. See the TrailPlus Membership Policy. The membership must have been active when the order was placed. [01-returns-policy-current.md > Standard return window]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]",
+      "citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[01-returns-policy-current.md > Standard return window]",
+        "[09-trailplus-membership.md > Return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 1.0,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Standard return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-031",
+      "category": "multi_part_factual",
+      "query": "What are Aster & Row's exact warranty durations for: (1) travel backpacks, (2) drinkware, and (3) packing cubes? Also, does Aster & Row offer a lifetime warranty?",
+      "latency_ms": 457.92,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from the purchase date**.\n- Packing cubes and other travel accessories: **1 year from the purchase date**.\n\nAster & Row does not offer a lifetime warranty. [07-warranty.md > Warranty periods]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Duties and taxes\nImport duties, taxes, and brokerage charges are not prepaid by Aster & Row. The recipient is responsible for charges assessed by Canadian authorities or the carrier. [06-international-shipping.md > Duties and taxes]\n\n### Packing cubes\nPacking cubes may be hand-washed in cool water with mild detergent and air-dried. Do not use high heat. [11-product-care.md > Packing cubes]",
+      "citations": [
+        "[07-warranty.md > Warranty periods]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[06-international-shipping.md > Duties and taxes]",
+        "[11-product-care.md > Packing cubes]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7273,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Duties and taxes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Packing cubes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-032",
+      "category": "multi_part_factual",
+      "query": "For orders shipped to Canada: (1) what is processing time before dispatch? (2) what is the estimated delivery timeframe after dispatch? and (3) who is responsible for customs duties and Canadian import taxes?",
+      "latency_ms": 580.62,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Canada delivery estimate\nCanadian orders generally arrive within **5\u20139 business days after dispatch**. Processing time before dispatch is usually 1\u20132 business days.\n\nDelivery estimates may be extended by customs processing or carrier delays. [06-international-shipping.md > Canada delivery estimate]\n\n### Duties and taxes\nImport duties, taxes, and brokerage charges are not prepaid by Aster & Row. The recipient is responsible for charges assessed by Canadian authorities or the carrier. [06-international-shipping.md > Duties and taxes]\n\n### Delivery estimates after dispatch\n- Contiguous United States: **3\u20135 business days**.\n- Alaska and Hawaii: **5\u20138 business days**.\n- PO boxes: **5\u20139 business days**.\n\nThese are estimates rather than guaranteed delivery dates. [05-domestic-shipping.md > Delivery estimates after dispatch]\n\n### Processing time\nMost orders require **1\u20132 business days** for processing before they are dispatched. Business days exclude weekends and United States federal holidays. [05-domestic-shipping.md > Processing time]",
+      "citations": [
+        "[06-international-shipping.md > Canada delivery estimate]",
+        "[06-international-shipping.md > Duties and taxes]",
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]",
+        "[05-domestic-shipping.md > Processing time]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8261,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canada delivery estimate",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Duties and taxes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Delivery estimates after dispatch",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Processing time",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-033",
+      "category": "multi_part_factual",
+      "query": "If I need to cancel or change an order: (1) what is the cancellation timeframe? (2) what order status is required? and (3) can customer support edit product quantities on my order if cancellation is no longer possible?",
+      "latency_ms": 446.75,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Product or quantity changes\nItems and quantities cannot be edited after checkout. When cancellation is still possible, the customer may request cancellation and place a new order. [08-order-changes-and-cancellations.md > Product or quantity changes]\n\n### Cancellation window\nA customer may request cancellation within **30 minutes of placing an order**, but only while the order status is `pending`.\n\nA cancellation cannot be guaranteed. Once the status changes to `processing`, `shipped`, `delivered`, or another later state, the order cannot be cancelled through the normal cancellation process. [08-order-changes-and-cancellations.md > Cancellation window]\n\n### Agent limitations\nThe support agent may check the current order status and explain the policy. It must not claim that an order was cancelled or changed unless a supported action confirms completion. [08-order-changes-and-cancellations.md > Agent limitations]\n\n### Address changes\nAn address correction may be requested within 30 minutes while an order is still pending. A human support specialist must complete the change.\n\nAfter an order enters processing, Aster & Row cannot guarantee an address change. After shipment, the customer may contact the carrier, but carrier changes are outside Aster & Row\u2019s control. [08-order-changes-and-cancellations.md > Address changes]",
+      "citations": [
+        "[08-order-changes-and-cancellations.md > Product or quantity changes]",
+        "[08-order-changes-and-cancellations.md > Cancellation window]",
+        "[08-order-changes-and-cancellations.md > Agent limitations]",
+        "[08-order-changes-and-cancellations.md > Address changes]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7391,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Product or quantity changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Cancellation window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Agent limitations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-034",
+      "category": "multi_part_factual",
+      "query": "What are the specific cleaning instructions for: (1) fabric bags and backpacks, (2) packing cubes, and (3) the lid of the Breeze Tumbler?",
+      "latency_ms": 494.95,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Bags and backpacks\nSpot-clean fabric bags with mild soap and cool water. Do not machine wash, bleach, dry-clean, or tumble dry. Air-dry completely before storage. [11-product-care.md > Bags and backpacks]\n\n### Breeze Tumbler\nThe stainless-steel body of the Breeze Tumbler should be **hand-washed**. The lid may be placed on the top rack of a dishwasher. Do not microwave any component. [11-product-care.md > Breeze Tumbler]\n\n### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from the purchase date**.\n- Packing cubes and other travel accessories: **1 year from the purchase date**.\n\nAster & Row does not offer a lifetime warranty. [07-warranty.md > Warranty periods]\n\n### Packing cubes\nPacking cubes may be hand-washed in cool water with mild detergent and air-dried. Do not use high heat. [11-product-care.md > Packing cubes]\n\n### Cleaning\nThe product card states that **all components are dishwasher safe**, with the top rack recommended.\n\nDo not place the tumbler or lid in a microwave. Avoid abrasive scrubbers that may damage the finish. [12-breeze-tumbler-product-card.md > Cleaning]",
+      "citations": [
+        "[11-product-care.md > Bags and backpacks]",
+        "[11-product-care.md > Breeze Tumbler]",
+        "[07-warranty.md > Warranty periods]",
+        "[11-product-care.md > Packing cubes]",
+        "[12-breeze-tumbler-product-card.md > Cleaning]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 5,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8148,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "11-product-care.md",
+            "heading": "Bags and backpacks",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Breeze Tumbler",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Packing cubes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "12-breeze-tumbler-product-card.md",
+            "heading": "Cleaning",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-035",
+      "category": "multi_part_factual",
+      "query": "What are the four specific requirements an item must satisfy under Aster & Row's item condition policy to be accepted for a standard return?",
+      "latency_ms": 509.32,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Item condition\nA returned item must be unused, unwashed, and in resalable condition. Original tags, accessories, and packaging must be included when they were supplied with the item.\n\nTrying an item indoors for fit does not by itself make it ineligible. Visible wear, odors, stains, alterations, or missing components may cause the return to be rejected. [01-returns-policy-current.md > Item condition]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]",
+      "citations": [
+        "[01-returns-policy-current.md > Item condition]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8095,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Item condition",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-036",
+      "category": "multi_part_factual",
+      "query": "Regarding price adjustments: (1) within how many days of purchase must the request be submitted? (2) how many adjustments are allowed per purchase? and (3) can price adjustments be applied to clearance items?",
+      "latency_ms": 623.78,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Price adjustments\nA customer may request one price adjustment when the public price of the same item, color, and size drops within **7 calendar days of the original purchase**.\n\nPrice adjustments are not available for:\n\n- Clearance or final-sale merchandise.\n- Limited-time flash sales.\n- Discount codes that the customer did not use at checkout.\n- Third-party retailer prices.\n- Out-of-stock variants.\n\nA human support specialist must approve and process an adjustment. The agent may explain apparent eligibility but must not promise that credit has been issued. [10-gift-cards-and-price-adjustments.md > Price adjustments]\n\n### Change-of-mind returns\nFinal-sale items cannot be returned or exchanged because of fit, color preference, duplicate purchase, or another change of mind. [03-final-sale-and-promotions.md > Change-of-mind returns]\n\n### Product or quantity changes\nItems and quantities cannot be edited after checkout. When cancellation is still possible, the customer may request cancellation and place a new order. [08-order-changes-and-cancellations.md > Product or quantity changes]\n\n### Processing time\nMost orders require **1\u20132 business days** for processing before they are dispatched. Business days exclude weekends and United States federal holidays. [05-domestic-shipping.md > Processing time]",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]",
+        "[03-final-sale-and-promotions.md > Change-of-mind returns]",
+        "[08-order-changes-and-cancellations.md > Product or quantity changes]",
+        "[05-domestic-shipping.md > Processing time]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8077,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Price adjustments",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Change-of-mind returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Product or quantity changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Processing time",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-037",
+      "category": "distinguishing_similar_policies",
+      "query": "How does Aster & Row distinguish an item damaged during shipping transit from a product with a manufacturing warranty defect in terms of reporting deadlines and available resolutions?",
+      "latency_ms": 449.28,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Final-sale products\nA product being marked final sale does not remove the limited warranty for a qualifying manufacturing defect. [07-warranty.md > Final-sale products]\n\n### Reporting window\nCustomers should report an item that arrived damaged, visibly defective, or different from what was ordered within **7 calendar days of delivery**.\n\nThe customer should provide the order ID, a short description, and clear photographs of the item and packaging when reasonably possible. [04-damaged-or-wrong-items.md > Reporting window]\n\n### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from the purchase date**.\n- Packing cubes and other travel accessories: **1 year from the purchase date**.\n\nAster & Row does not offer a lifetime warranty. [07-warranty.md > Warranty periods]\n\n### What is covered\nThe limited warranty covers manufacturing defects in materials or workmanship under normal use. Examples may include a seam that separates without misuse or a zipper mechanism that fails because of a manufacturing defect. [07-warranty.md > What is covered]",
+      "citations": [
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[07-warranty.md > Final-sale products]",
+        "[04-damaged-or-wrong-items.md > Reporting window]",
+        "[07-warranty.md > Warranty periods]",
+        "[07-warranty.md > What is covered]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 4,
+        "required_claims_missing": 1,
+        "claim_recall": 0.8,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6667,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Final-sale products",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Reporting window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "What is covered",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-038",
+      "category": "distinguishing_similar_policies",
+      "query": "What is the difference between cancelling an order versus returning an order in terms of timeframes, fees, and required order status?",
+      "latency_ms": 489.18,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Cancellation window\nA customer may request cancellation within **30 minutes of placing an order**, but only while the order status is `pending`.\n\nA cancellation cannot be guaranteed. Once the status changes to `processing`, `shipped`, `delivered`, or another later state, the order cannot be cancelled through the normal cancellation process. [08-order-changes-and-cancellations.md > Cancellation window]\n\n### Agent limitations\nThe support agent may check the current order status and explain the policy. It must not claim that an order was cancelled or changed unless a supported action confirms completion. [08-order-changes-and-cancellations.md > Agent limitations]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]",
+      "citations": [
+        "[08-order-changes-and-cancellations.md > Cancellation window]",
+        "[08-order-changes-and-cancellations.md > Agent limitations]",
+        "[09-trailplus-membership.md > Return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 2,
+        "required_claims_missing": 3,
+        "claim_recall": 0.4,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8824,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Cancellation window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Agent limitations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 2,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 2,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-039",
+      "category": "distinguishing_similar_policies",
+      "query": "How do change-of-mind return shipping arrangements differ between a domestic US customer and an international Canadian customer?",
+      "latency_ms": 606.57,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]\n\n### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]\n\n### Shipping benefit\nTrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount.\n\nThe benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges. [09-trailplus-membership.md > Shipping benefit]",
+      "citations": [
+        "[06-international-shipping.md > Canadian returns]",
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[09-trailplus-membership.md > Shipping benefit]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9048,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-040",
+      "category": "distinguishing_similar_policies",
+      "query": "How does Aster & Row distinguish an item purchased with a promotional discount coupon from an item designated as final sale regarding return eligibility?",
+      "latency_ms": 477.2,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### What counts as final sale\nAn item is final sale only when the product page, cart, or order confirmation clearly labels it **FINAL SALE**. A discount or promotional code does not automatically make an item final sale.\n\nGift cards are always final sale. [03-final-sale-and-promotions.md > What counts as final sale]\n\n### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]\n\n### Return window\nA customer whose TrailPlus membership was active when an order was placed receives a **45-calendar-day return window from delivery** for eligible items.\n\nJoining TrailPlus after placing an order does not extend that order\u2019s return window.\n\nFinal-sale restrictions, item-condition requirements, and warranty rules still apply. [09-trailplus-membership.md > Return window]",
+      "citations": [
+        "[03-final-sale-and-promotions.md > What counts as final sale]",
+        "[06-international-shipping.md > Canadian returns]",
+        "[09-trailplus-membership.md > Return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 4,
+        "required_claims_missing": 1,
+        "claim_recall": 0.8,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.95,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "What counts as final sale",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-041",
+      "category": "distinguishing_similar_policies",
+      "query": "What is the difference in domestic shipping benefits between a standard non-member customer and a TrailPlus member?",
+      "latency_ms": 515.17,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Shipping benefit\nTrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount.\n\nThe benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges. [09-trailplus-membership.md > Shipping benefit]\n\n### Shipping charges\nStandard shipping is free for eligible United States orders of **$75 or more after discounts and before tax**. TrailPlus members receive free standard domestic shipping without a minimum order value.\n\nExpedited shipping charges are shown at checkout and are not refundable unless Aster & Row shipped the wrong item or the shipment was damaged in transit. [05-domestic-shipping.md > Shipping charges]\n\n### Membership verification\nWhen membership status is not available to the agent, it should explain the standard policy and ask the customer to confirm whether TrailPlus was active on the order date. It must not assume membership based only on the customer requesting the benefit. [09-trailplus-membership.md > Membership verification]\n\n### Standard return window\nCustomers on the standard plan may request a return within **30 calendar days of delivery**.\n\nTrailPlus members receive a different return window. See the TrailPlus Membership Policy. The membership must have been active when the order was placed. [01-returns-policy-current.md > Standard return window]",
+      "citations": [
+        "[09-trailplus-membership.md > Shipping benefit]",
+        "[05-domestic-shipping.md > Shipping charges]",
+        "[09-trailplus-membership.md > Membership verification]",
+        "[01-returns-policy-current.md > Standard return window]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 3,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.8696,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Membership verification",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Standard return window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-042",
+      "category": "distinguishing_similar_policies",
+      "query": "How do return rules differ between purchasing an Aster & Row physical product versus purchasing an Aster & Row gift card?",
+      "latency_ms": 454.03,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Gift cards\nAster & Row gift cards do not expire. Gift cards are final sale and cannot be returned, exchanged for cash, or used to purchase another gift card, except where required by law.\n\nThe agent must not ask a customer to share a complete gift-card code in chat. [10-gift-cards-and-price-adjustments.md > Gift cards]\n\n### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]\n\n### Warranty periods\n- Aster & Row bags and backpacks: **2 years from the purchase date**.\n- Drinkware: **1 year from the purchase date**.\n- Packing cubes and other travel accessories: **1 year from the purchase date**.\n\nAster & Row does not offer a lifetime warranty. [07-warranty.md > Warranty periods]",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]",
+        "[06-international-shipping.md > Canadian returns]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]",
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 3,
+        "required_claims_missing": 1,
+        "claim_recall": 0.75,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.76,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Gift cards",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Warranty periods",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 3,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 2,
+        "completeness": 3,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-043",
+      "category": "distinguishing_similar_policies",
+      "query": "How does Aster & Row handle an address change request made within 30 minutes while an order is pending versus after the order has already been shipped?",
+      "latency_ms": 479.54,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Address changes\nAn address correction may be requested within 30 minutes while an order is still pending. A human support specialist must complete the change.\n\nAfter an order enters processing, Aster & Row cannot guarantee an address change. After shipment, the customer may contact the carrier, but carrier changes are outside Aster & Row\u2019s control. [08-order-changes-and-cancellations.md > Address changes]\n\n### Cancellation window\nA customer may request cancellation within **30 minutes of placing an order**, but only while the order status is `pending`.\n\nA cancellation cannot be guaranteed. Once the status changes to `processing`, `shipped`, `delivered`, or another later state, the order cannot be cancelled through the normal cancellation process. [08-order-changes-and-cancellations.md > Cancellation window]\n\n### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]",
+      "citations": [
+        "[08-order-changes-and-cancellations.md > Address changes]",
+        "[08-order-changes-and-cancellations.md > Cancellation window]",
+        "[06-international-shipping.md > Canadian returns]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 5,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9524,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Cancellation window",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-044",
+      "category": "difficult_precise_factual",
+      "query": "Under the domestic shipping policy, what are the three distinct delivery timeframe estimates after dispatch for: (1) the contiguous United States, (2) Alaska and Hawaii, and (3) PO boxes?",
+      "latency_ms": 463.26,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Delivery estimates after dispatch\n- Contiguous United States: **3\u20135 business days**.\n- Alaska and Hawaii: **5\u20138 business days**.\n- PO boxes: **5\u20139 business days**.\n\nThese are estimates rather than guaranteed delivery dates. [05-domestic-shipping.md > Delivery estimates after dispatch]\n\n### Canada delivery estimate\nCanadian orders generally arrive within **5\u20139 business days after dispatch**. Processing time before dispatch is usually 1\u20132 business days.\n\nDelivery estimates may be extended by customs processing or carrier delays. [06-international-shipping.md > Canada delivery estimate]\n\n### Processing time\nMost orders require **1\u20132 business days** for processing before they are dispatched. Business days exclude weekends and United States federal holidays. [05-domestic-shipping.md > Processing time]\n\n### Shipping charges\nStandard shipping is free for eligible United States orders of **$75 or more after discounts and before tax**. TrailPlus members receive free standard domestic shipping without a minimum order value.\n\nExpedited shipping charges are shown at checkout and are not refundable unless Aster & Row shipped the wrong item or the shipment was damaged in transit. [05-domestic-shipping.md > Shipping charges]",
+      "citations": [
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]",
+        "[06-international-shipping.md > Canada delivery estimate]",
+        "[05-domestic-shipping.md > Processing time]",
+        "[05-domestic-shipping.md > Shipping charges]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 4,
+        "required_claims_supported": 4,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9583,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Delivery estimates after dispatch",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canada delivery estimate",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Processing time",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 4,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-045",
+      "category": "difficult_precise_factual",
+      "query": "What is the exact dollar amount deducted for standard domestic return shipping, and what is the exact timeline for refunds to appear after the returned item is inspected?",
+      "latency_ms": 506.23,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]\n\n### Shipping charges\nStandard shipping is free for eligible United States orders of **$75 or more after discounts and before tax**. TrailPlus members receive free standard domestic shipping without a minimum order value.\n\nExpedited shipping charges are shown at checkout and are not refundable unless Aster & Row shipped the wrong item or the shipment was damaged in transit. [05-domestic-shipping.md > Shipping charges]\n\n### Available resolutions\nAfter review, Aster & Row may offer a replacement, refund, or another appropriate resolution. Availability of a replacement depends on stock.\n\nA return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or that the wrong item was sent. [04-damaged-or-wrong-items.md > Available resolutions]",
+      "citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]",
+        "[05-domestic-shipping.md > Shipping charges]",
+        "[04-damaged-or-wrong-items.md > Available resolutions]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 3,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.85,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "04-damaged-or-wrong-items.md",
+            "heading": "Available resolutions",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-046",
+      "category": "difficult_precise_factual",
+      "query": "What is the minimum dollar order value required to qualify for free standard domestic shipping, and is that threshold calculated before or after discounts and before or after tax?",
+      "latency_ms": 1506.68,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Shipping charges\nStandard shipping is free for eligible United States orders of **$75 or more after discounts and before tax**. TrailPlus members receive free standard domestic shipping without a minimum order value.\n\nExpedited shipping charges are shown at checkout and are not refundable unless Aster & Row shipped the wrong item or the shipment was damaged in transit. [05-domestic-shipping.md > Shipping charges]\n\n### Shipping benefit\nTrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount.\n\nThe benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges. [09-trailplus-membership.md > Shipping benefit]\n\n### Return shipping and refunds\nA **$6.95 return shipping fee** is deducted from the refund for standard domestic returns. The fee is waived when Aster & Row sent the wrong item or the item arrived damaged.\n\nRefunds are issued to the original payment method after the return is inspected. Customers should allow **5\u20137 business days after inspection** for the refund to appear.\n\nOriginal outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival. [01-returns-policy-current.md > Return shipping and refunds]",
+      "citations": [
+        "[05-domestic-shipping.md > Shipping charges]",
+        "[09-trailplus-membership.md > Shipping benefit]",
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 1,
+        "required_claims_missing": 2,
+        "claim_recall": 0.3333,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9474,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "05-domestic-shipping.md",
+            "heading": "Shipping charges",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "09-trailplus-membership.md",
+            "heading": "Shipping benefit",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "01-returns-policy-current.md",
+            "heading": "Return shipping and refunds",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 1,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 1,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-047",
+      "category": "difficult_precise_factual",
+      "query": "What are the temperature limitations and forbidden appliances for the Breeze Tumbler according to its product specifications and care guide?",
+      "latency_ms": 449.58,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Temperature use\nThe tumbler is intended for ordinary hot and cold beverages. It is not designed for use on a stove, in an oven, or in a freezer. [12-breeze-tumbler-product-card.md > Temperature use]\n\n### Product details\nThe Breeze Tumbler is a 20-ounce insulated stainless-steel tumbler with a splash-resistant lid. It is not leakproof and should be kept upright during transport. [12-breeze-tumbler-product-card.md > Product details]\n\n### Warranty and care\nDamage caused by cleaning methods that conflict with this guide is not covered by the limited warranty. [11-product-care.md > Warranty and care]\n\n### Breeze Tumbler\nThe stainless-steel body of the Breeze Tumbler should be **hand-washed**. The lid may be placed on the top rack of a dishwasher. Do not microwave any component. [11-product-care.md > Breeze Tumbler]\n\n### Cleaning\nThe product card states that **all components are dishwasher safe**, with the top rack recommended.\n\nDo not place the tumbler or lid in a microwave. Avoid abrasive scrubbers that may damage the finish. [12-breeze-tumbler-product-card.md > Cleaning]",
+      "citations": [
+        "[12-breeze-tumbler-product-card.md > Temperature use]",
+        "[12-breeze-tumbler-product-card.md > Product details]",
+        "[11-product-care.md > Warranty and care]",
+        "[11-product-care.md > Breeze Tumbler]",
+        "[12-breeze-tumbler-product-card.md > Cleaning]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 5,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.6667,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 5,
+        "valid_doc_count": 5,
+        "valid_heading_count": 5,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 5,
+        "citation_details": [
+          {
+            "filename": "12-breeze-tumbler-product-card.md",
+            "heading": "Temperature use",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "12-breeze-tumbler-product-card.md",
+            "heading": "Product details",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Warranty and care",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Breeze Tumbler",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "12-breeze-tumbler-product-card.md",
+            "heading": "Cleaning",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-048",
+      "category": "difficult_precise_factual",
+      "query": "Under Aster & Row's limited product warranty, what specific types of damage or conditions are explicitly excluded from warranty coverage?",
+      "latency_ms": 1493.16,
+      "is_fallback": false,
+      "model_used": "openai/gpt-oss-120b",
+      "fallback_occurred": true,
+      "response_text": "Under Aster\u202f&\u202fRow\u2019s limited product warranty, the following damage types and conditions are **explicitly excluded** from coverage:\n\n- Ordinary wear and tear  \n- Cosmetic changes (e.g., surface scratches that don\u2019t affect function)  \n- Accidental damage (drops, impacts, etc.)  \n- Damage caused by airlines or other carriers during transport  \n- Improper cleaning or cleaning methods that conflict with the product\u2011care guide  \n- Modifications, neglect, or misuse of the product  \n\nThese exclusions are outlined in the warranty documentation\u202f[07-warranty.md > What is not covered] and reinforced by the product\u2011care guide, which states that damage from prohibited cleaning methods is not covered\u202f[11-product-care.md > Warranty and care].",
+      "citations": [
+        "[07-warranty.md > What is not covered]",
+        "[11-product-care.md > Warranty and care]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 5,
+        "required_claims_supported": 5,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.3636,
+        "has_hallucinations": true
+      },
+      "cit_audit": {
+        "total_citations": 2,
+        "valid_doc_count": 2,
+        "valid_heading_count": 2,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 0,
+        "citation_details": [
+          {
+            "filename": "07-warranty.md",
+            "heading": "What is not covered",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          },
+          {
+            "filename": "11-product-care.md",
+            "heading": "Warranty and care",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": false
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 1,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-049",
+      "category": "difficult_precise_factual",
+      "query": "If an eligible customer in Canada wants to exchange an item for a different size, can Aster & Row process a direct exchange?",
+      "latency_ms": 469.0,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Canadian returns\nAster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage. When Aster & Row confirms that an item arrived damaged or incorrect, support will provide an appropriate resolution without charging an ordinary return fee.\n\nDirect exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order. [06-international-shipping.md > Canadian returns]\n\n### Supported destinations\nAster & Row currently ships internationally only to **Canada**. Shipping to other countries is not available at this time. [06-international-shipping.md > Supported destinations]\n\n### Address changes\nAn address correction may be requested within 30 minutes while an order is still pending. A human support specialist must complete the change.\n\nAfter an order enters processing, Aster & Row cannot guarantee an address change. After shipment, the customer may contact the carrier, but carrier changes are outside Aster & Row\u2019s control. [08-order-changes-and-cancellations.md > Address changes]",
+      "citations": [
+        "[06-international-shipping.md > Canadian returns]",
+        "[06-international-shipping.md > Supported destinations]",
+        "[08-order-changes-and-cancellations.md > Address changes]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 3,
+        "required_claims_supported": 3,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.9,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 3,
+        "valid_doc_count": 3,
+        "valid_heading_count": 3,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 3,
+        "citation_details": [
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Canadian returns",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "06-international-shipping.md",
+            "heading": "Supported destinations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Address changes",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 3,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    },
+    {
+      "case_id": "AQ50-050",
+      "category": "difficult_precise_factual",
+      "query": "What specific security and privacy restriction governs the customer support agent's handling of gift card codes during customer chat conversations?",
+      "latency_ms": 473.58,
+      "is_fallback": true,
+      "model_used": "deterministic_evidence_builder",
+      "fallback_occurred": true,
+      "response_text": "### Gift cards\nAster & Row gift cards do not expire. Gift cards are final sale and cannot be returned, exchanged for cash, or used to purchase another gift card, except where required by law.\n\nThe agent must not ask a customer to share a complete gift-card code in chat. [10-gift-cards-and-price-adjustments.md > Gift cards]\n\n### Damaged or incorrect items\nThe final-sale restriction does not remove a customer\u2019s right to report an item that arrived damaged, defective, or different from what was ordered. Those cases follow the Damaged or Wrong Items Policy. [03-final-sale-and-promotions.md > Damaged or incorrect items]\n\n### Review process\nWarranty claims require proof of purchase and may require photographs. A human support specialist reviews eligibility. The agent may explain the policy and collect information, but it must not promise approval. [07-warranty.md > Review process]\n\n### Agent limitations\nThe support agent may check the current order status and explain the policy. It must not claim that an order was cancelled or changed unless a supported action confirms completion. [08-order-changes-and-cancellations.md > Agent limitations]",
+      "citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]",
+        "[03-final-sale-and-promotions.md > Damaged or incorrect items]",
+        "[07-warranty.md > Review process]",
+        "[08-order-changes-and-cancellations.md > Agent limitations]"
+      ],
+      "claim_eval": {
+        "required_claims_total": 2,
+        "required_claims_supported": 2,
+        "required_claims_missing": 0,
+        "claim_recall": 1.0,
+        "contradictions_count": 0,
+        "contradictions": [],
+        "grounded_sentence_ratio": 0.7,
+        "has_hallucinations": false
+      },
+      "cit_audit": {
+        "total_citations": 4,
+        "valid_doc_count": 4,
+        "valid_heading_count": 4,
+        "superseded_count": 0,
+        "draft_or_untrusted_count": 0,
+        "customer_answering_false_count": 0,
+        "auto_attached_count": 4,
+        "citation_details": [
+          {
+            "filename": "10-gift-cards-and-price-adjustments.md",
+            "heading": "Gift cards",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "03-final-sale-and-promotions.md",
+            "heading": "Damaged or incorrect items",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "07-warranty.md",
+            "heading": "Review process",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          },
+          {
+            "filename": "08-order-changes-and-cancellations.md",
+            "heading": "Agent limitations",
+            "doc_exists": true,
+            "heading_exists": true,
+            "status": "active",
+            "authority": "official",
+            "customer_answering": true,
+            "auto_attached": true
+          }
+        ],
+        "all_valid": true
+      },
+      "rubric_scores": {
+        "factual_correctness": 4,
+        "groundedness": 2,
+        "citation_precision": 1,
+        "citation_completeness": 4,
+        "completeness": 4,
+        "abstention_quality": 4,
+        "conflict_handling": 4
+      }
+    }
+  ]
+}

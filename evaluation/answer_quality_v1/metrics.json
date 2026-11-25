@@ -1,0 +1,244 @@
+{
+  "evaluation_track": "fallback_baseline",
+  "total_cases_evaluated": 150,
+  "tracks_summary": {
+    "fallback_baseline": {
+      "status": "COMPLETED",
+      "sample_size": 150,
+      "generation_mode": "OutputValidator.build_fallback"
+    },
+    "live_llm": {
+      "status": "BLOCKED (Awaiting Provider Configuration & Explicit Approval)",
+      "sample_size": 0,
+      "reason": "Paid external API calls prohibited without explicit approval under Rule 9. Groq openai/gpt-oss-120b ready for testing upon approval."
+    },
+    "controlled_test": {
+      "status": "COMPLETED",
+      "sample_size": 10,
+      "fixtures_passed": 7
+    }
+  },
+  "composite_mean_score_out_of_4": 2.796,
+  "dimension_averages": {
+    "factual_correctness": 2.527,
+    "groundedness": 2.493,
+    "citation_precision": 0.927,
+    "citation_completeness": 3.473,
+    "completeness": 2.553,
+    "abstention_quality": 3.6,
+    "conflict_handling": 4.0
+  },
+  "claim_level_metrics": {
+    "total_required_claims": 243,
+    "total_supported_claims": 132,
+    "overall_claim_recall": 0.5432,
+    "total_contradictions": 1,
+    "cases_with_hallucinations": 5,
+    "hallucination_rate": 0.0333
+  },
+  "citation_audit_metrics": {
+    "total_citations_analyzed": 539,
+    "valid_doc_rate": 1.0,
+    "valid_heading_rate": 1.0,
+    "superseded_citation_rate": 0.0,
+    "draft_untrusted_citation_rate": 0.0,
+    "auto_attached_rate": 1.0
+  },
+  "category_breakdown": {
+    "standard_returns": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 3.4,
+        "groundedness": 3.0,
+        "citation_precision": 1.0,
+        "citation_completeness": 3.7,
+        "completeness": 3.4,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 3.214
+    },
+    "membership": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 2.6,
+        "groundedness": 3.2,
+        "citation_precision": 1.0,
+        "citation_completeness": 3.5,
+        "completeness": 2.6,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.986
+    },
+    "final_sale": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 3.0,
+        "groundedness": 2.6,
+        "citation_precision": 1.0,
+        "citation_completeness": 4.0,
+        "completeness": 3.0,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 3.086
+    },
+    "shipping": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 2.7,
+        "groundedness": 3.0,
+        "citation_precision": 1.0,
+        "citation_completeness": 4.0,
+        "completeness": 2.7,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 3.057
+    },
+    "warranty": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 1.8,
+        "groundedness": 2.1,
+        "citation_precision": 1.0,
+        "citation_completeness": 4.0,
+        "completeness": 1.8,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.671
+    },
+    "order_management": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 1.6,
+        "groundedness": 2.1,
+        "citation_precision": 0.7,
+        "citation_completeness": 2.5,
+        "completeness": 1.6,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.357
+    },
+    "gift_cards": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 2.8,
+        "groundedness": 2.8,
+        "citation_precision": 0.9,
+        "citation_completeness": 3.6,
+        "completeness": 2.8,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.986
+    },
+    "product_care": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 1.7,
+        "groundedness": 2.0,
+        "citation_precision": 1.0,
+        "citation_completeness": 4.0,
+        "completeness": 1.7,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.629
+    },
+    "policy_conflict": {
+      "count": 5,
+      "scores": {
+        "factual_correctness": 3.2,
+        "groundedness": 1.8,
+        "citation_precision": 1.0,
+        "citation_completeness": 3.2,
+        "completeness": 4.0,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 3.029
+    },
+    "superseded_trap": {
+      "count": 3,
+      "scores": {
+        "factual_correctness": 0.0,
+        "groundedness": 3.0,
+        "citation_precision": 1.0,
+        "citation_completeness": 1.0,
+        "completeness": 0.0,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 1.857
+    },
+    "draft_trap": {
+      "count": 3,
+      "scores": {
+        "factual_correctness": 0.333,
+        "groundedness": 2.0,
+        "citation_precision": 1.0,
+        "citation_completeness": 2.333,
+        "completeness": 0.333,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 2.0
+    },
+    "prompt_injection": {
+      "count": 4,
+      "scores": {
+        "factual_correctness": 0.0,
+        "groundedness": 1.5,
+        "citation_precision": 0.5,
+        "citation_completeness": 1.25,
+        "completeness": 0.0,
+        "abstention_quality": 1.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 1.179
+    },
+    "privacy_pii": {
+      "count": 5,
+      "scores": {
+        "factual_correctness": 0.0,
+        "groundedness": 1.2,
+        "citation_precision": 0.0,
+        "citation_completeness": 0.0,
+        "completeness": 0.0,
+        "abstention_quality": 2.4,
+        "conflict_handling": 4.0
+      },
+      "category_average": 1.086
+    },
+    "unanswerable": {
+      "count": 10,
+      "scores": {
+        "factual_correctness": 1.0,
+        "groundedness": 2.5,
+        "citation_precision": 1.0,
+        "citation_completeness": 3.7,
+        "completeness": 1.0,
+        "abstention_quality": 0.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 1.886
+    },
+    "policy_clause": {
+      "count": 40,
+      "scores": {
+        "factual_correctness": 3.9,
+        "groundedness": 2.625,
+        "citation_precision": 1.0,
+        "citation_completeness": 4.0,
+        "completeness": 3.9,
+        "abstention_quality": 4.0,
+        "conflict_handling": 4.0
+      },
+      "category_average": 3.346
+    }
+  }
+}

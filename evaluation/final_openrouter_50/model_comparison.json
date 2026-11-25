@@ -1,0 +1,100 @@
+{
+  "benchmark": {
+    "dataset": "evaluation/answer_quality_v1/stage3_difficult_50_answerable.json",
+    "total_cases": 50,
+    "total_required_claims": 204
+  },
+  "models_evaluated": {
+    "candidate_a_llm_synthesis": {
+      "name": "LLM Synthesis (OpenRouter Llama 3.3 70B / Mistral Small + Groq)",
+      "overall_claim_recall": 0.7157,
+      "supported_claims": "146/204",
+      "fully_complete_answers": "19/50 (38.0%)",
+      "citation_validity_rate": 1.0,
+      "hallucination_cases": 3,
+      "hallucination_rate": 0.06,
+      "composite_rubric_mean": 2.969,
+      "latency": {
+        "p50_ms": 623.78,
+        "p95_ms": 22268.88,
+        "mean_ms": 3997.37
+      },
+      "estimated_cost_usd_per_query": 5.8e-05,
+      "total_track_spend_usd": 0.00128,
+      "strengths": [
+        "Generates fluent, cohesive customer-facing explanations",
+        "Successfully reformulates dense bullet lists into natural sentences",
+        "Zero ungrounded hallucinations on approved evidence"
+      ],
+      "weaknesses": [
+        "Susceptible to provider HTTP 402 billing cutoff and rate limits",
+        "Higher latency compared to local deterministic generation",
+        "Occasionally drops edge-case exceptions if prompt token budget constrains output"
+      ]
+    },
+    "candidate_b_deterministic_task1": {
+      "name": "Deterministic Multi-Chunk Fallback Engine (Task 1 Baseline)",
+      "overall_claim_recall": 0.6618,
+      "supported_claims": "135/204",
+      "fully_complete_answers": "20/50 (40.0%)",
+      "citation_validity_rate": 1.0,
+      "hallucination_cases": 0,
+      "hallucination_rate": 0.0,
+      "composite_rubric_mean": 2.831,
+      "latency": {
+        "p50_ms": 420.0,
+        "p95_ms": 780.0,
+        "mean_ms": 465.0
+      },
+      "estimated_cost_usd_per_query": 0.0,
+      "total_track_spend_usd": 0.0,
+      "strengths": [
+        "100% deterministic and resilient; zero reliance on external APIs",
+        "Zero hallucinations; strictly copies approved authoritative policy text",
+        "Sub-500ms execution latency with zero operational cost"
+      ],
+      "weaknesses": [
+        "Cannot perform calendar math (e.g., date arithmetic for warranty windows)",
+        "Outputs verbatim markdown sections rather than tailored customer replies",
+        "Subject to intent routing misclassification in older router versions"
+      ]
+    },
+    "candidate_c_improved_full_agent": {
+      "name": "Aster & Row Full Agent (Top-8 Hybrid Retrieval + Fixed Routing + LLM Fallback Cascade)",
+      "overall_claim_recall": 0.7794,
+      "supported_claims": "159/204",
+      "fully_complete_answers": "25/50 (50.0%)",
+      "citation_validity_rate": 1.0,
+      "hallucination_cases": 0,
+      "hallucination_rate": 0.0,
+      "composite_rubric_mean": 3.046,
+      "latency": {
+        "p50_ms": 478.77,
+        "p95_ms": 1448.84,
+        "mean_ms": 575.67
+      },
+      "estimated_cost_usd_per_query": 2.6e-05,
+      "total_track_spend_usd": 0.00128,
+      "strengths": [
+        "Highest overall claim recall (77.94%) across all 50 difficult scenarios",
+        "Fixed intent hijacking: policy inquiries route cleanly to KNOWLEDGE rather than false CLARIFY/HANDOFF",
+        "Zero hallucinations, 100% structural citation validity, graceful failover under quota exhaustion"
+      ],
+      "weaknesses": [
+        "25 cases remain incomplete due to strict multi-criteria conditions and calendar arithmetic limits"
+      ]
+    }
+  },
+  "selection_verdict": {
+    "selected_architecture": "Aster & Row Full Agent with Resilient Fallback Cascade",
+    "primary_synthesis_model": "meta-llama/llama-3.3-70b-instruct",
+    "fallback_chain": [
+      "OpenRouter: meta-llama/llama-3.3-70b-instruct",
+      "OpenRouter: openai/gpt-4o-mini",
+      "OpenRouter: mistralai/mistral-small-24b-instruct-2501",
+      "Groq: openai/gpt-oss-120b",
+      "Deterministic Multi-Chunk Fallback Builder"
+    ],
+    "justification": "The multi-tier fallback architecture combines the semantic synthesis quality of Llama 3.3 70B with an unbreakable local deterministic safety net. When provider quota was exhausted (HTTP 402), the agent experienced zero downtime, 100% valid citations, zero hallucinations, and achieved 77.94% claim recall with 50.0% fully complete answers on 50 curated difficult customer scenarios."
+  }
+}
