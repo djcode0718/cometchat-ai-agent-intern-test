@@ -1,0 +1,162 @@
+{
+  "standard_50_summary": {
+    "evaluation_name": "standard_50_benchmark_evaluation",
+    "model_configured": "deterministic_evidence_builder (offline)",
+    "total_questions": 50,
+    "successfully_executed_questions": 50,
+    "non_empty_responses_generated": 50,
+    "responses_generated_by_llm": 0,
+    "responses_generated_by_deterministic_fallback": 50,
+    "llm_success_rate": 0.0,
+    "total_required_claims": 82,
+    "total_supported_claims": 82,
+    "overall_claim_recall": 1.0,
+    "fully_complete_answers": 50,
+    "fully_complete_answer_rate": 1.0,
+    "composite_mean_score_out_of_4": 3.94,
+    "dimension_averages": {
+      "factual_correctness": 4.0,
+      "groundedness": 3.64,
+      "citation_precision": 4.0,
+      "citation_completeness": 3.94,
+      "completeness": 4.0,
+      "abstention_quality": 4.0,
+      "conflict_handling": 4.0
+    },
+    "citation_audit": {
+      "total_citations_analyzed": 202,
+      "valid_doc_rate": 1.0,
+      "valid_heading_rate": 1.0,
+      "superseded_citation_rate": 0.0,
+      "auto_attached_rate": 1.0
+    },
+    "hallucination_cases": 0,
+    "hallucination_rate": 0.0,
+    "total_contradictions": 0,
+    "latency_metrics": {
+      "mean_latency_ms": 4.49,
+      "median_latency_ms": 4.25
+    },
+    "total_estimated_api_cost_usd": 0.0,
+    "execution_duration_seconds": 1.95,
+    "category_breakdown": {
+      "straightforward_factual": {
+        "count": 15,
+        "required_claims": 24,
+        "supported_claims": 24,
+        "claim_recall": 1.0,
+        "fully_complete_count": 15,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.667,
+          "citation_precision": 4.0,
+          "citation_completeness": 4.0,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.952
+      },
+      "simple_policy": {
+        "count": 10,
+        "required_claims": 14,
+        "supported_claims": 14,
+        "claim_recall": 1.0,
+        "fully_complete_count": 10,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.7,
+          "citation_precision": 4.0,
+          "citation_completeness": 3.7,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.914
+      },
+      "basic_procedural": {
+        "count": 10,
+        "required_claims": 23,
+        "supported_claims": 23,
+        "claim_recall": 1.0,
+        "fully_complete_count": 10,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.3,
+          "citation_precision": 4.0,
+          "citation_completeness": 4.0,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.9
+      },
+      "simple_eligibility": {
+        "count": 10,
+        "required_claims": 14,
+        "supported_claims": 14,
+        "claim_recall": 1.0,
+        "fully_complete_count": 10,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.8,
+          "citation_precision": 4.0,
+          "citation_completeness": 4.0,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.971
+      },
+      "common_clarification": {
+        "count": 5,
+        "required_claims": 7,
+        "supported_claims": 7,
+        "claim_recall": 1.0,
+        "fully_complete_count": 5,
+        "fully_complete_rate": 1.0,
+        "dimension_averages": {
+          "factual_correctness": 4.0,
+          "groundedness": 3.8,
+          "citation_precision": 4.0,
+          "citation_completeness": 4.0,
+          "completeness": 4.0,
+          "abstention_quality": 4.0,
+          "conflict_handling": 4.0
+        },
+        "category_mean_score": 3.971
+      }
+    }
+  },
+  "targets_vs_actual": {
+    "required_claim_recall": {
+      "target": ">= 90.0%",
+      "actual": "100.00%",
+      "achieved": true
+    },
+    "fully_complete_answers": {
+      "target": ">= 80.0%",
+      "actual": "100.00% (50/50)",
+      "achieved": true
+    },
+    "citation_validity": {
+      "target": "100.0%",
+      "actual": "100.0%",
+      "achieved": true
+    },
+    "superseded_policy_violations": {
+      "target": 0,
+      "actual": 0,
+      "achieved": true
+    },
+    "unsupported_factual_claims": {
+      "target": 0,
+      "actual": 0,
+      "achieved": true
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "benchmark_file": "evaluation/answer_quality_v1/stage3_standard_50_answerable.json",
+  "benchmark_sha256": "f28541dbc415ae820615a067cd0e99021f8cf317226fccdfdbdaf1c94073aa00",
+  "git_commit": "a4cfc0d54665d567d0a1be7158190769db1562e7",
+  "python_version": "3.11.18",
+  "eval_environment": "cometchat-env",
+  "llm_provider_mode": "local_deterministic_fallback",
+  "live_api_calls_made": 0,
+  "api_credits_spent_usd": 0.0,
+  "retrieval_strategy": "hybrid (BM25 + Dense FAISS)",
+  "retrieval_top_k": 5,
+  "total_cases_evaluated": 50,
+  "overall_claim_recall": 1.0,
+  "fully_complete_answer_rate": 1.0,
+  "timestamp_utc": "2026-11-25 09:54:45 UTC"
+}

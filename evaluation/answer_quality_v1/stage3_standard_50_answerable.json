@@ -1,0 +1,1909 @@
+{
+  "dataset_name": "Aster & Row Standard 50-Question Answerable Benchmark",
+  "version": "1.0",
+  "description": "Curated benchmark of 50 common, straightforward, and clearly answerable customer support questions for Aster & Row.",
+  "total_cases": 50,
+  "answerability_breakdown": {
+    "answerable": 50,
+    "unanswerable": 0
+  },
+  "category_breakdown": {
+    "straightforward_factual": 15,
+    "simple_policy": 10,
+    "basic_procedural": 10,
+    "simple_eligibility": 10,
+    "common_clarification": 5
+  },
+  "provenance_statement": "Curated strictly against official, active knowledge-base documents in Aster & Row. Every scenario is 100% answerable with 1-3 atomic claims grounded in active documentation. Excludes complex date math, cross-document contradictions, and customer order lookup dependencies.",
+  "cases": [
+    {
+      "case_id": "STD50-001",
+      "query": "How many days do customers have to request a return under the standard returns policy?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct single-clause lookup in the current active returns policy.",
+      "answerability": "answerable",
+      "expected_answer": "Under Aster & Row's standard returns policy, customers on the standard plan may request a return within 30 calendar days of delivery.",
+      "required_factual_claims": [
+        "Customers on the standard plan may request a return within 30 calendar days of delivery"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Returns are accepted within 45 days or 60 days of order placement",
+        "The return window is 30 days from the purchase date"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::standard-return-window"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Standard return window]"
+      ],
+      "conditions_exceptions_caveats": [
+        "TrailPlus members receive a different return window"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-002",
+      "query": "How long is the warranty coverage for Aster & Row bags and backpacks?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of product warranty length for bags and backpacks.",
+      "answerability": "answerable",
+      "expected_answer": "Aster & Row bags and backpacks are covered by a limited warranty for 2 years from the purchase date. Aster & Row does not offer a lifetime warranty.",
+      "required_factual_claims": [
+        "Aster & Row bags and backpacks have a warranty period of 2 years from the purchase date",
+        "Aster & Row does not offer a lifetime warranty"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row provides a lifetime warranty on backpacks",
+        "Backpacks only have a 1-year warranty"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::warranty-periods"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Coverage applies from original purchase date and covers manufacturing defects"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-003",
+      "query": "What is the warranty length for drinkware and travel accessories?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup for drinkware and travel accessories warranty length.",
+      "answerability": "answerable",
+      "expected_answer": "Aster & Row drinkware, packing cubes, and other travel accessories are covered for 1 year from the purchase date.",
+      "required_factual_claims": [
+        "Drinkware is covered for 1 year from the purchase date",
+        "Packing cubes and other travel accessories are covered for 1 year from the purchase date"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Drinkware is covered for 2 years or lifetime",
+        "Travel accessories do not have warranty coverage"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::warranty-periods"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Covers manufacturing defects under normal use"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-004",
+      "query": "How long does order processing take before an order is dispatched?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of domestic order processing time.",
+      "answerability": "answerable",
+      "expected_answer": "Most orders require 1 to 2 business days for processing before they are dispatched. Business days exclude weekends and United States federal holidays.",
+      "required_factual_claims": [
+        "Most orders require 1\u20132 business days for processing before they are dispatched",
+        "Business days exclude weekends and United States federal holidays"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Orders are processed on weekends and holidays",
+        "Processing takes 5 to 7 days"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::processing-time"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Processing time]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Dispatches occur on business days"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-005",
+      "query": "What is the estimated standard delivery time for orders within the contiguous United States?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of delivery transit time for contiguous US.",
+      "answerability": "answerable",
+      "expected_answer": "Standard delivery to the contiguous United States is estimated at 3 to 5 business days after dispatch. Note that delivery dates are estimates rather than guarantees.",
+      "required_factual_claims": [
+        "Contiguous United States delivery estimate is 3\u20135 business days after dispatch",
+        "Delivery dates are estimates rather than guaranteed delivery dates"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Delivery is guaranteed within 2 days",
+        "Delivery takes 10 to 14 business days"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::delivery-estimates-after-dispatch"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Applies after order has been dispatched from warehouse"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-006",
+      "query": "What is the estimated delivery time for domestic shipments to Alaska and Hawaii?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of delivery timeframes for non-contiguous US states.",
+      "answerability": "answerable",
+      "expected_answer": "Shipments to Alaska and Hawaii have an estimated delivery timeframe of 5 to 8 business days after dispatch.",
+      "required_factual_claims": [
+        "Deliveries to Alaska and Hawaii take an estimated 5\u20138 business days after dispatch"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Alaska and Hawaii receive standard 3 to 5 day delivery",
+        "Aster & Row does not ship to Alaska or Hawaii"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::delivery-estimates-after-dispatch"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Estimates apply after 1-2 business days processing"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-007",
+      "query": "What is the delivery time estimate for shipments sent to PO boxes?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of PO box delivery transit times.",
+      "answerability": "answerable",
+      "expected_answer": "Orders shipped to PO boxes have an estimated delivery window of 5 to 9 business days after dispatch.",
+      "required_factual_claims": [
+        "Shipments to PO boxes take an estimated 5\u20139 business days after dispatch"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row does not ship to PO boxes",
+        "PO boxes arrive in 1 to 2 business days"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::delivery-estimates-after-dispatch"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Delivery estimates after dispatch]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Delivery timeframes are estimates"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-008",
+      "query": "What international countries does Aster & Row currently ship to?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of supported international destinations.",
+      "answerability": "answerable",
+      "expected_answer": "Aster & Row currently ships internationally only to Canada. Shipping to other countries is not available at this time.",
+      "required_factual_claims": [
+        "Aster & Row currently ships internationally only to Canada",
+        "Shipping to other international countries is not available at this time"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row ships worldwide or to the UK and Europe",
+        "International shipping is available to all countries"
+      ],
+      "supporting_documents": [
+        "06-international-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-INTL::supported-destinations"
+      ],
+      "expected_citations": [
+        "[06-international-shipping.md > Supported destinations]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Only Canada is currently supported internationally"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-009",
+      "query": "How long does delivery to Canada usually take?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of Canadian shipping delivery estimates.",
+      "answerability": "answerable",
+      "expected_answer": "Canadian orders generally arrive within 5 to 9 business days after dispatch. Processing time before dispatch is usually 1 to 2 business days.",
+      "required_factual_claims": [
+        "Canadian orders generally arrive within 5\u20139 business days after dispatch",
+        "Processing time before dispatch is usually 1\u20132 business days"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Canadian orders arrive within 2 to 3 days",
+        "Shipping to Canada takes 30 days"
+      ],
+      "supporting_documents": [
+        "06-international-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-INTL::canada-delivery-estimate"
+      ],
+      "expected_citations": [
+        "[06-international-shipping.md > Canada delivery estimate]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Delivery may be extended by customs or carrier delays"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-010",
+      "query": "Do Aster & Row gift cards expire?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of gift card expiration policy.",
+      "answerability": "answerable",
+      "expected_answer": "No. Aster & Row gift cards do not expire.",
+      "required_factual_claims": [
+        "Aster & Row gift cards do not expire"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Gift cards expire after 1 year",
+        "Gift cards have a 5-year expiration date"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::gift-cards"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Gift cards are final sale and non-refundable"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-011",
+      "query": "What is the capacity of the Breeze Tumbler and is the lid leakproof?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct product card factual lookup of tumbler volume and lid specifications.",
+      "answerability": "answerable",
+      "expected_answer": "The Breeze Tumbler has a capacity of 20 ounces. Its lid is splash-resistant but is not leakproof, so it should be kept upright during transport.",
+      "required_factual_claims": [
+        "The Breeze Tumbler is a 20-ounce insulated stainless-steel tumbler",
+        "The lid is splash-resistant but not leakproof and should be kept upright during transport"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "The Breeze Tumbler lid is completely leakproof",
+        "The Breeze Tumbler is 32 ounces"
+      ],
+      "supporting_documents": [
+        "12-breeze-tumbler-product-card.md"
+      ],
+      "expected_evidence_chunks": [
+        "PROD-BREEZE-20::product-details"
+      ],
+      "expected_citations": [
+        "[12-breeze-tumbler-product-card.md > Product details]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must be kept upright during transport"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-012",
+      "query": "Can I put the Breeze Tumbler in the microwave or freezer?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual lookup of temperature and appliance usage restrictions.",
+      "answerability": "answerable",
+      "expected_answer": "No. The Breeze Tumbler is not designed for use in a microwave, on a stove, in an oven, or in a freezer. It is intended for ordinary hot and cold beverages.",
+      "required_factual_claims": [
+        "The Breeze Tumbler is not designed for use in a microwave or in a freezer",
+        "The tumbler is intended for ordinary hot and cold beverages"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "The Breeze Tumbler is microwave-safe",
+        "The Breeze Tumbler can be placed in the freezer"
+      ],
+      "supporting_documents": [
+        "12-breeze-tumbler-product-card.md"
+      ],
+      "expected_evidence_chunks": [
+        "PROD-BREEZE-20::temperature-use"
+      ],
+      "expected_citations": [
+        "[12-breeze-tumbler-product-card.md > Temperature use]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Avoid stove, oven, microwave, and freezer"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-013",
+      "query": "How much is deducted for return shipping on a standard domestic return?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual fee lookup from returns policy.",
+      "answerability": "answerable",
+      "expected_answer": "A $6.95 return shipping fee is deducted from the refund for standard domestic returns. This fee is waived if Aster & Row sent the wrong item or if it arrived damaged.",
+      "required_factual_claims": [
+        "A $6.95 return shipping fee is deducted from the refund for standard domestic returns"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Return shipping is always $15.00",
+        "All domestic returns have free return shipping with no fee"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::return-shipping-and-refunds"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Fee is waived when item arrives damaged or incorrect item sent"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-014",
+      "query": "Does using a discount code or promo code make my purchase final sale?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct factual rule lookup on discount codes versus final sale status.",
+      "answerability": "answerable",
+      "expected_answer": "No. A discount or promotional code does not automatically make an item final sale. An item is final sale only when clearly labeled FINAL SALE on the product page, cart, or order confirmation.",
+      "required_factual_claims": [
+        "A discount or promotional code does not automatically make an item final sale",
+        "An item is final sale only when clearly labeled FINAL SALE on the product page, cart, or order confirmation"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "All discounted items are automatically final sale",
+        "Using any promo code makes an order non-returnable"
+      ],
+      "supporting_documents": [
+        "03-final-sale-and-promotions.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-02::what-counts-as-final-sale"
+      ],
+      "expected_citations": [
+        "[03-final-sale-and-promotions.md > What counts as final sale]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Gift cards are always final sale"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-015",
+      "query": "What is the minimum purchase amount required for free standard US shipping?",
+      "category": "straightforward_factual",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct threshold lookup for domestic shipping fee waiver.",
+      "answerability": "answerable",
+      "expected_answer": "Standard shipping is free for eligible United States orders of $75 or more after discounts and before tax.",
+      "required_factual_claims": [
+        "Standard shipping is free for eligible United States orders of $75 or more after discounts and before tax"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Free shipping threshold is $50 or $100",
+        "Threshold is calculated before discounts are applied"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::shipping-charges"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Shipping charges]"
+      ],
+      "conditions_exceptions_caveats": [
+        "TrailPlus members receive free standard shipping without a minimum order value"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-016",
+      "query": "What is Aster & Row's return policy for final sale items?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Straightforward policy explanation for final sale change-of-mind returns.",
+      "answerability": "answerable",
+      "expected_answer": "Final-sale items cannot be returned or exchanged because of fit, color preference, duplicate purchase, or any other change of mind.",
+      "required_factual_claims": [
+        "Final-sale items cannot be returned or exchanged because of fit, color preference, duplicate purchase, or another change of mind"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Final-sale items can be returned within 30 days for store credit",
+        "Final sale items can be exchanged if customer pays shipping"
+      ],
+      "supporting_documents": [
+        "03-final-sale-and-promotions.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-02::change-of-mind-returns"
+      ],
+      "expected_citations": [
+        "[03-final-sale-and-promotions.md > Change-of-mind returns]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Damaged or defective items may still be reported under Damaged or Wrong Items Policy"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-017",
+      "query": "Are original shipping charges refunded when I return an item?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Simple policy query on refundability of outbound shipping fees.",
+      "answerability": "answerable",
+      "expected_answer": "No. Original outbound shipping charges are not refundable unless the order was incorrect or arrived damaged.",
+      "required_factual_claims": [
+        "Original outbound shipping charges are not refundable unless the order was incorrect or damaged on arrival"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Outbound shipping is always refunded for all returns",
+        "Shipping charges are refunded as store credit"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::return-shipping-and-refunds"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Exception applies when Aster & Row sent wrong item or it arrived damaged"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-018",
+      "query": "Who is responsible for paying customs duties and taxes on Canadian shipments?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct policy query on responsibility for international customs and duties.",
+      "answerability": "answerable",
+      "expected_answer": "Import duties, taxes, and brokerage charges are not prepaid by Aster & Row. The recipient in Canada is responsible for any charges assessed by Canadian authorities or the carrier.",
+      "required_factual_claims": [
+        "Import duties, taxes, and brokerage charges are not prepaid by Aster & Row",
+        "The recipient is responsible for charges assessed by Canadian authorities or the carrier"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row prepays all Canadian customs duties and GST",
+        "Duties are included in the checkout price"
+      ],
+      "supporting_documents": [
+        "06-international-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-INTL::duties-and-taxes"
+      ],
+      "expected_citations": [
+        "[06-international-shipping.md > Duties and taxes]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Recipient pays carrier upon arrival"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-019",
+      "query": "Does Aster & Row offer direct exchanges for orders shipped to Canada?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct policy rule regarding direct exchanges on international orders.",
+      "answerability": "answerable",
+      "expected_answer": "Direct exchanges are not offered for Canadian orders. An eligible customer may return the item and place a new order.",
+      "required_factual_claims": [
+        "Direct exchanges are not offered for Canadian orders",
+        "An eligible customer may return the item and place a new order"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row offers free direct exchanges to Canada",
+        "Canadian customers can swap sizes directly by contacting support"
+      ],
+      "supporting_documents": [
+        "06-international-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-INTL::canadian-returns"
+      ],
+      "expected_citations": [
+        "[06-international-shipping.md > Canadian returns]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Customer must pay Canadian return postage for change of mind"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-020",
+      "query": "What does the limited product warranty cover?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Explanation of qualifying warranty coverage scope.",
+      "answerability": "answerable",
+      "expected_answer": "The limited warranty covers manufacturing defects in materials or workmanship under normal use, such as seams separating without misuse or zipper mechanisms failing due to manufacturing defects.",
+      "required_factual_claims": [
+        "The limited warranty covers manufacturing defects in materials or workmanship under normal use"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Warranty covers all accidental drops and stains",
+        "Warranty covers routine wear and tear"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::what-is-covered"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > What is covered]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Applies to defects present under normal consumer use"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-021",
+      "query": "What types of damages are excluded from warranty coverage?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Policy exclusions list for limited warranty.",
+      "answerability": "answerable",
+      "expected_answer": "The warranty does not cover ordinary wear, cosmetic changes, accidental damage, airline or carrier damage, improper cleaning, modification, neglect, or misuse.",
+      "required_factual_claims": [
+        "The warranty does not cover ordinary wear, cosmetic changes, accidental damage, airline or carrier damage, improper cleaning, modification, neglect, or misuse"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Airline damage is fully covered by Aster & Row warranty",
+        "Cosmetic scratches are covered under warranty"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::what-is-not-covered"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > What is not covered]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Manufacturing defects remain covered"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-022",
+      "query": "Can I return a gift card for a cash refund?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Policy rule regarding gift card returns and cash redemption.",
+      "answerability": "answerable",
+      "expected_answer": "No. Gift cards are final sale and cannot be returned, exchanged for cash, or used to purchase another gift card, except where required by law.",
+      "required_factual_claims": [
+        "Gift cards are final sale and cannot be returned, exchanged for cash, or used to purchase another gift card, except where required by law"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Gift cards can be refunded within 30 days",
+        "Gift cards can be redeemed for cash upon request"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::gift-cards"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Exception only where required by local statute"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-023",
+      "query": "Can I return individual items from a promotional bundle?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Direct policy explanation of bundle return requirements.",
+      "answerability": "answerable",
+      "expected_answer": "A promotional bundle must be returned as a complete bundle unless a component arrived damaged or incorrect. A missing component may reduce or prevent the refund.",
+      "required_factual_claims": [
+        "A promotional bundle must be returned as a complete bundle unless a component arrived damaged or incorrect",
+        "A missing component may reduce or prevent the refund"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Individual items from a bundle can be returned for full item price",
+        "Bundles cannot be returned under any circumstances"
+      ],
+      "supporting_documents": [
+        "03-final-sale-and-promotions.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-02::bundles"
+      ],
+      "expected_citations": [
+        "[03-final-sale-and-promotions.md > Bundles]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Damaged or incorrect components can be addressed individually"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-024",
+      "query": "Does Aster & Row provide prepaid return shipping labels for Canadian returns?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Policy regarding return label provision for international Canadian orders.",
+      "answerability": "answerable",
+      "expected_answer": "No. Aster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns. The customer is responsible for return postage.",
+      "required_factual_claims": [
+        "Aster & Row does not provide prepaid labels for ordinary Canadian change-of-mind returns",
+        "The customer is responsible for return postage"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Prepaid shipping labels are provided for all Canadian returns",
+        "Canadian returns have a flat $6.95 fee with prepaid label"
+      ],
+      "supporting_documents": [
+        "06-international-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-INTL::canadian-returns"
+      ],
+      "expected_citations": [
+        "[06-international-shipping.md > Canadian returns]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Damaged or incorrect arrivals receive resolution without return fee"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-025",
+      "query": "What is the policy if an item is marked delivered by the carrier but I haven't received it?",
+      "category": "simple_policy",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Standard policy for delivery discrepancies and lost packages.",
+      "answerability": "answerable",
+      "expected_answer": "A shipment marked delivered but not received should be reported directly to customer support for assistance.",
+      "required_factual_claims": [
+        "A shipment marked delivered but not received should be reported to support"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Customer must immediately file a police report before contacting support",
+        "Aster & Row automatically issues a refund without investigation"
+      ],
+      "supporting_documents": [
+        "05-domestic-shipping.md"
+      ],
+      "expected_evidence_chunks": [
+        "SHIP-2026-US::delivery-problems"
+      ],
+      "expected_citations": [
+        "[05-domestic-shipping.md > Delivery problems]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Support investigates with carrier before confirming outcome"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-026",
+      "query": "How do I clean my Aster & Row fabric bag or backpack?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Step-by-step cleaning instructions from product care guide.",
+      "answerability": "answerable",
+      "expected_answer": "Spot-clean fabric bags with mild soap and cool water, and air-dry completely before storage. Do not machine wash, bleach, dry-clean, or tumble dry.",
+      "required_factual_claims": [
+        "Spot-clean fabric bags with mild soap and cool water",
+        "Do not machine wash, bleach, dry-clean, or tumble dry",
+        "Air-dry completely before storage"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Backpacks are machine washable on gentle cycle",
+        "Tumble dry on low heat is recommended"
+      ],
+      "supporting_documents": [
+        "11-product-care.md"
+      ],
+      "expected_evidence_chunks": [
+        "CARE-2026-01::bags-and-backpacks"
+      ],
+      "expected_citations": [
+        "[11-product-care.md > Bags and backpacks]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Machine washing voids warranty"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-027",
+      "query": "How should I wash Aster & Row packing cubes?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Care and washing instructions for packing cubes.",
+      "answerability": "answerable",
+      "expected_answer": "Packing cubes may be hand-washed in cool water with mild detergent and air-dried. Do not use high heat.",
+      "required_factual_claims": [
+        "Packing cubes may be hand-washed in cool water with mild detergent and air-dried",
+        "Do not use high heat"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Packing cubes can be washed in hot water in a washing machine",
+        "Dry packing cubes in a clothes dryer on high"
+      ],
+      "supporting_documents": [
+        "11-product-care.md"
+      ],
+      "expected_evidence_chunks": [
+        "CARE-2026-01::packing-cubes"
+      ],
+      "expected_citations": [
+        "[11-product-care.md > Packing cubes]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Avoid high heat"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-028",
+      "query": "How do I wash the Breeze Tumbler and its lid according to the product care guide?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Component-specific cleaning instructions for tumbler body and lid.",
+      "answerability": "answerable",
+      "expected_answer": "The stainless-steel body of the Breeze Tumbler should be hand-washed. The lid may be placed on the top rack of a dishwasher. Do not microwave any component.",
+      "required_factual_claims": [
+        "The stainless-steel body of the Breeze Tumbler should be hand-washed",
+        "The lid may be placed on the top rack of a dishwasher",
+        "Do not microwave any component"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "The stainless steel body is safe for bottom rack high heat dishwasher cycle",
+        "The lid is microwave safe"
+      ],
+      "supporting_documents": [
+        "11-product-care.md"
+      ],
+      "expected_evidence_chunks": [
+        "CARE-2026-01::breeze-tumbler"
+      ],
+      "expected_citations": [
+        "[11-product-care.md > Breeze Tumbler]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Top rack for lid; hand-wash body"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-029",
+      "query": "What should I do if my order arrives damaged, defective, or contains the wrong item?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Reporting steps and documentation requirements for arrival issues.",
+      "answerability": "answerable",
+      "expected_answer": "Customers should report an item that arrived damaged, visibly defective, or incorrect within 7 calendar days of delivery, providing their order ID, a short description, and clear photographs of the item and packaging.",
+      "required_factual_claims": [
+        "Report the item within 7 calendar days of delivery",
+        "Provide the order ID, a short description, and clear photographs of the item and packaging"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Arrival damages can be reported anytime within 6 months",
+        "No photographs or order ID are required"
+      ],
+      "supporting_documents": [
+        "04-damaged-or-wrong-items.md"
+      ],
+      "expected_evidence_chunks": [
+        "OPS-2026-04::reporting-window"
+      ],
+      "expected_citations": [
+        "[04-damaged-or-wrong-items.md > Reporting window]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must report within 7 calendar days of delivery"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-030",
+      "query": "How do I cancel an order that I just placed?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Procedural timeframe and status constraints for order cancellation.",
+      "answerability": "answerable",
+      "expected_answer": "You may request cancellation within 30 minutes of placing your order, but only while the order status is currently pending. Once the status changes to processing or later, it cannot be cancelled.",
+      "required_factual_claims": [
+        "A customer may request cancellation within 30 minutes of placing an order",
+        "Cancellation is only possible while the order status is pending"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Orders can be cancelled at any time before delivery",
+        "Cancellations can be made 24 hours after purchase"
+      ],
+      "supporting_documents": [
+        "08-order-changes-and-cancellations.md"
+      ],
+      "expected_evidence_chunks": [
+        "ORD-2026-01::cancellation-window"
+      ],
+      "expected_citations": [
+        "[08-order-changes-and-cancellations.md > Cancellation window]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Status must be pending; within 30 minutes of placing order"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-031",
+      "query": "How do I request an address change on a recent order?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Address change procedure and support specialist involvement.",
+      "answerability": "answerable",
+      "expected_answer": "An address correction may be requested within 30 minutes of placing the order while it is still pending. A human support specialist must complete the change.",
+      "required_factual_claims": [
+        "An address correction may be requested within 30 minutes while an order is still pending",
+        "A human support specialist must complete the change"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Customers can edit shipping addresses at any time",
+        "The AI agent can directly update the address in the shipping database"
+      ],
+      "supporting_documents": [
+        "08-order-changes-and-cancellations.md"
+      ],
+      "expected_evidence_chunks": [
+        "ORD-2026-01::address-changes"
+      ],
+      "expected_citations": [
+        "[08-order-changes-and-cancellations.md > Address changes]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Cannot be guaranteed once order enters processing"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-032",
+      "query": "What proof do I need to submit to file a warranty claim?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Submission requirements and review process for warranty evaluation.",
+      "answerability": "answerable",
+      "expected_answer": "Warranty claims require proof of purchase and may require clear photographs. A human support specialist reviews eligibility.",
+      "required_factual_claims": [
+        "Warranty claims require proof of purchase and may require photographs",
+        "A human support specialist reviews eligibility"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "No receipt or proof of purchase is needed",
+        "Warranty claims are approved automatically by the bot"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::review-process"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > Review process]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Human support specialist makes final approval"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-033",
+      "query": "How long does it take to receive a refund once a return is inspected?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Refund timing and payment method rules after return inspection.",
+      "answerability": "answerable",
+      "expected_answer": "Refunds are issued to the original payment method after inspection. Customers should allow 5 to 7 business days after inspection for the refund to appear.",
+      "required_factual_claims": [
+        "Refunds are issued to the original payment method after the return is inspected",
+        "Customers should allow 5\u20137 business days after inspection for the refund to appear"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Refunds appear immediately within 1 hour",
+        "Refunds are always issued as cash by mail"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::return-shipping-and-refunds"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Item must pass return inspection"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-034",
+      "query": "What resolutions are available if my item arrives damaged or defective?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Remedies offered for verified arrival damages.",
+      "answerability": "answerable",
+      "expected_answer": "After review, Aster & Row may offer a replacement, refund, or another appropriate resolution (replacements depend on stock). A return shipping fee is not charged when Aster & Row confirms the item arrived damaged or incorrect.",
+      "required_factual_claims": [
+        "Aster & Row may offer a replacement, refund, or another appropriate resolution",
+        "Availability of a replacement depends on stock",
+        "A return shipping fee is not charged when Aster & Row confirms that the item arrived damaged or incorrect"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Customer must pay the return shipping fee for damaged goods",
+        "Replacements are guaranteed even if out of stock"
+      ],
+      "supporting_documents": [
+        "04-damaged-or-wrong-items.md"
+      ],
+      "expected_evidence_chunks": [
+        "OPS-2026-04::available-resolutions"
+      ],
+      "expected_citations": [
+        "[04-damaged-or-wrong-items.md > Available resolutions]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Subject to stock availability and confirmation"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-035",
+      "query": "How do I request a price adjustment if an item I bought goes on sale?",
+      "category": "basic_procedural",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Procedural rules and timeline for price adjustment requests.",
+      "answerability": "answerable",
+      "expected_answer": "A customer may request one price adjustment when the public price of the same item, color, and size drops within 7 calendar days of the original purchase. A human support specialist must approve and process the adjustment.",
+      "required_factual_claims": [
+        "A customer may request one price adjustment when the public price of the same item, color, and size drops within 7 calendar days of the original purchase",
+        "A human support specialist must approve and process an adjustment"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Price adjustments can be requested up to 30 days later",
+        "Price adjustments are automatically processed in chat"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::price-adjustments"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must be identical item, color, and size; within 7 calendar days"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-036",
+      "query": "What physical condition must an item be in to be eligible for a return?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Condition standards for standard return eligibility.",
+      "answerability": "answerable",
+      "expected_answer": "A returned item must be unused, unwashed, and in resalable condition. Original tags, accessories, and packaging must be included when they were supplied.",
+      "required_factual_claims": [
+        "A returned item must be unused, unwashed, and in resalable condition",
+        "Original tags, accessories, and packaging must be included when they were supplied with the item"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Used, washed, or altered items can be returned for full refund",
+        "Tags and packaging do not need to be returned"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::item-condition"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Item condition]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Odors, stains, or alterations will cause rejection"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-037",
+      "query": "Does trying on an item indoors make it ineligible for a return?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Indoor try-on eligibility exception.",
+      "answerability": "answerable",
+      "expected_answer": "No. Trying an item indoors for fit does not by itself make it ineligible. However, visible wear, odors, stains, alterations, or missing components may cause the return to be rejected.",
+      "required_factual_claims": [
+        "Trying an item indoors for fit does not by itself make it ineligible",
+        "Visible wear, odors, stains, alterations, or missing components may cause the return to be rejected"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Any item taken out of its box or tried on is non-returnable",
+        "Items with visible stains or wear are accepted if tried indoors"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::item-condition"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Item condition]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must remain in resalable condition without odors or marks"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-038",
+      "query": "Can an order be cancelled once its status has moved to processing?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Eligibility restriction once order enters processing phase.",
+      "answerability": "answerable",
+      "expected_answer": "No. Once an order status changes to processing, shipped, delivered, or another later state, the order cannot be cancelled through the normal cancellation process.",
+      "required_factual_claims": [
+        "Once the status changes to processing, shipped, delivered, or another later state, the order cannot be cancelled through the normal cancellation process"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Orders in processing can be cancelled easily by clicking cancel",
+        "Processing orders can be cancelled anytime before dispatch"
+      ],
+      "supporting_documents": [
+        "08-order-changes-and-cancellations.md"
+      ],
+      "expected_evidence_chunks": [
+        "ORD-2026-01::cancellation-window"
+      ],
+      "expected_citations": [
+        "[08-order-changes-and-cancellations.md > Cancellation window]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Eligible items may be returned after delivery under Returns Policy"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-039",
+      "query": "Are final sale items eligible for warranty coverage if they have a manufacturing defect?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Interaction between final sale designation and manufacturing warranty.",
+      "answerability": "answerable",
+      "expected_answer": "Yes. A product being marked final sale does not remove the limited warranty for a qualifying manufacturing defect.",
+      "required_factual_claims": [
+        "A product being marked final sale does not remove the limited warranty for a qualifying manufacturing defect"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Final sale completely voids the limited product warranty",
+        "Final sale products carry zero warranty coverage"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::final-sale-products"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > Final-sale products]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Defect must qualify under limited warranty terms"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-040",
+      "query": "Are final sale items eligible for assistance if they arrive damaged or defective?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Eligibility of damaged final sale items under arrival policy.",
+      "answerability": "answerable",
+      "expected_answer": "Yes. Final-sale items are still eligible for review when they arrive damaged, defective, or incorrect. Final sale only prevents change-of-mind returns.",
+      "required_factual_claims": [
+        "Final-sale items are still eligible for review when they arrive damaged, defective, or incorrect",
+        "Final sale only prevents change-of-mind returns"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Final sale items arriving damaged receive no support or refund",
+        "Final sale items can never be replaced"
+      ],
+      "supporting_documents": [
+        "04-damaged-or-wrong-items.md"
+      ],
+      "expected_evidence_chunks": [
+        "OPS-2026-04::final-sale-items"
+      ],
+      "expected_citations": [
+        "[04-damaged-or-wrong-items.md > Final-sale items]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must report within 7 calendar days of delivery"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-041",
+      "query": "Does TrailPlus membership include free domestic shipping on small orders under $75?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Eligibility for free domestic shipping with no minimum spend for members.",
+      "answerability": "answerable",
+      "expected_answer": "Yes. TrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount.",
+      "required_factual_claims": [
+        "TrailPlus members receive free standard shipping on eligible United States orders without a minimum purchase amount"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "TrailPlus members must spend at least $75 for free shipping",
+        "TrailPlus does not offer shipping perks"
+      ],
+      "supporting_documents": [
+        "09-trailplus-membership.md"
+      ],
+      "expected_evidence_chunks": [
+        "MEM-2026-01::shipping-benefit"
+      ],
+      "expected_citations": [
+        "[09-trailplus-membership.md > Shipping benefit]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Membership must have been active on order date"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-042",
+      "query": "Are clearance or flash sale items eligible for a price adjustment?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Exclusions list for price adjustments.",
+      "answerability": "answerable",
+      "expected_answer": "No. Price adjustments are not available for clearance or final-sale merchandise, nor for limited-time flash sales.",
+      "required_factual_claims": [
+        "Price adjustments are not available for clearance or final-sale merchandise",
+        "Price adjustments are not available for limited-time flash sales"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Clearance items can get price adjustments if price drops further",
+        "Flash sales qualify for price adjustments"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::price-adjustments"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Applies only to regular public price drops"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-043",
+      "query": "Does TrailPlus free shipping apply to expedited shipping or international Canadian orders?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Scope limitations on TrailPlus shipping benefits.",
+      "answerability": "answerable",
+      "expected_answer": "No. The TrailPlus shipping benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges.",
+      "required_factual_claims": [
+        "The benefit does not cover expedited shipping, import duties, Canadian return postage, or other international charges"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "TrailPlus members get free overnight expedited shipping",
+        "TrailPlus members receive free international shipping to Canada"
+      ],
+      "supporting_documents": [
+        "09-trailplus-membership.md"
+      ],
+      "expected_evidence_chunks": [
+        "MEM-2026-01::shipping-benefit"
+      ],
+      "expected_citations": [
+        "[09-trailplus-membership.md > Shipping benefit]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Only covers standard domestic shipping"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-044",
+      "query": "Does improper cleaning of a backpack void the limited warranty?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Relationship between care guide instructions and warranty coverage.",
+      "answerability": "answerable",
+      "expected_answer": "Yes. Damage caused by cleaning methods that conflict with the care guide (such as machine washing) is not covered by the limited warranty.",
+      "required_factual_claims": [
+        "Damage caused by cleaning methods that conflict with this guide is not covered by the limited warranty"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "The warranty covers backpack damage from machine washing or bleaching",
+        "Cleaning damage is fully covered by warranty"
+      ],
+      "supporting_documents": [
+        "11-product-care.md"
+      ],
+      "expected_evidence_chunks": [
+        "CARE-2026-01::warranty-and-care"
+      ],
+      "expected_citations": [
+        "[11-product-care.md > Warranty and care]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Follow spot-cleaning recommendations to preserve warranty"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-045",
+      "query": "When is the $6.95 return shipping fee waived for domestic returns?",
+      "category": "simple_eligibility",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Fee waiver conditions for return shipping.",
+      "answerability": "answerable",
+      "expected_answer": "The $6.95 return shipping fee is waived when Aster & Row sent the wrong item or when the item arrived damaged.",
+      "required_factual_claims": [
+        "The fee is waived when Aster & Row sent the wrong item or the item arrived damaged"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Fee is waived for any change of mind",
+        "Fee is waived if customer claims fit issues"
+      ],
+      "supporting_documents": [
+        "01-returns-policy-current.md"
+      ],
+      "expected_evidence_chunks": [
+        "RET-2026-01::return-shipping-and-refunds"
+      ],
+      "expected_citations": [
+        "[01-returns-policy-current.md > Return shipping and refunds]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Requires confirmation of defect or incorrect fulfillment"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "02-returns-policy-legacy.md",
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-046",
+      "query": "Can customer support change the color or size of an item in my order after checkout?",
+      "category": "common_clarification",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Clarification on modifying items and quantities after checkout.",
+      "answerability": "answerable",
+      "expected_answer": "No. Items and quantities cannot be edited after checkout. When cancellation is still possible (while pending within 30 minutes), you may request cancellation and place a new order.",
+      "required_factual_claims": [
+        "Items and quantities cannot be edited after checkout",
+        "When cancellation is still possible, the customer may request cancellation and place a new order"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Support agents can directly swap sizes in an existing order",
+        "Orders can be edited anytime before shipment"
+      ],
+      "supporting_documents": [
+        "08-order-changes-and-cancellations.md"
+      ],
+      "expected_evidence_chunks": [
+        "ORD-2026-01::product-or-quantity-changes"
+      ],
+      "expected_citations": [
+        "[08-order-changes-and-cancellations.md > Product or quantity changes]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Cancel and replace is the only method"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-047",
+      "query": "If I forgot to enter a discount code during checkout, can I get a price adjustment for it?",
+      "category": "common_clarification",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Clarification on retroactive discount code application.",
+      "answerability": "answerable",
+      "expected_answer": "No. Price adjustments are not available for discount codes that the customer did not use at checkout.",
+      "required_factual_claims": [
+        "Price adjustments are not available for discount codes that the customer did not use at checkout"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Support will apply any forgotten promo code retroactively",
+        "Discount codes can be redeemed for cash after purchase"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::price-adjustments"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Price adjustments]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Promo codes must be entered during checkout"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-048",
+      "query": "If I discover a manufacturing defect after 7 days, can I still get help?",
+      "category": "common_clarification",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Clarification on defects reported after 7 days vs warranty.",
+      "answerability": "answerable",
+      "expected_answer": "Yes. A manufacturing defect reported after the seven-day arrival window may be considered under the Warranty Policy. Normal wear, accidental damage, and misuse are not arrival defects.",
+      "required_factual_claims": [
+        "A manufacturing defect reported after the seven-day arrival window may be considered under the Warranty Policy",
+        "Normal wear, accidental damage, and misuse are not arrival defects"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Any issue reported after 7 days is completely rejected",
+        "Arrival damages can be reported under warranty"
+      ],
+      "supporting_documents": [
+        "04-damaged-or-wrong-items.md"
+      ],
+      "expected_evidence_chunks": [
+        "OPS-2026-04::reports-after-seven-days"
+      ],
+      "expected_citations": [
+        "[04-damaged-or-wrong-items.md > Reports after seven days]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Must qualify under limited warranty terms"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-049",
+      "query": "Can I send my complete gift card code in the chat for you to check the balance?",
+      "category": "common_clarification",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Clarification on privacy and gift card code handling in chat.",
+      "answerability": "answerable",
+      "expected_answer": "No. The support agent must not ask for or receive a complete gift-card code in chat.",
+      "required_factual_claims": [
+        "The agent must not ask a customer to share a complete gift-card code in chat"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Customers should paste full gift card codes directly in the chat",
+        "Support agents can redeem complete gift card codes in chat"
+      ],
+      "supporting_documents": [
+        "10-gift-cards-and-price-adjustments.md"
+      ],
+      "expected_evidence_chunks": [
+        "PAY-2026-03::gift-cards"
+      ],
+      "expected_citations": [
+        "[10-gift-cards-and-price-adjustments.md > Gift cards]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Gift card codes are sensitive credentials"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    },
+    {
+      "case_id": "STD50-050",
+      "query": "Does Aster & Row offer a lifetime warranty on any of its products?",
+      "category": "common_clarification",
+      "difficulty": "Easy",
+      "difficulty_explanation": "Clarification debunking lifetime warranty misconceptions.",
+      "answerability": "answerable",
+      "expected_answer": "No. Aster & Row does not offer a lifetime warranty. Bags and backpacks are covered for 2 years, and drinkware and travel accessories are covered for 1 year from the purchase date.",
+      "required_factual_claims": [
+        "Aster & Row does not offer a lifetime warranty"
+      ],
+      "forbidden_or_unsupported_claims": [
+        "Aster & Row offers a lifetime warranty on all backpacks",
+        "Products purchased before 2026 carry lifetime warranties"
+      ],
+      "supporting_documents": [
+        "07-warranty.md"
+      ],
+      "expected_evidence_chunks": [
+        "WAR-2026-01::warranty-periods"
+      ],
+      "expected_citations": [
+        "[07-warranty.md > Warranty periods]"
+      ],
+      "conditions_exceptions_caveats": [
+        "Limited warranty terms apply (1 to 2 years)"
+      ],
+      "expects_human_escalation": false,
+      "authority_requirements": {
+        "must_use_active": true,
+        "must_use_official": true,
+        "forbidden_sources": [
+          "14-internal-content-migration-notes.md"
+        ]
+      },
+      "dataset_provenance": "curated_standard_50_answerable"
+    }
+  ]
+}
