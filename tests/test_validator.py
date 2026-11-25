@@ -265,4 +265,170 @@ def test_validator_informational_policy_statements_remain_valid():
     for statement in valid_policy_statements:
         result = OutputValidator.validate(statement, request)
         assert result.is_valid is True, f"Incorrectly rejected valid statement: '{statement}'. Violations: {result.violations}"
-        assert result.repaired_response.is_fallback is False
+        assert result.repaired_response.is_false is False if hasattr(result.repaired_response, "is_false") else (result.repaired_response.is_fallback is False)
+
+
+def _make_test_approved_chunk(doc_id: str, filename: str, heading: str, content: str) -> ApprovedEvidence:
+    meta = DocumentMetadata(
+        document_id=doc_id,
+        title=filename,
+        status="active",
+        effective_date="2026-03-01",
+        audience="customer",
+        policy_authority="official",
+        customer_answering=True,
+    )
+    chunk = KnowledgeChunk(
+        chunk_id=f"{doc_id}::{heading}",
+        document_id=doc_id,
+        filename=filename,
+        heading=heading,
+        content=content,
+        metadata=meta,
+        token_count=len(content.split()),
+        character_count=len(content),
+    )
+    return ApprovedEvidence(
+        chunk=chunk,
+        retrieval_score=0.9,
+        retrieval_rank=1,
+        retrieval_strategy="hybrid",
+    )
+
+
+def test_fallback_empty_evidence():
+    """Verify fallback with empty evidence returns safe fallback without citations."""
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[],
+        citations=[],
+    )
+    fallback = OutputValidator.build_fallback(request)
+    assert fallback.is_fallback is True
+    assert "Please contact customer support" in fallback.message
+    assert len(fallback.citations) == 0
+
+
+def test_fallback_single_chunk():
+    """Verify fallback with a single chunk formats heading, content, and citation correctly."""
+    chunk = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "Return Window", "Standard returns accepted within 30 days."
+    )
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[chunk],
+        citations=[chunk.citation_source],
+    )
+    fallback = OutputValidator.build_fallback(request)
+    assert fallback.is_fallback is True
+    assert "### Return Window" in fallback.message
+    assert "Standard returns accepted within 30 days." in fallback.message
+    assert "[01-returns-policy-current.md > Return Window]" in fallback.message
+    assert len(fallback.citations) == 1
+    assert fallback.citations[0].filename == "01-returns-policy-current.md"
+
+
+def test_fallback_multiple_chunks_included():
+    """Verify fallback includes multiple approved chunks separated by headings up to budget."""
+    chunk1 = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "Standard Returns", "Returns are accepted within 30 days."
+    )
+    chunk2 = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "TrailPlus Extended Window", "TrailPlus members receive 45 days."
+    )
+    chunk3 = _make_test_approved_chunk(
+        "DOC-SHIP", "02-shipping-policy.md", "Expedited Shipping", "Expedited shipping delivers in 2 business days."
+    )
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[chunk1, chunk2, chunk3],
+        citations=[chunk1.citation_source, chunk2.citation_source, chunk3.citation_source],
+    )
+    fallback = OutputValidator.build_fallback(request)
+
+    assert fallback.is_fallback is True
+    assert "### Standard Returns" in fallback.message
+    assert "### TrailPlus Extended Window" in fallback.message
+    assert "### Expedited Shipping" in fallback.message
+    assert len(fallback.citations) == 3
+    assert {c.heading for c in fallback.citations} == {
+        "Standard Returns", "TrailPlus Extended Window", "Expedited Shipping"
+    }
+
+
+def test_fallback_deduplication():
+    """Verify duplicate chunks by chunk_id and content hash are emitted only once."""
+    chunk1 = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "Return Window", "Standard returns accepted within 30 days."
+    )
+    chunk1_dup = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "Return Window", "Standard returns accepted within 30 days."
+    )
+    chunk2 = _make_test_approved_chunk(
+        "DOC-RET", "01-returns-policy-current.md", "Condition", "Items must be unworn."
+    )
+    # Different chunk id but identical content
+    chunk2_dup_content = _make_test_approved_chunk(
+        "DOC-RET-COPY", "01-returns-policy-current.md", "Condition Copy", "Items must be unworn."
+    )
+
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[chunk1, chunk1_dup, chunk2, chunk2_dup_content],
+        citations=[chunk1.citation_source, chunk2.citation_source],
+    )
+    fallback = OutputValidator.build_fallback(request)
+
+    assert fallback.message.count("Standard returns accepted within 30 days.") == 1
+    assert fallback.message.count("Items must be unworn.") == 1
+    assert len(fallback.citations) == 2
+
+
+def test_fallback_1500_char_boundary_and_citation_alignment():
+    """Verify fallback never exceeds 1500 chars and citations match only emitted chunks."""
+    content_chunk1 = "A" * 600
+    content_chunk2 = "B" * 600
+    content_chunk3 = "C" * 500  # Will not fit within 1500 limit with headers and citations
+
+    chunk1 = _make_test_approved_chunk("DOC-1", "doc1.md", "Section 1", content_chunk1)
+    chunk2 = _make_test_approved_chunk("DOC-2", "doc2.md", "Section 2", content_chunk2)
+    chunk3 = _make_test_approved_chunk("DOC-3", "doc3.md", "Section 3", content_chunk3)
+
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[chunk1, chunk2, chunk3],
+        citations=[chunk1.citation_source, chunk2.citation_source, chunk3.citation_source],
+    )
+    fallback = OutputValidator.build_fallback(request)
+
+    assert len(fallback.message) <= 1500
+    assert "Section 1" in fallback.message
+    assert "Section 2" in fallback.message
+    assert "Section 3" not in fallback.message
+
+    # Crucial: citation alignment - only chunk1 and chunk2 should be in citations
+    emitted_headings = [c.heading for c in fallback.citations]
+    assert "Section 1" in emitted_headings
+    assert "Section 2" in emitted_headings
+    assert "Section 3" not in emitted_headings
+    assert len(fallback.citations) == 2
+
+
+def test_fallback_single_oversized_chunk_safely_truncated():
+    """Verify single chunk exceeding 1500 chars is cleanly truncated with citation intact."""
+    oversized_content = "X" * 2000
+    chunk = _make_test_approved_chunk("DOC-BIG", "big.md", "Long Policy", oversized_content)
+
+    request = _make_request(
+        state=DecisionState.ANSWER,
+        evidence=[chunk],
+        citations=[chunk.citation_source],
+    )
+    fallback = OutputValidator.build_fallback(request)
+
+    assert len(fallback.message) <= 1500
+    assert fallback.message.startswith("### Long Policy\n")
+    assert fallback.message.endswith("... [big.md > Long Policy]")
+    assert len(fallback.citations) == 1
+    assert fallback.citations[0].filename == "big.md"
+

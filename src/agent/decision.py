@@ -28,25 +28,12 @@ class DecisionEngine:
         # Rule 1: Privacy / Internal Data Disclosure Refusal & Security Probes
         # -------------------------------------------------------------------
         has_security_keyword = bool(PRIVACY_VIOLATION_PATTERN.search(query))
-        has_extraction_intent = any(
-            req in query
-            for req in [
-                "give me",
-                "show me",
-                "tell me",
-                "what is the customer",
-                "reveal",
-                "customer's",
-                "internal",
-                "output all",
-                "debug",
-                "system prompt",
-                "secret",
-                "keys",
-                "codes",
-                "pin",
-                "hash",
-            ]
+        has_extraction_intent = bool(
+            re.search(
+                r"\b(give me|show me|tell me|what is the customer|reveal|customer's|internal|output all|debug|system prompt|secret|keys|codes|pin|hash)\b",
+                query,
+                re.IGNORECASE,
+            )
         )
         if has_security_keyword and has_extraction_intent:
             return AgentDecision(

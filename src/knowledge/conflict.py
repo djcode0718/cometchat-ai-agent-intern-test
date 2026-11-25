@@ -34,7 +34,7 @@ class ConflictRule:
         """Check if approved evidence triggers this conflict rule."""
         query_lower = query.lower()
 
-        # Check if query or retrieved content matches the conflict topic
+        # Check if query specifically targets the conflicting topic
         matches_topic = any(kw in query_lower for kw in self.topic_keywords)
 
         chunks_a: List[ApprovedEvidence] = []
@@ -48,15 +48,10 @@ class ConflictRule:
                 if not self.heading_b or self.heading_b.lower() in item.heading.lower():
                     chunks_b.append(item)
 
-        # If both incompatible sources are present (or query specifically targets the conflicting topic)
-        if chunks_a and chunks_b:
-            conflict_items = chunks_a + chunks_b
-            return True, conflict_items, self.description
-
-        # If query specifically asks about the conflicting topic and one source is present,
-        # but the topic has a known contradiction across active official docs:
+        # Conflict detection should operate on relevant claims, not broadly on entire documents.
+        # Only flag conflict if the query actually pertains to the conflicting topic.
         if matches_topic and (chunks_a or chunks_b):
-            conflict_items = chunks_a + chunks_b
+            conflict_items = (chunks_a + chunks_b) if (chunks_a and chunks_b) else (chunks_a or chunks_b)
             return True, conflict_items, self.description
 
         return False, [], ""
@@ -70,7 +65,16 @@ BUILTIN_CONFLICT_RULES: List[ConflictRule] = [
         doc_id_b="PROD-BREEZE-20",
         heading_a="Breeze Tumbler",
         heading_b="Cleaning",
-        topic_keywords=["dishwasher", "dish wash", "clean", "washing", "breeze tumbler"],
+        topic_keywords=[
+            "dishwasher",
+            "dish wash",
+            "dishwashing",
+            "hand-wash",
+            "hand wash",
+            "dishwasher safe",
+            "wash the tumbler",
+            "washing the tumbler",
+        ],
         description=(
             "Official sources conflict on Breeze Tumbler dishwashing safety: "
             "Product Care Guide (CARE-2026-01) states the stainless-steel body must be hand-washed, "

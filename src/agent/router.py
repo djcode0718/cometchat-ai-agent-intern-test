@@ -84,15 +84,28 @@ class Router:
             intent = cls.detect_order_intent(query)
             return RouteType.ORDER, intent, None, session_active_id
 
-        # 3. Query is about an order status/lookup but missing an order ID
-        if has_order_keywords and any(
+        # 3. Query is about a personal order status/lookup but missing an order ID
+        is_order_lookup = any(
             phrase in query.lower()
             for phrase in [
-                "where is my order", "track my order", "order status",
+                "where is my order", "track my order", "my order status",
                 "when will my order", "cancel my order", "check my order",
-                "where is my package", "where's my order"
+                "where is my package", "where's my order", "status of my order",
+                "check my shipment", "track my package"
             ]
-        ):
+        ) or (query.lower().strip() in ["order status", "track order", "track package"])
+
+        is_policy_inquiry = any(
+            p in query.lower()
+            for p in [
+                "difference between", "what is the difference", "policy", "what are the rules",
+                "timeframe", "can customer support", "cancellation window",
+                "can i cancel and reorder", "what order status is required",
+                "if the warehouse has already", "moved the order status",
+            ]
+        )
+
+        if has_order_keywords and is_order_lookup and not is_policy_inquiry:
             intent = cls.detect_order_intent(query)
             return RouteType.ORDER, intent, None, None
 
