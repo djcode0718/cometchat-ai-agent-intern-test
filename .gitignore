@@ -80,3 +80,11 @@ README-project-instructions.md
 code-context/
 scratch/
 aster_row_synthetic_eval_v2/
+Aster & Row Upgrade Plan, Checklist and Antigravity Prompts.md
+evaluation/agent_decision_v1/
+evaluation/fault_injection_v1/
+evaluation/load_v1/
+evaluation/results_committed_backup/
+evaluation/retrieval_v2/
+evaluation/security_adversarial_v1/
+
