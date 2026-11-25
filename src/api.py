@@ -20,7 +20,7 @@ load_dotenv()
 from src.agent.orchestrator import AgentOrchestrator
 from src.agent.state import DecisionState, PublicAgentResponse
 from src.approvals import get_approval_service
-from src.approvals.auth import authenticate_reviewer
+from src.approvals.auth import authenticate_reviewer, authorize_reviewer_action
 from src.approvals.models import ActionType, ProposalStatus
 from src.approvals.schemas import (
     ApproveProposalRequest,
@@ -425,6 +425,7 @@ def get_reviewer_proposal(
     request: Request,
     reviewer_id: str = Depends(authenticate_reviewer),
 ) -> ProposalResponse:
+    authorize_reviewer_action(reviewer_id, "read")
     request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
     approval_service = get_approval_service()
     proposal = approval_service.get(proposal_id)
@@ -446,6 +447,7 @@ def approve_reviewer_proposal(
     request: Request,
     reviewer_id: str = Depends(authenticate_reviewer),
 ) -> ProposalResponse:
+    authorize_reviewer_action(reviewer_id, "approve")
     request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
     approval_service = get_approval_service()
     try:
@@ -478,6 +480,7 @@ def reject_reviewer_proposal(
     request: Request,
     reviewer_id: str = Depends(authenticate_reviewer),
 ) -> ProposalResponse:
+    authorize_reviewer_action(reviewer_id, "reject")
     request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID")
     approval_service = get_approval_service()
     try:

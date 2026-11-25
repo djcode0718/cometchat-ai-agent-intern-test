@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-11-25T23:02:33.232244+00:00",
+  "database": "PostgreSQL 14.18 (localhost:5432/aster_row_test)",
+  "concurrent_threads": 10,
+  "race_duration_ms": 15.28,
+  "results_summary": {
+    "total_attempts": 10,
+    "successful_executions": 1,
+    "idempotent_safe_returns": 9,
+    "unhandled_errors": 0,
+    "double_execution_count": 0,
+    "order_cancelled_exactly_once": true
+  },
+  "worker_results": [
+    {
+      "worker_id": 0,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 2,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 3,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 4,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 5,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 7,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 6,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 1,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 8,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 9,
+      "status": "EXECUTED",
+      "error": null
+    }
+  ]
+}

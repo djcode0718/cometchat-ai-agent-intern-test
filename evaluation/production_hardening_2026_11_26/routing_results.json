@@ -1,0 +1,14 @@
+{
+  "benchmark_timestamp": "2026-11-25T23:02:37.657449+00:00",
+  "total_queries_evaluated": 200,
+  "correct_routes": 200,
+  "routing_accuracy": 1.0,
+  "route_breakdown": {
+    "knowledge_queries": 100,
+    "order_queries": 100
+  },
+  "llm_bypass_metrics": {
+    "deterministic_bypasses": 30,
+    "llm_bypass_rate": 0.15
+  }
+}

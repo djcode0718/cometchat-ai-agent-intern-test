@@ -235,7 +235,11 @@ class OutputValidator:
         if request.customer_safe_order:
             order = request.customer_safe_order
             parts = [f"Order {order.order_id} is currently {order.status}."]
-            if order.status in ("cancelled", "returned"):
+            if request.supported_action == "cancellation_request_submitted":
+                parts.append("Your cancellation request has been submitted for review.")
+            elif request.supported_action == "address_change_request_submitted":
+                parts.append("Your address update request has been submitted for review.")
+            elif order.status in ("cancelled", "returned"):
                 parts.append("This order is not arriving and will not be shipped.")
             elif order.carrier:
                 parts.append(f"It was shipped via {order.carrier} (Tracking: {order.tracking_number or 'unavailable'}).")

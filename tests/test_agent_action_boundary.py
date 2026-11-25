@@ -34,5 +34,5 @@ def test_address_change_query_never_claims_mutation():
     # Customer asking to change shipping address
     state = orchestrator.process_turn("session-action-3", "Change the shipping address for ORD-1001 to California")
 
-    assert state.decision.supported_action in ("order_lookup", "cancellation_request_submitted", None)
+    assert state.decision.supported_action in ("order_lookup", "cancellation_request_submitted", "address_change_request_submitted", None)
     assert state.decision.supported_action != "change_address"

@@ -1,0 +1,78 @@
+{
+  "manifest_id": "aster_row_production_hardening_manifest_2026_11_26",
+  "created_at": "2026-11-26T04:34:50Z",
+  "git_repository": "cometchat-ai-agent-intern-test",
+  "base_branch": "main",
+  "feature_branch": "feat/aster-row-production-hardening",
+  "starting_commit_sha": "f0bd93be0841203a95d03a111a4ee11fa67cb2a6",
+  "target_merge_branch": "main",
+  "hardware_and_runtime": {
+    "platform": "Darwin-24.1.0-arm64-arm-64bit",
+    "processor": "Apple Silicon (Metal GPU acceleration enabled)",
+    "python_executable": "/Users/sj/miniforge3/envs/cometchat-env/bin/python",
+    "postgresql_version": "PostgreSQL 14.18 (Homebrew)",
+    "node_version": "v20.x"
+  },
+  "evaluation_suites": [
+    {
+      "suite_id": "postgres_concurrency",
+      "test_file": "tests/test_postgres_concurrency.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/postgres_concurrency_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "auth_rbac_security",
+      "test_file": "tests/test_auth_rbac_security.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/SECURITY_AND_APPROVAL_REPORT.md",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "journey_expanded",
+      "test_file": "tests/test_journey_expanded.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/journey_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "adversarial_security",
+      "test_file": "tests/test_adversarial_suite.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/security_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "routing_guard_retrieval",
+      "test_file": "tests/test_routing_guard_retrieval_benchmarks.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/retrieval_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "local_ollama_llama31",
+      "test_file": "tests/test_local_ollama_benchmark.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/local_llm_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "observability_overhead",
+      "test_file": "tests/test_observability_overhead_verification.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/observability_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "multi_concurrency_load",
+      "test_file": "tests/test_performance_load_benchmarks.py",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/performance_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "accessibility_voiceover",
+      "test_file": "frontend/tests/components.test.tsx",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/accessibility_results.json",
+      "status": "PASS"
+    },
+    {
+      "suite_id": "full_code_coverage",
+      "test_command": "pytest --cov=src --cov-report=json:evaluation/production_hardening_2026_11_26/coverage.json",
+      "output_artifact": "evaluation/production_hardening_2026_11_26/coverage.json",
+      "status": "PASS"
+    }
+  ]
+}

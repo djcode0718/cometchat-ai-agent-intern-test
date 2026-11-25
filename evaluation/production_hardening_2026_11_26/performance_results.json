@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-11-26T04:25:00Z",
+  "harness": "pytest + ThreadPoolExecutor + TestClient(FastAPI)",
+  "concurrency_benchmarks": {
+    "C=1": {
+      "concurrency": 1,
+      "total_requests": 50,
+      "wall_time_seconds": 8.94,
+      "throughput_rps": 5.59,
+      "error_rate_pct": 0.0,
+      "latency_ms": {
+        "mean": 178.74,
+        "p50": 179.06,
+        "p90": 192.99,
+        "p95": 197.28,
+        "p99": 204.71
+      }
+    },
+    "C=5": {
+      "concurrency": 5,
+      "total_requests": 50,
+      "wall_time_seconds": 1.848,
+      "throughput_rps": 27.06,
+      "error_rate_pct": 0.0,
+      "latency_ms": {
+        "mean": 182.65,
+        "p50": 182.6,
+        "p90": 206.93,
+        "p95": 216.11,
+        "p99": 222.33
+      }
+    },
+    "C=10": {
+      "concurrency": 10,
+      "total_requests": 50,
+      "wall_time_seconds": 1.203,
+      "throughput_rps": 41.55,
+      "error_rate_pct": 0.0,
+      "latency_ms": {
+        "mean": 230.1,
+        "p50": 222.21,
+        "p90": 276.41,
+        "p95": 293.2,
+        "p99": 302.2
+      }
+    },
+    "C=25": {
+      "concurrency": 25,
+      "total_requests": 50,
+      "wall_time_seconds": 1.251,
+      "throughput_rps": 39.95,
+      "error_rate_pct": 0.0,
+      "latency_ms": {
+        "mean": 551.83,
+        "p50": 505.35,
+        "p90": 777.44,
+        "p95": 784.69,
+        "p99": 806.63
+      }
+    },
+    "C=50": {
+      "concurrency": 50,
+      "total_requests": 50,
+      "wall_time_seconds": 1.457,
+      "throughput_rps": 34.31,
+      "error_rate_pct": 0.0,
+      "latency_ms": {
+        "mean": 865.46,
+        "p50": 1019.49,
+        "p90": 1058.98,
+        "p95": 1082.52,
+        "p99": 1455.72
+      }
+    }
+  }
+}
