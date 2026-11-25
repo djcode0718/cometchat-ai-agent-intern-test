@@ -1,30 +1,82 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
-.env
-.DS_Store
-*.egg-info/
-dist/
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
 build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+htmlcov/
+*.cover
+.hypothesis/
+
+# Type Checking & Linting
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Node & Frontend
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 frontend/dist/
 frontend/node_modules/
 
-README-project-instructions.md
+# OS Specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Evaluation Archives & Temporary Cache
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific archives & scratch
+README-project-instructions.md
 *.zip
 .cache/
-.coverage
-coverage.xml
-htmlcov/
 code-context/
 scratch/
 aster_row_synthetic_eval_v2/
-evaluation/agent_decision_v1/
-evaluation/fault_injection_v1/
-evaluation/load_v1/
-evaluation/retrieval_v2/
-evaluation/security_adversarial_v1/
-evaluation/results_committed_backup/

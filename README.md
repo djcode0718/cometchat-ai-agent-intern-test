@@ -10,7 +10,7 @@ Aster & Row's customer support operations require an AI assistant that provides 
 
 This system was engineered with an authoritative **deterministic-first architecture**:
 - **Deterministic Authority**: Routing, entity normalization, document precedence, policy conflict detection, order state reconciliation, PII scrubbing, and decision governance are executed in deterministic Python before and after LLM generation.
-- **Language Generation Layer**: The LLM (Groq `openai/gpt-oss-120b` with Groq `openai/gpt-oss-20b` fallback) functions strictly as a grounded synthesizer, bound by verified evidence and validated against strict output constraints.
+- **Language Generation Layer**: The LLM (OpenRouter multi-model fallback chain `meta-llama/llama-3.3-70b-instruct` -> `openai/gpt-4o-mini` -> `mistralai/mistral-small-24b-instruct-2501`, with secondary Groq `openai/gpt-oss-120b` fallback) functions strictly as a grounded synthesizer, bound by verified evidence and validated against strict output constraints.
 - **Customer Privacy & Safety**: Customer PII (emails, addresses), internal risk scores, warehouse notes, system prompts, and raw order JSON are strictly inaccessible to the client and excluded from LLM prompts.
 - **Interactive Delivery**: Includes a terminal CLI, a lightweight FastAPI backend, and a modern React conversation interface.
 
@@ -45,12 +45,10 @@ pip install fastapi uvicorn httpx
 cp .env.example .env
 ```
 
-Edit `.env` and provide your Groq API key:
+Edit `.env` and provide your OpenRouter or Groq API key:
 ```dotenv
-GROQ_API_KEY=your_groq_api_key_here
-GROQ_BASE_URL=https://api.groq.com/openai/v1
-GROQ_LLM_MODEL=openai/gpt-oss-120b
-GROQ_FALLBACK_MODEL=openai/gpt-oss-20b
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+LLM_PROVIDER=openrouter
 ```
 
 ### 3. Run the Interactive CLI
@@ -79,7 +77,7 @@ npm run dev
 ### 6. Run the Test and Evaluation Suites
 
 ```bash
-# Full test suite (224 unit & integration tests)
+# Full test suite (300+ unit, integration & campaign tests)
 pytest -q
 
 # Run visible evaluation cases (15 cases)
@@ -100,11 +98,14 @@ All secrets are loaded via `python-dotenv` from `.env` and are never committed t
 
 | Variable | Default | Description |
 | :--- | :--- | :--- |
+| `OPENROUTER_API_KEY` | *(None)* | OpenRouter API access key. |
+| `OPENROUTER_BASE_URL` | `https://openrouter.ai/api/v1` | OpenRouter API base URL. |
+| `OPENROUTER_PRIMARY_MODEL` | `meta-llama/llama-3.3-70b-instruct` | Primary OpenRouter model. |
 | `GROQ_API_KEY` | *(None)* | Groq API access key. |
 | `GROQ_BASE_URL` | `https://api.groq.com/openai/v1` | Groq OpenAI-compatible base URL. |
 | `GROQ_LLM_MODEL` | `openai/gpt-oss-120b` | Primary Groq LLM model identifier. |
 | `GROQ_FALLBACK_MODEL` | `openai/gpt-oss-20b` | Secondary fallback Groq LLM model identifier. |
-| `LLM_PROVIDER` | `groq` | Active LLM provider mode (`groq`). |
+| `LLM_PROVIDER` | `openrouter` | Active LLM provider mode (`openrouter`, `groq`, `gemini`, `mock`). |
 | `CORS_ORIGINS` | `http://localhost:5173,http://localhost:3000` | Comma-separated allowed frontend origins. |
 | `KNOWLEDGE_BASE_DIR` | `knowledge-base` | Directory path containing Markdown knowledge docs. |
 | `ORDERS_FILE` | `data/orders.json` | Path to the mock orders data store. |
@@ -217,7 +218,7 @@ The evaluation harness (`evaluation/harness.py`) executes deterministic assertio
 | **Novel Regression Cases** (`regression_cases.json`) | 7 / 8 | **8 / 8** | **100.0%** | **PASSED** |
 | **Combined Evaluation Suite** | 21 / 23 | **23 / 23** | **100.0%** | **PASSED** |
 | **Adversarial Security Probes** | — | **5 / 5** | **100.0%** | **PASSED** |
-| **Full Pytest Suite** | 159 | **224** | **100.0%** | **PASSED** |
+| **Full Pytest Suite** | 159 | **301+** | **100.0%** | **PASSED** |
 
 ### Visible Cases Category Breakdown
 
@@ -370,11 +371,13 @@ cometchat-ai-agent-intern-test/
 │   │   └── normalizer.py            # Order ID format normalizer
 │   ├── llm/
 │   │   ├── provider.py              # Flexible provider base & OpenAI compatibility
+│   │   ├── openrouter.py            # OpenRouter API provider client with exponential backoff
+│   │   ├── openrouter_chain.py      # OpenRouter multi-model fallback chain
 │   │   ├── grok.py                  # Groq API provider (Primary & Fallback models)
 │   │   ├── fallback.py              # Structured multi-tier FallbackChainLLMProvider
-│   │   ├── prompt.py                # Grounded prompt templates
-│   │   ├── validator.py             # Regex & citation output validator
-│   │   └── factory.py               # Provider factory (Groq 120b -> Groq 20b -> Safe)
+│   │   ├── prompts.py               # Grounded prompt templates
+│   │   ├── validator.py             # Regex & citation output validator (Task 1 multi-chunk aggregation)
+│   │   └── factory.py               # Provider factory (OpenRouter -> Groq -> Safe)
 │   ├── cli.py                       # Interactive terminal REPL
 │   └── api.py                       # FastAPI REST API server
 ├── frontend/                        # React 18 + Vite frontend application

@@ -1,0 +1,15 @@
+# Development & Testing dependencies for Aster & Row Customer Support Agent
+-r requirements.txt
+
+# Testing & Coverage
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+coverage>=7.0.0
+pytest-cov>=5.0.0
+
+# Static Analysis & Linting
+ruff>=0.4.0
+mypy>=1.10.0
+
+# Performance & Load Testing
+locust>=2.20.0
