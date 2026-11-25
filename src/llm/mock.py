@@ -90,6 +90,10 @@ class MockLLMProvider(BaseLLMProvider):
 
         if request.customer_safe_order:
             order = request.customer_safe_order
+            if request.supported_action == "cancellation_request_submitted":
+                return f"Order {order.order_id} is currently {order.status}. Your cancellation request has been submitted for review."
+            if request.supported_action == "address_change_request_submitted":
+                return f"Order {order.order_id} is currently {order.status}. Your address update request has been submitted for review."
             if order.status == "cancelled":
                 return f"Order {order.order_id} is cancelled and will not be shipped."
             if order.status == "returned":

@@ -153,3 +153,38 @@ def test_llm_provider_generation_failure_handled_gracefully():
     assert state.trace["provider"] == "failing-api-provider"
     assert len(state.response.message.strip()) > 0
     assert "30" in state.response.message or "support" in state.response.message.lower()
+
+
+def test_orchestrator_request_id_correlation(shared_orchestrator):
+    """Verify request_id is correctly bound to state.trace and propagated to approval audit events."""
+    from structlog.contextvars import bind_contextvars, clear_contextvars
+    from src.approvals import get_approval_service
+    from src.approvals.models import ProposedActionModel
+
+    approval_svc = get_approval_service()
+    with approval_svc._session_factory() as s:
+        s.query(ProposedActionModel).filter_by(order_id="ORD-1001").delete()
+        s.commit()
+
+    # Test 1: Explicit request_id parameter
+    state1 = shared_orchestrator.process_turn(
+        "s_corr_1", "Please cancel my order ORD-1001", request_id="req-explicit-123"
+    )
+    assert state1.trace.get("request_id") == "req-explicit-123"
+
+    events = approval_svc.audit_repo.list_events(order_id="ORD-1001")
+    creation_events = [e for e in events if e.action == "create_proposal"]
+    assert len(creation_events) > 0
+    assert any(e.request_id == "req-explicit-123" for e in creation_events)
+
+    # Test 2: Implicit request_id from structlog contextvars
+    clear_contextvars()
+    bind_contextvars(request_id="req-contextvar-456")
+    try:
+        state2 = shared_orchestrator.process_turn(
+            "s_corr_2", "What is the return window for standard items?"
+        )
+        assert state2.trace.get("request_id") == "req-contextvar-456"
+    finally:
+        clear_contextvars()
+

@@ -86,8 +86,16 @@ class AgentOrchestrator:
             except Exception:
                 pass
 
-    def process_turn(self, session_id: str, query: str) -> AgentState:
+    def process_turn(
+        self, session_id: str, query: str, request_id: Optional[str] = None
+    ) -> AgentState:
         """Process a single conversation turn and produce an authoritative, validated AgentState."""
+        if request_id is None:
+            try:
+                from structlog.contextvars import get_contextvars
+                request_id = get_contextvars().get("request_id")
+            except Exception:
+                request_id = None
         session = self.session_manager.get_or_create_session(session_id)
         clean_query = query.strip()
         turn_id = len(session.messages) + 1
@@ -215,6 +223,7 @@ class AgentOrchestrator:
                     session_id=session_id,
                     action_type=action_type,
                     evidence_snapshot=safe_snapshot,
+                    request_id=request_id,
                 )
                 proposal_info = {"id": proposal.id, "status": proposal.status.value}
                 # Keep decision_state ANSWER and supported_action cancellation_request_submitted
@@ -307,6 +316,7 @@ class AgentOrchestrator:
 
         # 7. Build Comprehensive, PII-Free Observability Trace
         trace_data: Dict[str, Any] = {
+            "request_id": request_id,
             "session_id": session_id,
             "turn_id": turn_id,
             "query": clean_query,
