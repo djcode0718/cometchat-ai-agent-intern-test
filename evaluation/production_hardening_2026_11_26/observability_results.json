@@ -1,0 +1,20 @@
+{
+  "evaluation_timestamp": "2026-11-26T04:24:00Z",
+  "sample_size": 100,
+  "endpoint": "/health",
+  "latency_summary_ms": {
+    "mean": 2.347,
+    "p50": 1.589,
+    "p90": 1.76,
+    "p99": 73.322
+  },
+  "middleware_overhead_ms": 2.347,
+  "pii_redaction_verified": true,
+  "prometheus_metrics_verified": true,
+  "metrics_found": [
+    "http_requests_total",
+    "http_request_duration_seconds",
+    "agent_turns_total",
+    "agent_stage_duration_seconds"
+  ]
+}
