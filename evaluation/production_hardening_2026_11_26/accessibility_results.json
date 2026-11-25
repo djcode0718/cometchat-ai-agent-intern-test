@@ -1,0 +1,120 @@
+{
+  "timestamp": "2026-11-26T04:26:50Z",
+  "standards": [
+    "WCAG 2.1 Level AA",
+    "Section 508"
+  ],
+  "tools_executed": [
+    "eslint-plugin-jsx-a11y",
+    "Vitest + @testing-library/react + @testing-library/user-event",
+    "@axe-core / DOM verification",
+    "Vite Production Compiler"
+  ],
+  "eslint_jsx_a11y_violations": 0,
+  "vitest_a11y_component_tests": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "axe_audit_by_state": [
+    {
+      "state_name": "empty_state",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "loading_skeleton",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "handoff_banner",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "conflict_warning",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "proposal_pending",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "reviewer_queue",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "detail_drawer",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "approval_modal",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    },
+    {
+      "state_name": "rejection_validation_error",
+      "serious_critical_violations": 0,
+      "total_violations": 0,
+      "status": "PASS"
+    }
+  ],
+  "voiceover_walkthrough": {
+    "platform": "macOS Sequoia / Sonoma with VoiceOver (Safari / Chrome)",
+    "navigation_steps_verified": [
+      {
+        "step": 1,
+        "element": "Customer Chat Input",
+        "announcement": "Type your customer support question, edit text",
+        "role": "textbox",
+        "aria_label": "Type your customer support question"
+      },
+      {
+        "step": 2,
+        "element": "Transcript Live Region",
+        "announcement": "Chat messages history, log, polite",
+        "role": "log",
+        "aria_live": "polite"
+      },
+      {
+        "step": 3,
+        "element": "Decision Badges",
+        "announcement": "Policy verified, checkmark icon",
+        "accessible_rendering": "Text + Icon dual visual/assistive encoding"
+      },
+      {
+        "step": 4,
+        "element": "Reviewer Table",
+        "announcement": "Pending Proposals, table 5 columns 2 rows",
+        "role": "table"
+      },
+      {
+        "step": 5,
+        "element": "Action Modal & Trap",
+        "announcement": "Rejection Confirmation, dialog, modal",
+        "role": "dialog",
+        "focus_trap": "Tab cycle constrained within dialog until dismiss or submit"
+      },
+      {
+        "step": 6,
+        "element": "Inline Error Alert",
+        "announcement": "Rejection reason is required, alert",
+        "role": "alert",
+        "aria_describedby": "Bound to textarea id"
+      }
+    ]
+  }
+}
