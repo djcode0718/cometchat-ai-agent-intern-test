@@ -51,3 +51,50 @@ jobs:
           RETRIEVAL_TOP_K: 8
         run: |
           PYTHONPATH=. pytest --cov=src --cov-report=term --cov-report=xml -q
+
+      - name: Run security dependency audit (pip-audit)
+        run: |
+          pip-audit -r requirements.txt
+
+      - name: Run evaluation regression gate against thresholds
+        env:
+          APP_ENV: test
+          LLM_PROVIDER: mock
+        run: |
+          PYTHONPATH=. python evaluation/run_suite.py --output-name ci_eval_run --check-thresholds
+
+  frontend-accessibility:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm security audit
+        run: npm audit --omit=dev
+
+      - name: Check jsx-a11y lint rules
+        run: npx eslint src/
+
+      - name: Run Vitest accessibility unit tests
+        run: npx vitest run
+
+      - name: Build frontend production bundle
+        run: npm run build
+
+      - name: Run Lighthouse CI Accessibility Assertion
+        run: |
+          npx lhci collect --config=lighthouserc.cjs
+          npx lhci assert --config=lighthouserc.cjs

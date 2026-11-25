@@ -1,0 +1,124 @@
+{
+  "scenario_name": "End-to-End Customer Cancellation Action Lifecycle",
+  "timestamp": "2026-11-25T21:07:14.519507+00:00",
+  "order_id": "ORD-1001",
+  "session_id": "journey-cust-e32d4ba1",
+  "customer_id": "CUST-001",
+  "timeline_stages": [
+    {
+      "stage_order": 0,
+      "stage_name": "initial_order_state",
+      "order_status_in_db": "pending",
+      "is_cancellable_under_policy": true,
+      "placed_at": "2026-03-01T11:00:00Z",
+      "simulated_clock": "2026-03-01T11:15:00Z"
+    },
+    {
+      "stage_order": 1,
+      "stage_name": "customer_cancellation_request",
+      "request_id": "req-cust-04119711",
+      "http_status": 200,
+      "decision_state": "ANSWER",
+      "supported_action": "cancellation_request_submitted",
+      "proposal_created": {
+        "id": "prop_f2a9f4e05b56",
+        "status": "PENDING_APPROVAL"
+      },
+      "order_status_in_db_post_chat": "pending",
+      "premature_mutation_occurred": false
+    },
+    {
+      "stage_order": 2,
+      "stage_name": "customer_proposal_status_card_polling",
+      "request_id": "req-poll-5eddd3",
+      "http_status": 200,
+      "proposal_status": "PENDING_APPROVAL",
+      "version": 1
+    },
+    {
+      "stage_order": 3,
+      "stage_name": "reviewer_queue_inspection",
+      "request_id": "req-rev-get-627f63",
+      "http_status": 200,
+      "evidence_snapshot": {
+        "order_id": "ORD-1001",
+        "status": "pending",
+        "is_cancellable": true,
+        "membership_tier": "standard"
+      },
+      "customer_safe": true
+    },
+    {
+      "stage_order": 4,
+      "stage_name": "reviewer_approval_and_execution",
+      "request_id": "req-rev-appr-77403d25",
+      "http_status": 200,
+      "proposal_final_status": "EXECUTED",
+      "proposal_final_version": 3,
+      "decided_by": "admin",
+      "order_status_in_db_post_execution": "cancelled",
+      "raw_data_status": "cancelled",
+      "execution_success": true
+    },
+    {
+      "stage_order": 5,
+      "stage_name": "idempotent_duplicate_approval",
+      "request_id": "req-rev-dup-952280b8",
+      "http_status": 200,
+      "proposal_status": "EXECUTED",
+      "second_mutation_prevented": true
+    },
+    {
+      "stage_order": 6,
+      "stage_name": "audit_history_verification",
+      "request_id": "req-rev-audit-41ec13",
+      "http_status": 200,
+      "total_audit_events": 3,
+      "events_chronological": [
+        {
+          "id": "aud_9884ada8c70c",
+          "order_id": "ORD-1001",
+          "proposal_id": "prop_f2a9f4e05b56",
+          "action": "create_proposal",
+          "from_state": null,
+          "to_state": "PENDING_APPROVAL",
+          "decided_by": "agent",
+          "reason": "customer_cancellation_request",
+          "request_id": null,
+          "timestamp": "2026-03-01T11:15:00"
+        },
+        {
+          "id": "aud_2414424947c5",
+          "order_id": "ORD-1001",
+          "proposal_id": "prop_f2a9f4e05b56",
+          "action": "approve",
+          "from_state": "PENDING_APPROVAL",
+          "to_state": "APPROVED",
+          "decided_by": "admin",
+          "reason": "Customer contacted within 30m window, approved cancellation.",
+          "request_id": "req-rev-appr-77403d25",
+          "timestamp": "2026-03-01T11:15:00"
+        },
+        {
+          "id": "aud_b7d3661dfb19",
+          "order_id": "ORD-1001",
+          "proposal_id": "prop_f2a9f4e05b56",
+          "action": "execute_success",
+          "from_state": "APPROVED",
+          "to_state": "EXECUTED",
+          "decided_by": "system_execution",
+          "reason": "order_mutated",
+          "request_id": "req-rev-appr-77403d25",
+          "timestamp": "2026-03-01T11:15:00"
+        }
+      ]
+    }
+  ],
+  "verification_summary": {
+    "all_stages_passed": true,
+    "single_mutation_guaranteed": true,
+    "zero_premature_mutations": true,
+    "zero_pii_leaks": true,
+    "idempotency_verified": true
+  }
+}

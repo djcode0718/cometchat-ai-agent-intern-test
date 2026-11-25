@@ -63,6 +63,7 @@ class PublicAgentResponse(BaseModel):
     supported_action: Optional[str] = Field(default=None, description="Read-only action performed if any")
     is_fallback: bool = Field(default=False, description="True if response was produced by deterministic fallback")
     fallback_reason: Optional[str] = Field(default=None, description="Reason why fallback was triggered")
+    proposal: Optional[Dict[str, Any]] = Field(default=None, description="Optional proposal info if action was submitted for review")
 
 
 class AgentState(BaseModel):
@@ -145,4 +146,5 @@ class AgentState(BaseModel):
             supported_action=self.response.supported_action if self.response else None,
             is_fallback=self.is_fallback,
             fallback_reason=self.response.fallback_reason if self.response else None,
+            proposal=self.trace.get("proposal") if self.trace else None,
         )

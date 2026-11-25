@@ -69,6 +69,17 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("LLM_PROVIDER", "openrouter")
     )
 
+    # Offline / Local LLM Configuration (Ollama)
+    offline_mode: bool = Field(
+        default_factory=lambda: os.getenv("OFFLINE_MODE", "false").lower() in ("true", "1", "yes")
+    )
+    ollama_base_url: str = Field(
+        default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    )
+    ollama_model: str = Field(
+        default_factory=lambda: os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+    )
+
     # OpenRouter Configuration (Multi-model fallback chain)
     openrouter_api_key: Optional[str] = Field(
         default_factory=lambda: os.getenv("OPENROUTER_API_KEY")

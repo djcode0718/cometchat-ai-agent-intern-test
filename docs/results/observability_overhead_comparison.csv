@@ -1,0 +1,4 @@
+Scenario,Description,Status,Requests,RPS,p50_ms,p95_ms,p99_ms,Failures
+scenario_a_mock_instrumented,Mock LLM with Observability & Prometheus Instrumentation ON,COMPLETED,453,25.175257218896988,5,35,5700,0
+scenario_b_mock_uninstrumented,Mock LLM with Observability & Prometheus Instrumentation OFF,COMPLETED,633,33.34831978565991,6,46,2000,0
+scenario_c_live_llm,Live LLM Provider,SKIPPED (No API key),0,N/A,N/A,N/A,N/A,0

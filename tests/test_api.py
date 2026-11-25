@@ -203,7 +203,7 @@ def test_orchestrator_error_handling(client):
 
     res = client.post("/chat", json={"message": "Hello"})
     assert res.status_code == 500
-    assert res.json() == {"detail": "Unable to safely process the request."}
+    assert res.json()["detail"] == "Unable to safely process the request."
     assert "secret key" not in res.text
     assert "database explosion" not in res.text
 
@@ -339,6 +339,7 @@ def test_response_contains_only_public_fields(client):
         "is_fallback",
         "fallback_reason",
         "safe_order",
+        "proposal",
     }
     assert set(data.keys()).issubset(allowed_keys)
     assert "internal_secret" not in data

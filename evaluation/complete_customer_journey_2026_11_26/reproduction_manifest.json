@@ -1,0 +1,59 @@
+{
+  "repository": "Aster & Row Customer Support Agent",
+  "git_commit": "663f5bbf50e42b90b497240ec466b4e74b19ec8a",
+  "git_branch": "feat/aster-row-agent-upgrade",
+  "evaluation_timestamp": "2026-11-25T21:07:14.521131+00:00",
+  "runtime_environment": {
+    "python_version": "3.11.18",
+    "node_version": "v20+",
+    "operating_system": "macOS Darwin (Apple Silicon)",
+    "local_llm_server": "Ollama v0.1.x+ running llama3.1:8b on http://localhost:11434"
+  },
+  "reproduction_commands": [
+    {
+      "step": "Run Positive Lifecycle Journey Test",
+      "command": "PYTHONPATH=. pytest tests/test_journey_e2e_complete.py -v"
+    },
+    {
+      "step": "Run Negative & Adversarial Matrix (24 Scenarios)",
+      "command": "PYTHONPATH=. pytest tests/test_journey_adversarial_matrix.py -v"
+    },
+    {
+      "step": "Run Multi-Concurrency Performance Benchmark",
+      "command": "PYTHONPATH=. python evaluation/run_journey_performance.py"
+    },
+    {
+      "step": "Run Complete Test Suite & Coverage",
+      "command": "PYTHONPATH=. pytest --cov=src --cov-report=json:coverage.json -q"
+    },
+    {
+      "step": "Run Frontend Linter & Accessibility Unit Tests",
+      "command": "cd frontend && npm run lint && npm run test"
+    },
+    {
+      "step": "Run Playwright Accessibility & Keyboard E2E Tests",
+      "command": "cd frontend && npm run test:e2e"
+    }
+  ],
+  "generated_deliverables": [
+    "evaluation/complete_customer_journey_2026_11_26/EXECUTIVE_SUMMARY.md",
+    "evaluation/complete_customer_journey_2026_11_26/ARCHITECTURE_AND_DATA_FLOW.md",
+    "evaluation/complete_customer_journey_2026_11_26/COMPLETE_JOURNEY_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/SCENARIO_MATRIX.csv",
+    "evaluation/complete_customer_journey_2026_11_26/METRICS_SUMMARY.json",
+    "evaluation/complete_customer_journey_2026_11_26/PERFORMANCE_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/SECURITY_AND_APPROVAL_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/OBSERVABILITY_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/ACCESSIBILITY_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/TEST_AND_COVERAGE_REPORT.md",
+    "evaluation/complete_customer_journey_2026_11_26/BASELINE_VS_FINAL.md",
+    "evaluation/complete_customer_journey_2026_11_26/RESUME_METRICS.md",
+    "evaluation/complete_customer_journey_2026_11_26/reproduction_manifest.json",
+    "evaluation/complete_customer_journey_2026_11_26/journey_results.json",
+    "evaluation/complete_customer_journey_2026_11_26/security_results.json",
+    "evaluation/complete_customer_journey_2026_11_26/performance_results.json",
+    "evaluation/complete_customer_journey_2026_11_26/observability_results.json",
+    "evaluation/complete_customer_journey_2026_11_26/accessibility_results.json",
+    "evaluation/complete_customer_journey_2026_11_26/coverage.json"
+  ]
+}

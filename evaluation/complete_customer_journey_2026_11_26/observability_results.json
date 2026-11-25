@@ -1,0 +1,100 @@
+{
+  "timestamp": "2026-11-25T21:07:14.519880+00:00",
+  "logging_standard": "JSON structured logging via structlog with request_id correlation",
+  "sample_journey_log_events": [
+    {
+      "event": "http_request_finished",
+      "request_id": "req-cust-04119711",
+      "method": "POST",
+      "route": "/chat",
+      "status": 200,
+      "latency_ms": 12.4,
+      "logger": "http_access"
+    },
+    {
+      "event": "proposal_created",
+      "request_id": "req-cust-04119711",
+      "proposal_id": "prop_f2a9f4e05b56",
+      "order_id": "ORD-1001",
+      "status": "PENDING_APPROVAL",
+      "logger": "approvals.service"
+    },
+    {
+      "event": "proposal_approved",
+      "request_id": "req-rev-appr-77403d25",
+      "proposal_id": "prop_f2a9f4e05b56",
+      "reviewer_id": "admin",
+      "version": 2,
+      "logger": "approvals.service"
+    },
+    {
+      "event": "order_cancelled_executed",
+      "request_id": "req-rev-appr-77403d25",
+      "order_id": "ORD-1001",
+      "status": "cancelled",
+      "version": 3,
+      "logger": "approvals.service"
+    }
+  ],
+  "prometheus_metrics_snapshot": {
+    "http_requests_total{method=\"POST\",route=\"/chat\",status=\"200\"}": 1.0,
+    "http_requests_total{method=\"GET\",route=\"/sessions/{session_id}/proposal\",status=\"200\"}": 1.0,
+    "http_requests_total{method=\"GET\",route=\"/reviewer/proposals/{proposal_id}\",status=\"200\"}": 1.0,
+    "http_requests_total{method=\"POST\",route=\"/reviewer/proposals/{proposal_id}/approve\",status=\"200\"}": 2.0,
+    "http_requests_total{method=\"GET\",route=\"/reviewer/audit\",status=\"200\"}": 1.0,
+    "http_requests_total{method=\"GET\",route=\"/sessions/{session_id}/trace\",status=\"200\"}": 1.0
+  },
+  "sanitized_trace_sample": {
+    "session_id": "journey-cust-e32d4ba1",
+    "turn_id": 1,
+    "query": "Please cancel my order ORD-1001 right now.",
+    "route": "ORDER",
+    "order_intent": "CANCELLATION",
+    "extracted_order_id": "ORD-1001",
+    "active_order_id": "ORD-1001",
+    "decision_state": "ANSWER",
+    "decision_reason": "Order ORD-1001 retrieved successfully with authoritative status 'pending'.",
+    "handoff_recommended": false,
+    "handoff_reason": null,
+    "supported_action": "cancellation_request_submitted",
+    "provider": "mock",
+    "generation_failed": false,
+    "generation_latency_ms": 0.07,
+    "stage_timings_ms": {
+      "routing": 0.02,
+      "retrieval": 0.76,
+      "decision": 0.14,
+      "generation": 0.07,
+      "validation": 0.0
+    },
+    "is_fallback": false,
+    "fallback_reason": null,
+    "citations": [],
+    "proposal": {
+      "id": "prop_f2a9f4e05b56",
+      "status": "PENDING_APPROVAL"
+    },
+    "final_message": "Your cancellation request for order ORD-1001 has been submitted for review (reference: prop_f2a9f4e05b56). A support reviewer will inspect and confirm the request.",
+    "safe_order": {
+      "order_id": "ORD-1001",
+      "status": "pending",
+      "carrier": null,
+      "tracking_number": null,
+      "estimated_delivery": null,
+      "is_cancellable": true
+    }
+  },
+  "pii_and_secret_audit": {
+    "fields_scanned": [
+      "customer_email",
+      "shipping_address",
+      "credit_card",
+      "api_key",
+      "risk_score",
+      "warehouse_notes"
+    ],
+    "leaks_detected": 0,
+    "leak_rate_percent": 0.0,
+    "scrubbing_mechanism": "CustomerSafeOrder mapping, OutputValidator, and sanitized trace logging"
+  }
+}

@@ -35,6 +35,11 @@ def build_user_prompt(request: GroundedGenerationRequest) -> str:
         sections.append(f"SUGGESTED_CLARIFICATION: {request.suggested_clarification}")
     if request.supported_action:
         sections.append(f"SUPPORTED_ACTION: {request.supported_action}")
+    if request.proposal_info:
+        sections.append(
+            f"PROPOSAL_INFO: Reference {request.proposal_info.get('id')}, Status {request.proposal_info.get('status')}. "
+            f"Inform customer that the request has been submitted for review. Do not state the action is completed/cancelled unless status is EXECUTED."
+        )
 
     # 2. Approved Knowledge Evidence (if applicable)
     if request.approved_evidence or request.conflict_evidence:

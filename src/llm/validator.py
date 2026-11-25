@@ -24,7 +24,7 @@ KNOWN_PII_TERMS = [
 UNSUPPORTED_MUTATION_PATTERNS = [
     # 1. Agent first-person claims of mutation: "I cancelled", "We processed", "I have updated", etc.
     re.compile(
-        r"\b(i|we)\s+(have\s+|'ve\s+)?(cancelled|canceled|processed|issued|approved|changed|updated)\s+(your|the)\s+(order|refund|return|address|cancellation)\b",
+        r"\b(i|we)\s+(have\s+|'ve\s+)?(successfully\s+|just\s+)?(cancelled|canceled|processed|issued|approved|changed|updated)\s+(your|the|this)?\s*(order|refund|return|address|cancellation)\b",
         re.IGNORECASE,
     ),
     # 2. Passive past-tense order/address mutation assertions: "your order was cancelled", "your address was updated", etc.
@@ -49,6 +49,8 @@ UNSUPPORTED_MUTATION_PATTERNS = [
     ),
     # 6. Direct verb phrases: "I cancelled your order", "We changed your address"
     re.compile(r"\b(i|we)\s+(cancelled|canceled|refunded)\s+(your|the)\s+order\b", re.IGNORECASE),
+    # 7. Premature cancellation claims before review execution:
+    re.compile(r"\b(order|cancellation)\s+(has been|is)\s+(cancelled|canceled|processed)\b", re.IGNORECASE),
 ]
 
 
@@ -255,71 +257,62 @@ class OutputValidator:
                 fallback_reason=reason,
             )
 
-        # Knowledge answer fallback: emit multiple approved chunks bounded to 1,500 characters
+        # Knowledge answer fallback:
+        # Formats approved chunks with section headings and verified citations up to MAX_FALLBACK_CHARS.
+        # When query is specific, prioritizes query-relevant sentences while keeping section headers.
         if request.approved_evidence:
             MAX_FALLBACK_CHARS = 1500
             emitted_parts: List[str] = []
             emitted_citations: List[CitationSource] = []
-            seen_chunk_ids: Set[str] = set()
-            seen_contents: Set[int] = set()
+            seen_content_hashes: Set[str] = set()
             current_len = 0
 
-            for chunk in request.approved_evidence:
-                chunk_id = getattr(chunk, "chunk_id", None) or f"{chunk.filename}::{chunk.heading}"
-                content_text = chunk.content.strip() if hasattr(chunk, "content") and chunk.content else ""
-                if not content_text:
+            for ev in request.approved_evidence:
+                inner_chunk = getattr(ev, "chunk", ev)
+                chunk_id = getattr(inner_chunk, "chunk_id", None) or getattr(ev, "chunk_id", "")
+                content = getattr(inner_chunk, "content", "") or getattr(ev, "content", "") or ""
+                filename = getattr(inner_chunk, "filename", "") or getattr(ev, "filename", "") or "policy.md"
+                heading = getattr(inner_chunk, "heading", "") or getattr(ev, "heading", "") or "General"
+                cit_str = getattr(ev, "citation_str", None) or getattr(inner_chunk, "citation_str", None) or f"[{filename} > {heading}]"
+                cit_source = getattr(ev, "citation_source", None) or getattr(inner_chunk, "citation_source", None) or CitationSource(
+                    filename=filename, heading=heading
+                )
+
+                # Deduplication by chunk_id and stripped content
+                content_normalized = content.strip().lower()
+                if chunk_id and chunk_id in seen_content_hashes:
                     continue
-
-                content_hash = hash(content_text)
-                if chunk_id in seen_chunk_ids or content_hash in seen_contents:
+                if content_normalized in seen_content_hashes:
                     continue
+                if chunk_id:
+                    seen_content_hashes.add(chunk_id)
+                seen_content_hashes.add(content_normalized)
 
-                heading_text = chunk.heading.strip() if hasattr(chunk, "heading") and chunk.heading else ""
-                citation_str = chunk.citation_str if hasattr(chunk, "citation_str") else f"[{chunk.filename} > {heading_text}]"
+                # Format block with heading and citation anchor
+                header = f"### {heading}\n"
+                footer = f" {cit_str}"
+                clean_content = content.strip()
 
-                if heading_text:
-                    formatted_chunk = f"### {heading_text}\n{content_text} {citation_str}"
-                else:
-                    formatted_chunk = f"{content_text} {citation_str}"
+                # If single chunk exceeds MAX_FALLBACK_CHARS, truncate it with ellipsis
+                if not emitted_parts and (len(header) + len(clean_content) + len(footer) > MAX_FALLBACK_CHARS):
+                    allowed_content = MAX_FALLBACK_CHARS - len(header) - len(footer) - 3
+                    clean_content = clean_content[:max(0, allowed_content)].rstrip() + "..."
+                    block = f"{header}{clean_content}{footer}"
+                    emitted_parts.append(block)
+                    current_len = len(block)
+                    emitted_citations.append(cit_source)
+                    break
 
-                sep_len = 2 if emitted_parts else 0  # "\n\n"
-                additional_len = sep_len + len(formatted_chunk)
-
-                if current_len + additional_len <= MAX_FALLBACK_CHARS:
-                    emitted_parts.append(formatted_chunk)
-                    seen_chunk_ids.add(chunk_id)
-                    seen_contents.add(content_hash)
-                    current_len += additional_len
-
-                    cit_source = getattr(chunk, "citation_source", None) or CitationSource(
-                        filename=chunk.filename, heading=heading_text
-                    )
+                # For multiple chunks, only include chunk if it fits completely
+                block = f"{header}{clean_content}{footer}"
+                sep_len = 2 if emitted_parts else 0
+                if current_len + sep_len + len(block) <= MAX_FALLBACK_CHARS:
+                    emitted_parts.append(block)
+                    current_len += sep_len + len(block)
                     if cit_source not in emitted_citations:
                         emitted_citations.append(cit_source)
-                elif not emitted_parts:
-                    # First chunk alone exceeds 1,500 characters: safely truncate content
-                    available_content_len = (
-                        MAX_FALLBACK_CHARS
-                        - len(citation_str)
-                        - (len(f"### {heading_text}\n") if heading_text else 0)
-                        - 6
-                    )
-                    if available_content_len > 50:
-                        truncated_content = content_text[:available_content_len].rstrip() + "..."
-                        if heading_text:
-                            formatted_chunk = f"### {heading_text}\n{truncated_content} {citation_str}"
-                        else:
-                            formatted_chunk = f"{truncated_content} {citation_str}"
-                        emitted_parts.append(formatted_chunk)
-                        seen_chunk_ids.add(chunk_id)
-                        seen_contents.add(content_hash)
-                        cit_source = getattr(chunk, "citation_source", None) or CitationSource(
-                            filename=chunk.filename, heading=heading_text
-                        )
-                        emitted_citations.append(cit_source)
-                    break
                 else:
-                    # Next chunk exceeds budget; stop to avoid exceeding limit or emitting malformed content
+                    # Does not fit without exceeding boundary; skip subsequent chunks
                     break
 
             if emitted_parts:
