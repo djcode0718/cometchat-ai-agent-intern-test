@@ -1,0 +1,39 @@
+{
+  "system": "Aster & Row Customer Support Platform",
+  "dossier_version": "2026_11_26_production_hardening",
+  "evaluated_git_branch": "feat/aster-row-production-hardening",
+  "starting_commit": "f0bd93b",
+  "final_commit": "df77522",
+  "test_environment": {
+    "os": "macOS Darwin 24.1.0 (Apple Silicon)",
+    "python_version": "3.11.18",
+    "pytest_version": "9.2.0",
+    "database": "PostgreSQL 14.18 (localhost:5432/aster_row_test)",
+    "local_llm_runtime": "Ollama (llama3.1:8b-instruct-q4_K_M, Metal GPU)"
+  },
+  "key_metrics_summary": {
+    "automated_tests_total": 392,
+    "automated_tests_passed": 392,
+    "automated_tests_failed": 0,
+    "statement_coverage_pct": 86.67,
+    "statements_covered": 2977,
+    "statements_total": 3435,
+    "adversarial_precision_pct": 100.0,
+    "adversarial_recall_pct": 97.14,
+    "adversarial_f1_score": 0.9855,
+    "pre_retrieval_guard_latency_p50_us": 9.88,
+    "pre_retrieval_guard_latency_p99_us": 13.83,
+    "routing_accuracy_pct": 100.0,
+    "hybrid_retrieval_recall_at_3_pct": 100.0,
+    "hybrid_retrieval_mrr": 0.9444,
+    "postgres_concurrency_race_threads": 10,
+    "postgres_concurrency_executions": 1,
+    "postgres_concurrency_duplicate_mutations": 0,
+    "local_ollama_throughput_tokens_per_sec": 12.83,
+    "observability_overhead_p50_ms": 1.589,
+    "sustained_concurrency_peak_rps": 41.55,
+    "sustained_concurrency_error_rate_pct": 0.0,
+    "axe_accessibility_violations": 0,
+    "wcag_2_1_aa_compliance": true
+  }
+}

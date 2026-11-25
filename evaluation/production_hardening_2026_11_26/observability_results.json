@@ -3,12 +3,12 @@
   "sample_size": 100,
   "endpoint": "/health",
   "latency_summary_ms": {
-    "mean": 2.347,
-    "p50": 1.589,
-    "p90": 1.76,
-    "p99": 73.322
+    "mean": 2.57,
+    "p50": 2.329,
+    "p90": 3.015,
+    "p99": 9.936
   },
-  "middleware_overhead_ms": 2.347,
+  "middleware_overhead_ms": 2.57,
   "pii_redaction_verified": true,
   "prometheus_metrics_verified": true,
   "metrics_found": [

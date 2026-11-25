@@ -27,8 +27,10 @@ from src.agent.security_guard import evaluate_input_guard
 def uncap_rate_limits():
     """Uncap rate limits for 120-query evaluation burst."""
     import os
-    os.environ["RATE_LIMIT_CHAT"] = "10000/minute"
+    os.environ["RATE_LIMIT_CHAT"] = "100000/minute"
+    app.state.limiter.enabled = False
     yield
+    app.state.limiter.enabled = True
     os.environ.pop("RATE_LIMIT_CHAT", None)
 
 

@@ -1,14 +1,14 @@
 {
-  "benchmark_timestamp": "2026-11-25T22:43:05.181013+00:00",
+  "benchmark_timestamp": "2026-11-25T23:02:36.405282+00:00",
   "total_iterations": 1000,
   "latency_metrics_us": {
-    "min_us": 0.46,
-    "mean_us": 7.61,
-    "p50_us": 9.88,
-    "p90_us": 11.33,
-    "p95_us": 11.5,
-    "p99_us": 13.83,
-    "max_us": 19.75
+    "min_us": 0.75,
+    "mean_us": 8.38,
+    "p50_us": 10.46,
+    "p90_us": 12.67,
+    "p95_us": 12.96,
+    "p99_us": 14.04,
+    "max_us": 20.79
   },
   "false_positive_evaluation": {
     "total_benign_queries": 150,
