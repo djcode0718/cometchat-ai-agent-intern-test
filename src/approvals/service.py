@@ -196,19 +196,19 @@ class ApprovalService:
 
             self._expire_if_due(proposal, session)
 
-            # Idempotency: Approving an already-executed or already-approved proposal returns current state
-            if proposal.status in (ProposalStatus.APPROVED, ProposalStatus.EXECUTED):
-                return proposal
-
-            # Terminal states (REJECTED, EXPIRED, FAILED) cannot be approved
-            if is_terminal(proposal.status):
+            # If proposal is already in a non-approvable terminal state (EXPIRED, FAILED, REJECTED), reject immediately
+            if proposal.status in (ProposalStatus.EXPIRED, ProposalStatus.FAILED, ProposalStatus.REJECTED):
                 raise InvalidTransition(proposal.status, ProposalStatus.APPROVED, "Cannot approve terminal proposal")
 
-            # Optimistic concurrency check
+            # Optimistic concurrency check: if client sent an expected version, enforce it before idempotent bypass
             if expected_version is not None and proposal.version != expected_version:
                 raise ConcurrencyConflictError(
                     f"Version conflict: expected {expected_version}, found {proposal.version}"
                 )
+
+            # Idempotency: Approving an already-executed or already-approved proposal returns current state
+            if proposal.status in (ProposalStatus.APPROVED, ProposalStatus.EXECUTED):
+                return proposal
 
             # Transition PENDING_APPROVAL -> APPROVED
             old_status = proposal.status
@@ -267,7 +267,9 @@ class ApprovalService:
                 if proposal.action_type == ActionType.CANCELLATION:
                     order_row.status = "cancelled"
                     if order_row.raw_data:
-                        order_row.raw_data["status"] = "cancelled"
+                        raw_copy = dict(order_row.raw_data)
+                        raw_copy["status"] = "cancelled"
+                        order_row.raw_data = raw_copy
                 session.commit()
                 session.refresh(proposal)
 
@@ -327,17 +329,19 @@ class ApprovalService:
 
             self._expire_if_due(proposal, session)
 
-            # Idempotency: Rejecting an already-rejected proposal returns it
-            if proposal.status == ProposalStatus.REJECTED:
-                return proposal
-
-            if is_terminal(proposal.status):
+            # If proposal is already terminal (EXPIRED, FAILED, EXECUTED), reject immediately
+            if proposal.status in (ProposalStatus.EXPIRED, ProposalStatus.FAILED, ProposalStatus.EXECUTED):
                 raise InvalidTransition(proposal.status, ProposalStatus.REJECTED, "Cannot reject terminal proposal")
 
+            # Optimistic concurrency check: if client sent an expected version, enforce it before idempotent bypass
             if expected_version is not None and proposal.version != expected_version:
                 raise ConcurrencyConflictError(
                     f"Version conflict: expected {expected_version}, found {proposal.version}"
                 )
+
+            # Idempotency: Rejecting an already-rejected proposal returns it
+            if proposal.status == ProposalStatus.REJECTED:
+                return proposal
 
             old_status = proposal.status
             proposal.status = transition(proposal.status, ProposalEvent.REJECT)

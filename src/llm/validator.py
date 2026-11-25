@@ -24,7 +24,7 @@ KNOWN_PII_TERMS = [
 UNSUPPORTED_MUTATION_PATTERNS = [
     # 1. Agent first-person claims of mutation: "I cancelled", "We processed", "I have updated", etc.
     re.compile(
-        r"\b(i|we)\s+(have\s+|'ve\s+)?(cancelled|canceled|processed|issued|approved|changed|updated)\s+(your|the)\s+(order|refund|return|address|cancellation)\b",
+        r"\b(i|we)\s+(have\s+|'ve\s+)?(successfully\s+|just\s+)?(cancelled|canceled|processed|issued|approved|changed|updated)\s+(your|the|this)?\s*(order|refund|return|address|cancellation)\b",
         re.IGNORECASE,
     ),
     # 2. Passive past-tense order/address mutation assertions: "your order was cancelled", "your address was updated", etc.

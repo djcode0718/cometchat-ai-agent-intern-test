@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "dossier_name": "Aster & Row Customer Support Action Lifecycle Dossier",
+    "evaluated_at": "2026-11-25T21:07:14.520976+00:00",
+    "git_commit_sha": "663f5bbf50e42b90b497240ec466b4e74b19ec8a",
+    "git_branch": "feat/aster-row-agent-upgrade"
+  },
+  "metrics": [
+    {
+      "metric_id": "METRIC-01",
+      "name": "End-to-End Customer Journey Completion Rate",
+      "formula": "(successful_end_to_end_lifecycles / total_lifecycle_attempts) * 100",
+      "numerator": 1,
+      "denominator": 1,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "Measures full traversal from customer cancellation request through reviewer approval, atomic order execution, and audit trail generation."
+    },
+    {
+      "metric_id": "METRIC-02",
+      "name": "Single-Mutation Guarantee (Idempotency) Rate",
+      "formula": "(duplicate_approvals_with_exactly_one_execution / total_duplicate_approval_probes) * 100",
+      "numerator": 2,
+      "denominator": 2,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "Verifies that duplicate approval submissions return HTTP 200 without duplicate database mutations or double-cancellations."
+    },
+    {
+      "metric_id": "METRIC-03",
+      "name": "Adversarial & Negative Scenario Pass Rate",
+      "formula": "(passed_adversarial_scenarios / total_adversarial_scenarios) * 100",
+      "numerator": 24,
+      "denominator": 24,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "24 comprehensive adversarial probes covering auth bypass, optimistic locking, prompt injection, and reliability."
+    },
+    {
+      "metric_id": "METRIC-04",
+      "name": "Customer PII & Credential Leakage Rate",
+      "formula": "(detected_pii_or_credential_leaks / total_scanned_responses) * 100",
+      "numerator": 0,
+      "denominator": 50,
+      "value": 0.0,
+      "unit": "%",
+      "threshold": 0.0,
+      "status": "PASS",
+      "description": "Ensures zero emails, physical addresses, API keys, internal fraud scores, or warehouse notes are exposed to customers."
+    },
+    {
+      "metric_id": "METRIC-05",
+      "name": "Fabricated Citation Containment Rate",
+      "formula": "(intercepted_unapproved_citations / total_hallucinated_citation_probes) * 100",
+      "numerator": 1,
+      "denominator": 1,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "Verifies that OutputValidator intercepts unapproved policy citations and forces deterministic fallback."
+    },
+    {
+      "metric_id": "METRIC-06",
+      "name": "Optimistic Concurrency Conflict Detection Rate",
+      "formula": "(detected_version_conflicts / total_concurrent_race_attempts) * 100",
+      "numerator": 1,
+      "denominator": 1,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "Verifies that two reviewers submitting concurrent decisions on the same proposal version result in one HTTP 200 and one HTTP 409."
+    },
+    {
+      "metric_id": "METRIC-07",
+      "name": "Automated Test Suite Pass Rate",
+      "formula": "(passed_tests / total_tests_executed) * 100",
+      "numerator": 351,
+      "denominator": 351,
+      "value": 100.0,
+      "unit": "%",
+      "threshold": 100.0,
+      "status": "PASS",
+      "description": "Total pytest test suite across API, approvals, state machine, router, validator, and e2e journeys."
+    },
+    {
+      "metric_id": "METRIC-08",
+      "name": "Backend Python Test Coverage",
+      "formula": "(covered_statements / total_statements) * 100",
+      "numerator": 2937,
+      "denominator": 3399,
+      "value": 86.41,
+      "unit": "%",
+      "threshold": 80.0,
+      "status": "PASS",
+      "description": "Overall line coverage across all src/ modules measured by pytest-cov."
+    },
+    {
+      "metric_id": "METRIC-09",
+      "name": "Frontend Serious/Critical Accessibility Violations",
+      "formula": "count(axe_violations where impact in ['serious', 'critical'])",
+      "numerator": 0,
+      "denominator": 9,
+      "value": 0,
+      "unit": "violations",
+      "threshold": 0,
+      "status": "PASS",
+      "description": "@axe-core/playwright automated audit across 9 distinct application states."
+    },
+    {
+      "metric_id": "METRIC-10",
+      "name": "Frontend Lighthouse Accessibility Score",
+      "formula": "lighthouse_accessibility_audit_score",
+      "numerator": 100,
+      "denominator": 100,
+      "value": 100,
+      "unit": "/ 100",
+      "threshold": 95,
+      "status": "PASS",
+      "description": "Lighthouse CI automated accessibility audit score for Customer and Reviewer consoles."
+    }
+  ]
+}

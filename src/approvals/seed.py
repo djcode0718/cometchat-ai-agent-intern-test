@@ -27,6 +27,11 @@ def seed_database(demo_file_path: str = "data/demo_orders.json") -> int:
             if not existing:
                 created_dt = datetime.fromisoformat(order_dict["created_at"].replace("Z", "+00:00"))
                 updated_dt = datetime.fromisoformat(order_dict["updated_at"].replace("Z", "+00:00"))
+                raw_dict = dict(order_dict.get("raw_data", {}))
+                if "status_updated_at" not in raw_dict:
+                    raw_dict["status_updated_at"] = order_dict["updated_at"]
+                if "placed_at" not in raw_dict:
+                    raw_dict["placed_at"] = order_dict["created_at"]
                 order_row = OrderModel(
                     order_id=order_id,
                     customer_id=order_dict["customer_id"],
@@ -35,7 +40,7 @@ def seed_database(demo_file_path: str = "data/demo_orders.json") -> int:
                     updated_at=updated_dt,
                     items=order_dict.get("items", []),
                     shipping_address=order_dict.get("shipping_address", {}),
-                    raw_data=order_dict.get("raw_data", {}),
+                    raw_data=raw_dict,
                 )
                 session.add(order_row)
                 count += 1
@@ -43,7 +48,13 @@ def seed_database(demo_file_path: str = "data/demo_orders.json") -> int:
                 existing.status = order_dict["status"]
                 existing.items = order_dict.get("items", [])
                 existing.shipping_address = order_dict.get("shipping_address", {})
-                existing.raw_data = order_dict.get("raw_data", {})
+                raw_dict = dict(order_dict.get("raw_data", {}))
+                raw_dict["status"] = order_dict["status"]
+                if "status_updated_at" not in raw_dict:
+                    raw_dict["status_updated_at"] = order_dict["updated_at"]
+                if "placed_at" not in raw_dict:
+                    raw_dict["placed_at"] = order_dict["created_at"]
+                existing.raw_data = raw_dict
                 count += 1
         session.commit()
     print(f"Successfully seeded {count} orders into database.")
