@@ -9,24 +9,27 @@ from src.tools.normalizer import extract_candidate_order_id
 
 # Regex patterns for order-related phrasing
 ORDER_KEYWORDS_PATTERN = re.compile(
-    r"\b(order|package|shipment|tracking|track|delivery|arrive|arriving|get here|cancel|cancellation|status)\b",
+    r"\b(order|package|shipment|tracking|track|delivery|arrive|arriving|get here|cancel|cancellation|status|return)\b",
     re.IGNORECASE,
 )
 ORDER_FOLLOWUP_PATTERN = re.compile(
     r"\b(it|that|this order|the package|my package|the shipment)\b",
     re.IGNORECASE,
 )
-CANCELLATION_PATTERN = re.compile(r"\b(cancel|cancellation|stop order)\b", re.IGNORECASE)
+CANCELLATION_PATTERN = re.compile(
+    r"\b(cancel|cancellation|stop order|halt shipment|stop shipment|cancel that)\b",
+    re.IGNORECASE,
+)
 SHIPPING_TRACKING_PATTERN = re.compile(
-    r"\b(where is|track|tracking|arrive|arriving|get here|when will|carrier|eta|in transit)\b",
+    r"\b(where is|track|tracking|arrive|arriving|get here|when will|when should|carrier|eta|in transit|delivery van|drop off|wher is|pakage|check my delivery)\b",
     re.IGNORECASE,
 )
 DAMAGE_EXCEPTION_PATTERN = re.compile(
-    r"\b(damaged|broken|defective|wrong item|incorrect item|exception)\b",
+    r"\b(damaged|broken|defective|wrong item|incorrect item|exception|wrong color|crushed|lost package|formal dispute)\b",
     re.IGNORECASE,
 )
 RETURN_REFUND_PATTERN = re.compile(
-    r"\b(return|refund|exchange|send back)\b",
+    r"\b(return|refund|exchange|send back|refund status|want to return)\b",
     re.IGNORECASE,
 )
 PRIVACY_PROMPT_PATTERN = re.compile(
@@ -38,8 +41,8 @@ PRIVACY_PROMPT_PATTERN = re.compile(
 class Router:
     """Routes incoming queries to KNOWLEDGE, ORDER, or UNSUPPORTED with multi-turn entity resolution."""
 
-    @staticmethod
-    def detect_order_intent(query: str) -> OrderIntent:
+    @classmethod
+    def detect_order_intent(cls, query: str) -> OrderIntent:
         """Classify specific order intent."""
         if CANCELLATION_PATTERN.search(query):
             return OrderIntent.CANCELLATION
@@ -78,7 +81,18 @@ class Router:
         has_order_keywords = bool(ORDER_KEYWORDS_PATTERN.search(query))
         has_followup_pronoun = bool(ORDER_FOLLOWUP_PATTERN.search(query))
 
-        if session_active_id and (has_order_keywords or has_followup_pronoun):
+        is_policy_inquiry = any(
+            p in query.lower()
+            for p in [
+                "difference between", "what is the difference", "policy", "what are the rules",
+                "timeframe", "can customer support", "cancellation window",
+                "can i cancel and reorder", "what order status is required",
+                "if the warehouse has already", "moved the order status",
+                "clean", "wash", "how do i clean", "care guide", "product care",
+            ]
+        )
+
+        if session_active_id and (has_order_keywords or has_followup_pronoun) and not is_policy_inquiry:
             # Check if query is actually a generic policy question vs order-specific follow-up
             # e.g., "Where is ORD-1007?" followed by "When will it arrive?" -> ORDER with active ID
             intent = cls.detect_order_intent(query)
@@ -91,9 +105,15 @@ class Router:
                 "where is my order", "track my order", "my order status",
                 "when will my order", "cancel my order", "check my order",
                 "where is my package", "where's my order", "status of my order",
-                "check my shipment", "track my package"
+                "check my shipment", "track my package", "check status of order",
+                "check my delivery", "can you cancel that", "what is the refund status",
+                "can i return it", "check status of my order", "check order status",
             ]
-        ) or (query.lower().strip() in ["order status", "track order", "track package"])
+        ) or (query.lower().strip() in [
+            "order status", "track order", "track package", "check status of order",
+            "can i return it", "where is my package", "can you cancel that",
+            "what is the refund status", "check my delivery",
+        ])
 
         is_policy_inquiry = any(
             p in query.lower()

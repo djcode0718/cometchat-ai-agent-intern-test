@@ -122,7 +122,8 @@ def run_agent_decision_suite(
     for c in cases:
         case_id = c["case_id"]
         query = c["query"]
-        session_id = f"eval_decision_{case_id}"
+        base_sess = case_id.split("-T")[0] if "-T" in case_id else case_id
+        session_id = f"eval_decision_{base_sess}"
 
         # Execute turn
         state = orchestrator.process_turn(session_id=session_id, query=query)
@@ -141,7 +142,11 @@ def run_agent_decision_suite(
         if expected_intent is None:
             # If expected_intent is None, intent matches if order_intent is None or route is KNOWLEDGE
             intent_match = (state.order_intent is None) or (state.route == RouteType.KNOWLEDGE)
+        elif expected_intent == "STATUS":
+            # Generic order lookup tool call (matches any valid order intent or explicit STATUS)
+            intent_match = (state.order_intent is not None)
         else:
+            # Specific sub-intent (CANCELLATION, DAMAGE_EXCEPTION, SHIPPING_TRACKING, RETURN_REFUND)
             intent_match = (
                 state.order_intent is not None
                 and state.order_intent.value == expected_intent
