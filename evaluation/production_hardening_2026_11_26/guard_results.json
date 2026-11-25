@@ -1,0 +1,18 @@
+{
+  "benchmark_timestamp": "2026-11-25T22:43:05.181013+00:00",
+  "total_iterations": 1000,
+  "latency_metrics_us": {
+    "min_us": 0.46,
+    "mean_us": 7.61,
+    "p50_us": 9.88,
+    "p90_us": 11.33,
+    "p95_us": 11.5,
+    "p99_us": 13.83,
+    "max_us": 19.75
+  },
+  "false_positive_evaluation": {
+    "total_benign_queries": 150,
+    "false_positives": 0,
+    "false_positive_rate": 0.0
+  }
+}
