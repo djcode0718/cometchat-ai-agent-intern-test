@@ -42,3 +42,13 @@ services:
       - ./deploy/observability/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
     depends_on:
       - prometheus
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: aster_row_frontend
+    ports:
+      - "3001:80"
+    depends_on:
+      - api

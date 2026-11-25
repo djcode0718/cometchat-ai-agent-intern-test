@@ -110,6 +110,10 @@ class ApprovalService:
             if existing:
                 self._expire_if_due(existing, session)
                 if existing.status == ProposalStatus.PENDING_APPROVAL:
+                    # Update session_id to current customer session
+                    existing.session_id = session_id
+                    session.commit()
+                    session.refresh(existing)
                     return existing
 
             proposal = ProposedActionModel(
