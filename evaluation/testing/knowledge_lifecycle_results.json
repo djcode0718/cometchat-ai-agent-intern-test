@@ -1,0 +1,91 @@
+{
+  "total_lifecycle_scenarios": 8,
+  "passed": 8,
+  "failed": 0,
+  "scenarios": [
+    {
+      "id": "KB-001",
+      "name": "Initial Ingestion",
+      "description": "Ingest known markdown document into isolated index",
+      "verified_criteria": [
+        "Document metadata validated",
+        "Exact chunk count created",
+        "Section headings preserved",
+        "Stable chunk IDs"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-002",
+      "name": "Re-ingestion Idempotency",
+      "description": "Re-ingesting unchanged repository produces identical chunks with zero duplicates",
+      "verified_criteria": [
+        "Chunk count invariant",
+        "Chunk IDs strictly identical",
+        "Zero duplicate retrieval candidates"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-003",
+      "name": "Document Update",
+      "description": "Mutating policy text immediately indexes updated content and drops stale chunks",
+      "verified_criteria": [
+        "Updated policy terms retrievable",
+        "Stale text purged from active index"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-004",
+      "name": "Superseded Policy Handling",
+      "description": "Active policy preferred over legacy superseded version with identical headings",
+      "verified_criteria": [
+        "KnowledgeResolver filters superseded document",
+        "Approved evidence contains only active policy"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-005",
+      "name": "Document Deletion",
+      "description": "Deleting markdown file clears its chunks completely from index",
+      "verified_criteria": [
+        "Index chunk count drops to 0",
+        "Zero orphaned chunks in memory"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-006",
+      "name": "Failed Ingestion Containment",
+      "description": "Malformed YAML frontmatter raises FrontmatterParsingError safely without index corruption",
+      "verified_criteria": [
+        "Controlled FrontmatterParsingError exception",
+        "Zero partial or corrupted document states"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-007",
+      "name": "Index Rebuild Consistency",
+      "description": "Rebuilding index from source documents reproduces deterministic BM25 scores",
+      "verified_criteria": [
+        "Chunk ID ranking identical",
+        "Retrieval scores match to 6 decimal places"
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "KB-008",
+      "name": "Chunk Boundary Integrity",
+      "description": "Policy statements at doc beginning, middle, and end remain independently retrievable",
+      "verified_criteria": [
+        "Lead paragraph retrievable",
+        "Closing statement retrievable",
+        "Heading hierarchy preserved"
+      ],
+      "status": "PASS"
+    }
+  ]
+}

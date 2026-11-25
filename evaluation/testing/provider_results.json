@@ -1,0 +1,134 @@
+{
+  "total_provider_tests": 24,
+  "passed": 23,
+  "skipped": 1,
+  "failed": 0,
+  "provider_matrix": [
+    {
+      "id": "PR-01",
+      "description": "Valid JSON response",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-02",
+      "description": "Valid plain-text response",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-03",
+      "description": "Empty response content",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-04",
+      "description": "Missing content field in message",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-05",
+      "description": "Malformed JSON payload",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-06",
+      "description": "Unexpected response schema",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-07",
+      "description": "HTTP 400 Bad Request",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-08",
+      "description": "HTTP 401 Unauthorized",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-09",
+      "description": "HTTP 402 Credits Exhausted (no loop)",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-10",
+      "description": "HTTP 429 Rate Limit backoff",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-11",
+      "description": "HTTP 500 Internal Server Error retry",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-12",
+      "description": "HTTP 502 Bad Gateway retry",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-13",
+      "description": "HTTP 503 Service Unavailable retry",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-14",
+      "description": "Connection timeout handling",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-15",
+      "description": "Read timeout handling",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-16",
+      "description": "Connection reset / Network error",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-17",
+      "description": "Invalid model response",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-18",
+      "description": "Excessively long response handling",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-19",
+      "description": "Unsupported claims detection",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-20",
+      "description": "Malformed citations repair",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-CASCADE-01",
+      "description": "Fallback cascade: primary succeeds",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-CASCADE-02",
+      "description": "Fallback cascade: primary fails -> secondary succeeds",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-CASCADE-03",
+      "description": "Fallback cascade: all remote fail -> deterministic succeeds",
+      "status": "PASS"
+    },
+    {
+      "id": "PR-LIVE-GATED",
+      "description": "Opt-in live provider probe",
+      "status": "SKIPPED",
+      "reason": "Gated by LIVE_LLM_TESTS=1 and request budget > 0"
+    }
+  ],
+  "live_suite_status": {
+    "LIVE_LLM_TESTS": "0",
+    "LIVE_LLM_MAX_REQUESTS": "0",
+    "status": "SKIPPED (Safe by default, 0 credits spent)"
+  }
+}

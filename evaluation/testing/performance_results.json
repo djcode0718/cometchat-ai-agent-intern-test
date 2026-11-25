@@ -1,0 +1,88 @@
+{
+  "benchmark_name": "offline_performance_and_load_test",
+  "system_metadata": {
+    "os": "Darwin",
+    "machine": "arm64",
+    "python_version": "3.11.18",
+    "provider_mode": "local_deterministic_offline",
+    "max_rss_memory_mb": 443.98
+  },
+  "pipeline_stage_breakdown_ms": {
+    "api_validation_ms": 0.109,
+    "intent_routing_ms": 0.248,
+    "retrieval_ms": 8.605,
+    "evidence_assembly_ms": 0.355,
+    "generation_and_citation_ms": 0.156,
+    "serialization_ms": 6.325
+  },
+  "concurrency_matrix": [
+    {
+      "concurrency_level": 1,
+      "total_requests": 50,
+      "successful_requests": 50,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "total_time_seconds": 0.333,
+      "throughput_rps": 150.02,
+      "latency_percentiles_ms": {
+        "min": 5.38,
+        "p50": 6.52,
+        "p95": 8.11,
+        "p99": 11.07,
+        "mean": 6.66,
+        "max": 11.07
+      }
+    },
+    {
+      "concurrency_level": 5,
+      "total_requests": 50,
+      "successful_requests": 50,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "total_time_seconds": 0.259,
+      "throughput_rps": 192.88,
+      "latency_percentiles_ms": {
+        "min": 21.81,
+        "p50": 25.69,
+        "p95": 29.11,
+        "p99": 29.72,
+        "mean": 25.85,
+        "max": 29.72
+      }
+    },
+    {
+      "concurrency_level": 10,
+      "total_requests": 50,
+      "successful_requests": 50,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "total_time_seconds": 0.366,
+      "throughput_rps": 136.65,
+      "latency_percentiles_ms": {
+        "min": 57.5,
+        "p50": 73.36,
+        "p95": 82.06,
+        "p99": 84.88,
+        "mean": 72.36,
+        "max": 84.88
+      }
+    },
+    {
+      "concurrency_level": 25,
+      "total_requests": 50,
+      "successful_requests": 50,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "total_time_seconds": 0.332,
+      "throughput_rps": 150.62,
+      "latency_percentiles_ms": {
+        "min": 132.31,
+        "p50": 159.85,
+        "p95": 186.12,
+        "p99": 197.46,
+        "mean": 160.44,
+        "max": 197.46
+      }
+    }
+  ]
+}

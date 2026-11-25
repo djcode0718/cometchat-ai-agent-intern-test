@@ -255,19 +255,84 @@ class OutputValidator:
                 fallback_reason=reason,
             )
 
-        # Knowledge answer fallback
+        # Knowledge answer fallback: emit multiple approved chunks bounded to 1,500 characters
         if request.approved_evidence:
-            primary_chunk = request.approved_evidence[0]
-            msg = f"{primary_chunk.content} {primary_chunk.citation_str}"
-            return GeneratedResponse(
-                message=msg,
-                decision_state=state,
-                citations=request.citations,
-                handoff_recommended=request.handoff_recommended,
-                supported_action=None,
-                is_fallback=True,
-                fallback_reason=reason,
-            )
+            MAX_FALLBACK_CHARS = 1500
+            emitted_parts: List[str] = []
+            emitted_citations: List[CitationSource] = []
+            seen_chunk_ids: Set[str] = set()
+            seen_contents: Set[int] = set()
+            current_len = 0
+
+            for chunk in request.approved_evidence:
+                chunk_id = getattr(chunk, "chunk_id", None) or f"{chunk.filename}::{chunk.heading}"
+                content_text = chunk.content.strip() if hasattr(chunk, "content") and chunk.content else ""
+                if not content_text:
+                    continue
+
+                content_hash = hash(content_text)
+                if chunk_id in seen_chunk_ids or content_hash in seen_contents:
+                    continue
+
+                heading_text = chunk.heading.strip() if hasattr(chunk, "heading") and chunk.heading else ""
+                citation_str = chunk.citation_str if hasattr(chunk, "citation_str") else f"[{chunk.filename} > {heading_text}]"
+
+                if heading_text:
+                    formatted_chunk = f"### {heading_text}\n{content_text} {citation_str}"
+                else:
+                    formatted_chunk = f"{content_text} {citation_str}"
+
+                sep_len = 2 if emitted_parts else 0  # "\n\n"
+                additional_len = sep_len + len(formatted_chunk)
+
+                if current_len + additional_len <= MAX_FALLBACK_CHARS:
+                    emitted_parts.append(formatted_chunk)
+                    seen_chunk_ids.add(chunk_id)
+                    seen_contents.add(content_hash)
+                    current_len += additional_len
+
+                    cit_source = getattr(chunk, "citation_source", None) or CitationSource(
+                        filename=chunk.filename, heading=heading_text
+                    )
+                    if cit_source not in emitted_citations:
+                        emitted_citations.append(cit_source)
+                elif not emitted_parts:
+                    # First chunk alone exceeds 1,500 characters: safely truncate content
+                    available_content_len = (
+                        MAX_FALLBACK_CHARS
+                        - len(citation_str)
+                        - (len(f"### {heading_text}\n") if heading_text else 0)
+                        - 6
+                    )
+                    if available_content_len > 50:
+                        truncated_content = content_text[:available_content_len].rstrip() + "..."
+                        if heading_text:
+                            formatted_chunk = f"### {heading_text}\n{truncated_content} {citation_str}"
+                        else:
+                            formatted_chunk = f"{truncated_content} {citation_str}"
+                        emitted_parts.append(formatted_chunk)
+                        seen_chunk_ids.add(chunk_id)
+                        seen_contents.add(content_hash)
+                        cit_source = getattr(chunk, "citation_source", None) or CitationSource(
+                            filename=chunk.filename, heading=heading_text
+                        )
+                        emitted_citations.append(cit_source)
+                    break
+                else:
+                    # Next chunk exceeds budget; stop to avoid exceeding limit or emitting malformed content
+                    break
+
+            if emitted_parts:
+                msg = "\n\n".join(emitted_parts)
+                return GeneratedResponse(
+                    message=msg,
+                    decision_state=state,
+                    citations=emitted_citations,
+                    handoff_recommended=request.handoff_recommended,
+                    supported_action=None,
+                    is_fallback=True,
+                    fallback_reason=reason,
+                )
 
         return GeneratedResponse(
             message="Please contact customer support for assistance with this inquiry.",

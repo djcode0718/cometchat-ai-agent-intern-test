@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 from src.agent.decision import DecisionEngine
 from src.agent.router import Router
 from src.agent.state import AgentDecision, AgentState, RouteType
+from src.core.config import get_settings
 from src.core.session import SessionManager
 from src.knowledge.evidence import EvidencePack
 from src.knowledge.resolver import KnowledgeResolver
@@ -81,7 +82,8 @@ class AgentOrchestrator:
                     safe_order = None
 
             elif route == RouteType.KNOWLEDGE:
-                raw_candidates = self.retriever.retrieve(clean_query, top_k=5)
+                top_k = get_settings().retrieval_top_k
+                raw_candidates = self.retriever.retrieve(clean_query, top_k=top_k)
                 evidence_pack = self.knowledge_resolver.resolve(clean_query, raw_candidates)
         except Exception as e:
             # Fallback evidence pack on tool/retrieval error

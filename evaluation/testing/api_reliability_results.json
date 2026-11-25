@@ -1,0 +1,75 @@
+{
+  "total_api_reliability_tests": 11,
+  "passed": 11,
+  "failed": 0,
+  "authentication_layer_status": "Documented Limitation: Public support endpoint (/chat) does not enforce token auth; enterprise deployment requires Bearer JWT integration.",
+  "rate_limiting_status": "Documented Limitation: Application-level rate limiting not present in baseline FastAPI routes; relies on reverse-proxy / CDN (e.g. Cloudflare / Nginx) rate limiting.",
+  "tests": [
+    {
+      "id": "API-VAL-01",
+      "name": "Missing message field",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-02",
+      "name": "Empty string message",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-03",
+      "name": "Whitespace-only message",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-04",
+      "name": "Null message field",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-05",
+      "name": "Wrong data type (int instead of str)",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-06",
+      "name": "Excessively long message (> 4000 chars)",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-07",
+      "name": "Malformed JSON payload",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-08",
+      "name": "Unexpected fields safely ignored",
+      "expected_code": 200,
+      "status": "PASS"
+    },
+    {
+      "id": "API-VAL-09",
+      "name": "Invalid content-type (text/plain)",
+      "expected_code": 422,
+      "status": "PASS"
+    },
+    {
+      "id": "API-CONC-10",
+      "name": "10 Concurrent requests thread-safety & state isolation",
+      "expected_code": 200,
+      "status": "PASS"
+    },
+    {
+      "id": "API-LIFE-11",
+      "name": "Session reset and audit trace isolation",
+      "expected_code": 200,
+      "status": "PASS"
+    }
+  ]
+}

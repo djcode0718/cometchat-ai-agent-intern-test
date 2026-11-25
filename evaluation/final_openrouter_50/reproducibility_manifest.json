@@ -1,0 +1,36 @@
+{
+  "manifest_version": "1.0",
+  "evaluation_suite": "Aster & Row Difficult 50 Benchmark",
+  "baseline_git_commit": "a4cfc0d54665d567d0a1be7158190769db1562e7",
+  "benchmark_dataset_path": "evaluation/answer_quality_v1/stage3_difficult_50_answerable.json",
+  "benchmark_sha256": "ceb7e55f884cc053dec3409161b8c94db2de3ab11099c04db36ddf457f52d4ad",
+  "environment": {
+    "python_version": "3.11.18",
+    "os": "macOS",
+    "active_env": "cometchat-env",
+    "pytest_test_count": 239,
+    "pytest_failures": 0
+  },
+  "configuration": {
+    "llm_provider": "openrouter_chain",
+    "openrouter_primary_model": "meta-llama/llama-3.3-70b-instruct",
+    "openrouter_secondary_model": "openai/gpt-4o-mini",
+    "openrouter_tertiary_model": "mistralai/mistral-small-24b-instruct-2501",
+    "groq_backup_model": "openai/gpt-oss-120b",
+    "deterministic_fallback_enabled": true,
+    "retrieval_strategy": "Hybrid (Dense FAISS + BM25 Lexical)",
+    "retrieval_top_k": 8,
+    "max_generation_tokens": 600,
+    "generation_temperature": 0.0,
+    "cost_safety_cap_usd": 2.0
+  },
+  "execution_metrics": {
+    "total_benchmark_cases": 50,
+    "generation_only_claim_recall": 0.7157,
+    "generation_only_fully_complete": 19,
+    "full_agent_claim_recall": 0.7794,
+    "full_agent_fully_complete": 25,
+    "total_actual_spend_usd": 0.00256
+  },
+  "generated_at_utc": "2026-11-25 08:52:12 UTC"
+}
