@@ -4,6 +4,8 @@ from src.llm.factory import get_llm_provider
 from src.llm.gemini import GeminiLLMProvider
 from src.llm.grok import GrokLLMProvider, GroqLLMProvider
 from src.llm.mock import MockLLMProvider
+from src.llm.ollama import OllamaLLMProvider
+from src.llm.openrouter import OpenRouterLLMProvider
 from src.llm.models import (
     GeneratedResponse,
     GroundedGenerationRequest,
@@ -21,6 +23,8 @@ __all__ = [
     "GroqLLMProvider",
     "FallbackChainLLMProvider",
     "MockLLMProvider",
+    "OllamaLLMProvider",
+    "OpenRouterLLMProvider",
     "FlexibleLLMProvider",
     "get_llm_provider",
     "GroundedGenerationRequest",

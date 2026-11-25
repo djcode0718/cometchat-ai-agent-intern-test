@@ -9,6 +9,7 @@ from src.llm.fallback import FallbackChainLLMProvider
 from src.llm.gemini import GeminiLLMProvider
 from src.llm.grok import GrokLLMProvider
 from src.llm.mock import MockLLMProvider
+from src.llm.ollama import OllamaLLMProvider
 from src.llm.openrouter import OpenRouterLLMProvider
 from src.llm.openrouter_chain import OpenRouterFallbackChainProvider
 from src.llm.provider import FlexibleLLMProvider
@@ -26,13 +27,21 @@ def get_llm_provider(
 ) -> BaseLLMProvider:
     """Instantiate and return the configured LLM provider or fallback chain."""
     settings = get_settings()
-    ptype = (
-        provider_type
-        or settings.llm_provider
-        or os.getenv("LLM_PROVIDER", "openrouter")
-    ).lower()
+    # Explicit provider_type takes priority, then OFFLINE_MODE or LLM_PROVIDER
+    if provider_type:
+        ptype = provider_type.lower()
+    elif settings.offline_mode or os.getenv("OFFLINE_MODE", "false").lower() in ("true", "1", "yes"):
+        ptype = "ollama"
+    else:
+        ptype = (settings.llm_provider or os.getenv("LLM_PROVIDER", "openrouter")).lower()
 
-    if ptype in ("mock", "test", "offline"):
+    if ptype in ("ollama", "local", "local_llm"):
+        return OllamaLLMProvider(
+            base_url=settings.ollama_base_url,
+            model_name=primary_model or settings.ollama_model,
+        )
+
+    if ptype in ("mock", "test"):
         return MockLLMProvider()
 
     if ptype in ("openrouter", "openrouter_chain", "open_router"):

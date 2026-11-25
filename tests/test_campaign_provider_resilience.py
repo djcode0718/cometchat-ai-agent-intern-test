@@ -12,7 +12,10 @@ from src.llm.openrouter import OpenRouterLLMProvider
 from src.llm.openrouter_chain import OpenRouterFallbackChainProvider
 from src.llm.base import GroundedGenerationRequest, GeneratedResponse, LLMGenerationError
 from src.llm.validator import OutputValidator
+from src.core.config import get_settings
 from src.core.models import CitationSource
+from src.llm.factory import get_llm_provider
+from src.llm.ollama import OllamaLLMProvider
 
 
 @pytest.fixture
@@ -334,7 +337,7 @@ def test_fallback_cascade_all_fail_deterministic_succeeds(base_request):
 
 
 # =============================================================================
-# Opt-In Live LLM Test Suite (Gated by LIVE_LLM_TESTS=1)
+# Opt-In Live / Local LLM Test Suite (Gated by LIVE_LLM_TESTS=1)
 # =============================================================================
 
 @pytest.mark.skipif(
@@ -342,9 +345,20 @@ def test_fallback_cascade_all_fail_deterministic_succeeds(base_request):
     reason="Live LLM tests are strictly opt-in and require LIVE_LLM_TESTS=1 and positive LIVE_LLM_MAX_REQUESTS budget."
 )
 def test_live_opt_in_provider_probe():
-    """Live LLM test probe (strictly skipped unless explicitly opted-in with budget)."""
-    # This test will safely skip when LIVE_LLM_TESTS=0
-    provider = OpenRouterLLMProvider()
-    req = GroundedGenerationRequest(user_query="Hello", decision_state="ANSWER", decision_reason="probe")
+    """Live LLM test probe supporting both online providers and local offline Ollama."""
+    settings = get_settings()
+    if settings.offline_mode or os.getenv("LLM_PROVIDER") == "ollama":
+        provider = OllamaLLMProvider()
+    else:
+        # If openrouter API key is available or online provider configured, use factory
+        provider = get_llm_provider()
+
+    req = GroundedGenerationRequest(
+        user_query="Hello! What is your return window?",
+        decision_state=DecisionState.ANSWER,
+        decision_reason="Testing opt-in provider generation probe",
+    )
     resp = provider.generate(req)
     assert resp is not None
+    assert len(resp.message) > 0
+    assert resp.decision_state == DecisionState.ANSWER
