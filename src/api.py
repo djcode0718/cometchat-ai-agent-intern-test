@@ -5,15 +5,27 @@ import uuid
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pydantic import BaseModel, Field, field_validator
 
 load_dotenv()
 
 from src.agent.orchestrator import AgentOrchestrator
 from src.agent.state import DecisionState, PublicAgentResponse
+from src.core.config import get_settings
+from src.observability.integrations import init_sentry
+from src.observability.logging import configure_logging, get_logger
+from src.observability.request_context import RequestContextMiddleware
+from src.observability.trace_cache import BoundedTTLCache
+
+# Initialize logging and Sentry early
+settings = get_settings()
+configure_logging(app_env=settings.app_env, log_level=settings.log_level)
+init_sentry()
+logger = get_logger("api")
 
 
 # ---------------------------------------------------------------------------
@@ -23,6 +35,12 @@ from src.agent.state import DecisionState, PublicAgentResponse
 class HealthResponse(BaseModel):
     """Health check response."""
     status: str = "ok"
+
+
+class ReadyResponse(BaseModel):
+    """Readiness probe response."""
+    status: str
+    reasons: List[str] = Field(default_factory=list)
 
 
 class ChatRequest(BaseModel):
@@ -87,7 +105,10 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-# Configure CORS
+# 1. Request Context & Observability Middleware (First in chain)
+app.add_middleware(RequestContextMiddleware)
+
+# 2. Configure CORS
 cors_origins_raw = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000")
 allowed_origins = [origin.strip() for origin in cors_origins_raw.split(",") if origin.strip()]
 
@@ -99,9 +120,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global orchestrator and safe trace cache
+# Global orchestrator and safe trace cache with bounded TTL & LRU capacity
 _orchestrator: Optional[AgentOrchestrator] = None
-_session_traces: Dict[str, Dict[str, Any]] = {}
+_session_traces = BoundedTTLCache(
+    maxsize=int(os.getenv("SESSION_TRACE_MAXSIZE", "1000")),
+    ttl_seconds=float(os.getenv("SESSION_TRACE_TTL_SECONDS", "3600.0")),
+)
 
 
 def get_orchestrator() -> AgentOrchestrator:
@@ -124,13 +148,35 @@ def set_orchestrator(orchestrator: Optional[AgentOrchestrator]) -> None:
 
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    """Ensure raw exception traces and secrets are never exposed to the client."""
-    # HTTPExceptions should bubble with their own status and message
+    """Ensure raw exception traces and secrets are never exposed to the client while logging structured errors."""
+    request_id = getattr(request.state, "request_id", None) or request.headers.get("X-Request-ID", "unknown")
+
+    # Pass through standard HTTPExceptions with their own status and detail
     if isinstance(exc, HTTPException):
-        return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+        headers = {"X-Request-ID": request_id} if request_id != "unknown" else None
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"detail": exc.detail},
+            headers=headers,
+        )
+
+    # Log internal error with full stack trace and request_id
+    logger.error(
+        "unhandled_server_exception",
+        error=str(exc),
+        error_type=type(exc).__name__,
+        request_id=request_id,
+        exc_info=True,
+    )
+
+    headers = {"X-Request-ID": request_id} if request_id != "unknown" else None
     return JSONResponse(
         status_code=500,
-        content={"detail": "Unable to safely process the request."},
+        content={
+            "detail": "Unable to safely process the request.",
+            "request_id": request_id,
+        },
+        headers=headers,
     )
 
 
@@ -142,10 +188,51 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
     "/health",
     response_model=HealthResponse,
     summary="Health check endpoint",
-    description="Returns service health status without making any LLM or external calls.",
+    description="Dependency-free liveness probe returning service health status.",
 )
 def health_check() -> HealthResponse:
     return HealthResponse(status="ok")
+
+
+@app.get(
+    "/ready",
+    response_model=ReadyResponse,
+    summary="Readiness probe endpoint",
+    description="Checks that knowledge base is loaded and retriever is initialized.",
+)
+def readiness_check() -> Any:
+    reasons: List[str] = []
+    try:
+        settings = get_settings()
+        kb_path = settings.knowledge_base_path
+        if not kb_path.exists():
+            reasons.append(f"Knowledge base path does not exist: {kb_path}")
+        else:
+            md_files = list(kb_path.glob("*.md"))
+            if not md_files:
+                reasons.append("Knowledge base directory contains no markdown documents.")
+
+        orch = get_orchestrator()
+        if not hasattr(orch, "retriever") or orch.retriever is None:
+            reasons.append("Retriever is not initialized in orchestrator.")
+    except Exception as e:
+        reasons.append(f"Initialization check error: {str(e)}")
+
+    if reasons:
+        return JSONResponse(
+            status_code=503,
+            content={"status": "not_ready", "reasons": reasons},
+        )
+    return ReadyResponse(status="ready", reasons=[])
+
+
+@app.get(
+    "/metrics",
+    summary="Prometheus metrics endpoint",
+    description="Exposes Prometheus metrics in standard text format.",
+)
+def metrics_endpoint() -> Response:
+    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 @app.post(
@@ -165,35 +252,32 @@ def chat_endpoint(request: ChatRequest) -> ChatResponse:
 
     try:
         state = orchestrator.process_turn(session_id, request.message)
-        _session_traces[session_id] = state.trace
-
-        public_resp: PublicAgentResponse = state.to_public_response()
-        safe_order = state.trace.get("safe_order") if state.trace else None
-
-        dec_state_str = (
-            public_resp.decision_state.value
-            if isinstance(public_resp.decision_state, DecisionState)
-            else str(public_resp.decision_state)
-        )
-
-        return ChatResponse(
-            session_id=public_resp.session_id,
-            turn_id=public_resp.turn_id,
-            message=public_resp.message,
-            decision_state=dec_state_str,
-            citations=public_resp.citations,
-            handoff_recommended=public_resp.handoff_recommended,
-            handoff_reason=public_resp.handoff_reason,
-            supported_action=public_resp.supported_action,
-            is_fallback=public_resp.is_fallback,
-            fallback_reason=public_resp.fallback_reason,
-            safe_order=safe_order,
-        )
     except Exception as exc:
-        raise HTTPException(
-            status_code=500,
-            detail="Unable to safely process the request.",
-        ) from exc
+        raise exc
+    _session_traces.set(session_id, state.trace)
+
+    public_resp: PublicAgentResponse = state.to_public_response()
+    safe_order = state.trace.get("safe_order") if state.trace else None
+
+    dec_state_str = (
+        public_resp.decision_state.value
+        if isinstance(public_resp.decision_state, DecisionState)
+        else str(public_resp.decision_state)
+    )
+
+    return ChatResponse(
+        session_id=public_resp.session_id,
+        turn_id=public_resp.turn_id,
+        message=public_resp.message,
+        decision_state=dec_state_str,
+        citations=public_resp.citations,
+        handoff_recommended=public_resp.handoff_recommended,
+        handoff_reason=public_resp.handoff_reason,
+        supported_action=public_resp.supported_action,
+        is_fallback=public_resp.is_fallback,
+        fallback_reason=public_resp.fallback_reason,
+        safe_order=safe_order,
+    )
 
 
 @app.post(
@@ -205,8 +289,7 @@ def chat_endpoint(request: ChatRequest) -> ChatResponse:
 def reset_session_endpoint(session_id: str) -> ResetResponse:
     orchestrator = get_orchestrator()
     orchestrator.session_manager.clear_session(session_id)
-    if session_id in _session_traces:
-        del _session_traces[session_id]
+    _session_traces.delete(session_id)
     return ResetResponse(session_id=session_id, status="reset")
 
 

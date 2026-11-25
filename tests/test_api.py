@@ -203,7 +203,7 @@ def test_orchestrator_error_handling(client):
 
     res = client.post("/chat", json={"message": "Hello"})
     assert res.status_code == 500
-    assert res.json() == {"detail": "Unable to safely process the request."}
+    assert res.json()["detail"] == "Unable to safely process the request."
     assert "secret key" not in res.text
     assert "database explosion" not in res.text
 
