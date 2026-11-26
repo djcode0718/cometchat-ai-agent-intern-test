@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-11-25T23:02:33.232244+00:00",
+  "timestamp": "2026-11-26T08:03:36.921506+00:00",
   "database": "PostgreSQL 14.18 (localhost:5432/aster_row_test)",
   "concurrent_threads": 10,
-  "race_duration_ms": 15.28,
+  "race_duration_ms": 14.82,
   "results_summary": {
     "total_attempts": 10,
     "successful_executions": 1,
@@ -13,7 +13,7 @@
   },
   "worker_results": [
     {
-      "worker_id": 0,
+      "worker_id": 1,
       "status": "EXECUTED",
       "error": null
     },
@@ -33,6 +33,11 @@
       "error": null
     },
     {
+      "worker_id": 6,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
       "worker_id": 5,
       "status": "EXECUTED",
       "error": null
@@ -43,22 +48,17 @@
       "error": null
     },
     {
-      "worker_id": 6,
-      "status": "EXECUTED",
-      "error": null
-    },
-    {
-      "worker_id": 1,
-      "status": "EXECUTED",
-      "error": null
-    },
-    {
-      "worker_id": 8,
+      "worker_id": 0,
       "status": "EXECUTED",
       "error": null
     },
     {
       "worker_id": 9,
+      "status": "EXECUTED",
+      "error": null
+    },
+    {
+      "worker_id": 8,
       "status": "EXECUTED",
       "error": null
     }

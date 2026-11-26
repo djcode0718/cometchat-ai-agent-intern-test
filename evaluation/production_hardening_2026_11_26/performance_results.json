@@ -1,75 +1,75 @@
 {
-  "timestamp": "2026-11-26T04:25:00Z",
+  "timestamp": "2026-11-26T08:04:01.331196+00:00",
   "harness": "pytest + ThreadPoolExecutor + TestClient(FastAPI)",
   "concurrency_benchmarks": {
     "C=1": {
       "concurrency": 1,
-      "total_requests": 50,
-      "wall_time_seconds": 8.94,
-      "throughput_rps": 5.59,
+      "total_requests": 500,
+      "wall_time_seconds": 2.925,
+      "throughput_rps": 170.97,
       "error_rate_pct": 0.0,
       "latency_ms": {
-        "mean": 178.74,
-        "p50": 179.06,
-        "p90": 192.99,
-        "p95": 197.28,
-        "p99": 204.71
+        "mean": 5.84,
+        "p50": 7.01,
+        "p90": 8.96,
+        "p95": 10.64,
+        "p99": 12.3
       }
     },
     "C=5": {
       "concurrency": 5,
-      "total_requests": 50,
-      "wall_time_seconds": 1.848,
-      "throughput_rps": 27.06,
+      "total_requests": 500,
+      "wall_time_seconds": 3.219,
+      "throughput_rps": 155.35,
       "error_rate_pct": 0.0,
       "latency_ms": {
-        "mean": 182.65,
-        "p50": 182.6,
-        "p90": 206.93,
-        "p95": 216.11,
-        "p99": 222.33
+        "mean": 32.08,
+        "p50": 37.95,
+        "p90": 51.74,
+        "p95": 65.71,
+        "p99": 217.91
       }
     },
     "C=10": {
       "concurrency": 10,
-      "total_requests": 50,
-      "wall_time_seconds": 1.203,
-      "throughput_rps": 41.55,
+      "total_requests": 500,
+      "wall_time_seconds": 4.168,
+      "throughput_rps": 119.96,
       "error_rate_pct": 0.0,
       "latency_ms": {
-        "mean": 230.1,
-        "p50": 222.21,
-        "p90": 276.41,
-        "p95": 293.2,
-        "p99": 302.2
+        "mean": 82.76,
+        "p50": 82.74,
+        "p90": 152.21,
+        "p95": 195.5,
+        "p99": 358.46
       }
     },
     "C=25": {
       "concurrency": 25,
-      "total_requests": 50,
-      "wall_time_seconds": 1.251,
-      "throughput_rps": 39.95,
+      "total_requests": 500,
+      "wall_time_seconds": 2.978,
+      "throughput_rps": 167.91,
       "error_rate_pct": 0.0,
       "latency_ms": {
-        "mean": 551.83,
-        "p50": 505.35,
-        "p90": 777.44,
-        "p95": 784.69,
-        "p99": 806.63
+        "mean": 146.39,
+        "p50": 174.69,
+        "p90": 315.82,
+        "p95": 336.33,
+        "p99": 428.83
       }
     },
     "C=50": {
       "concurrency": 50,
-      "total_requests": 50,
-      "wall_time_seconds": 1.457,
-      "throughput_rps": 34.31,
+      "total_requests": 500,
+      "wall_time_seconds": 5.112,
+      "throughput_rps": 97.8,
       "error_rate_pct": 0.0,
       "latency_ms": {
-        "mean": 865.46,
-        "p50": 1019.49,
-        "p90": 1058.98,
-        "p95": 1082.52,
-        "p99": 1455.72
+        "mean": 497.33,
+        "p50": 518.96,
+        "p90": 976.62,
+        "p95": 1027.13,
+        "p99": 1135.27
       }
     }
   }

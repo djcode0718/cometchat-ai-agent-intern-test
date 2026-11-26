@@ -1,14 +1,75 @@
 {
-  "evaluation_timestamp": "2026-11-26T04:24:00Z",
-  "sample_size": 100,
-  "endpoint": "/health",
-  "latency_summary_ms": {
-    "mean": 2.57,
-    "p50": 2.329,
-    "p90": 3.015,
-    "p99": 9.936
+  "evaluation_timestamp": "2026-11-26T07:47:21.228904+00:00",
+  "sample_size_per_repeat": 1000,
+  "repeats": 3,
+  "health_endpoint": {
+    "path": "/health",
+    "repeats": [
+      {
+        "repeat": 1,
+        "uninstrumented_mean_ms": 0.955,
+        "instrumented_mean_ms": 1.538,
+        "overhead_mean_ms": 0.583,
+        "uninstrumented_p50_ms": 0.917,
+        "instrumented_p50_ms": 1.507,
+        "overhead_p50_ms": 0.59
+      },
+      {
+        "repeat": 2,
+        "uninstrumented_mean_ms": 0.973,
+        "instrumented_mean_ms": 1.551,
+        "overhead_mean_ms": 0.579,
+        "uninstrumented_p50_ms": 0.945,
+        "instrumented_p50_ms": 1.524,
+        "overhead_p50_ms": 0.579
+      },
+      {
+        "repeat": 3,
+        "uninstrumented_mean_ms": 0.965,
+        "instrumented_mean_ms": 1.958,
+        "overhead_mean_ms": 0.993,
+        "uninstrumented_p50_ms": 0.941,
+        "instrumented_p50_ms": 1.568,
+        "overhead_p50_ms": 0.628
+      }
+    ],
+    "average_overhead_p50_ms": 0.599,
+    "average_overhead_mean_ms": 0.718
   },
-  "middleware_overhead_ms": 2.57,
+  "chat_endpoint": {
+    "path": "/chat",
+    "repeats": [
+      {
+        "repeat": 1,
+        "uninstrumented_mean_ms": 7.546,
+        "instrumented_mean_ms": 255.019,
+        "overhead_mean_ms": 247.473,
+        "uninstrumented_p50_ms": 6.294,
+        "instrumented_p50_ms": 189.17,
+        "overhead_p50_ms": 182.876
+      },
+      {
+        "repeat": 2,
+        "uninstrumented_mean_ms": 6.437,
+        "instrumented_mean_ms": 259.167,
+        "overhead_mean_ms": 252.73,
+        "uninstrumented_p50_ms": 5.714,
+        "instrumented_p50_ms": 188.951,
+        "overhead_p50_ms": 183.238
+      },
+      {
+        "repeat": 3,
+        "uninstrumented_mean_ms": 6.528,
+        "instrumented_mean_ms": 188.78,
+        "overhead_mean_ms": 182.252,
+        "uninstrumented_p50_ms": 5.646,
+        "instrumented_p50_ms": 186.068,
+        "overhead_p50_ms": 180.423
+      }
+    ],
+    "average_overhead_p50_ms": 182.179,
+    "average_overhead_mean_ms": 227.485
+  },
   "pii_redaction_verified": true,
   "prometheus_metrics_verified": true,
   "metrics_found": [

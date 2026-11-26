@@ -60,19 +60,23 @@ class OllamaLLMProvider(BaseLLMProvider):
             {"role": "user", "content": user_prompt},
         ]
 
-        endpoint = f"{self.base_url}/v1/chat/completions"
+        endpoint = f"{self.base_url}/api/chat"
         payload = {
             "model": self.model_name,
             "messages": messages,
-            "temperature": self.temperature,
-            "max_tokens": self.max_tokens,
             "stream": False,
+            "options": {
+                "temperature": self.temperature,
+                "num_predict": self.max_tokens,
+            },
         }
 
         start_time = time.perf_counter()
         raw_text = ""
         prompt_tokens = 0
         completion_tokens = 0
+        eval_count = 0
+        eval_duration_ns = 0
 
         try:
             with httpx.Client(timeout=self.timeout_seconds) as client:
@@ -88,14 +92,12 @@ class OllamaLLMProvider(BaseLLMProvider):
                 )
 
             data = resp.json()
-            choices = data.get("choices", [])
-            if not choices:
-                raise LLMGenerationError("Ollama response contained no choices.")
-
-            raw_text = choices[0].get("message", {}).get("content", "").strip()
-            usage = data.get("usage", {})
-            prompt_tokens = usage.get("prompt_tokens", 0)
-            completion_tokens = usage.get("completion_tokens", 0)
+            message_obj = data.get("message", {})
+            raw_text = message_obj.get("content", "").strip()
+            prompt_tokens = data.get("prompt_eval_count", 0)
+            eval_count = data.get("eval_count", 0)
+            eval_duration_ns = data.get("eval_duration", 0)
+            completion_tokens = eval_count
 
         except httpx.ConnectError as ce:
             logger.error("ollama_connection_failed", error=str(ce), base_url=self.base_url)
@@ -112,6 +114,9 @@ class OllamaLLMProvider(BaseLLMProvider):
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
             "total_tokens": prompt_tokens + completion_tokens,
+            "eval_count": eval_count,
+            "eval_duration_ns": eval_duration_ns,
+            "eval_duration_ms": round(eval_duration_ns / 1_000_000.0, 2) if eval_duration_ns else 0.0,
             "offline": True,
         }
 

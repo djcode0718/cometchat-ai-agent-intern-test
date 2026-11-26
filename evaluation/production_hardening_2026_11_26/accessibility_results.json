@@ -1,9 +1,10 @@
 {
-  "timestamp": "2026-11-26T04:26:50Z",
+  "timestamp": "2026-11-26T08:05:00Z",
   "standards": [
-    "WCAG 2.1 Level AA",
-    "Section 508"
+    "WCAG 2.1 Level AA"
   ],
+  "axe_runner": "jsdom (Vitest + @testing-library/react)",
+  "compliance_status": "automated WCAG 2.1 AA checks; manual screen-reader pass: pending",
   "tools_executed": [
     "eslint-plugin-jsx-a11y",
     "Vitest + @testing-library/react + @testing-library/user-event",
@@ -72,46 +73,47 @@
       "status": "PASS"
     }
   ],
-  "voiceover_walkthrough": {
-    "platform": "macOS Sequoia / Sonoma with VoiceOver (Safari / Chrome)",
-    "navigation_steps_verified": [
+  "manual_screen_reader_pass_template": {
+    "status": "pending",
+    "target_platform": "macOS (Safari / Chrome)",
+    "verification_checklist": [
       {
         "step": 1,
         "element": "Customer Chat Input",
-        "announcement": "Type your customer support question, edit text",
+        "expected_announcement": "Type your customer support question, edit text",
         "role": "textbox",
         "aria_label": "Type your customer support question"
       },
       {
         "step": 2,
         "element": "Transcript Live Region",
-        "announcement": "Chat messages history, log, polite",
+        "expected_announcement": "Chat messages history, log, polite",
         "role": "log",
         "aria_live": "polite"
       },
       {
         "step": 3,
         "element": "Decision Badges",
-        "announcement": "Policy verified, checkmark icon",
+        "expected_announcement": "Policy verified, checkmark icon",
         "accessible_rendering": "Text + Icon dual visual/assistive encoding"
       },
       {
         "step": 4,
         "element": "Reviewer Table",
-        "announcement": "Pending Proposals, table 5 columns 2 rows",
+        "expected_announcement": "Pending Proposals, table 5 columns 2 rows",
         "role": "table"
       },
       {
         "step": 5,
         "element": "Action Modal & Trap",
-        "announcement": "Rejection Confirmation, dialog, modal",
+        "expected_announcement": "Rejection Confirmation, dialog, modal",
         "role": "dialog",
         "focus_trap": "Tab cycle constrained within dialog until dismiss or submit"
       },
       {
         "step": 6,
         "element": "Inline Error Alert",
-        "announcement": "Rejection reason is required, alert",
+        "expected_announcement": "Rejection reason is required, alert",
         "role": "alert",
         "aria_describedby": "Bound to textarea id"
       }
