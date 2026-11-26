@@ -1,7 +1,7 @@
-# Aster & Row Security Policy
+# CometChat Security Policy
 
 ## Security Model Overview
-Aster & Row follows a strict **Deterministic-First Architecture** designed to eliminate hallucinations, prevent prompt injection privilege escalation, and protect customer data privacy.
+CometChat follows a strict **Deterministic-First Architecture** designed to eliminate hallucinations, prevent prompt injection privilege escalation, and protect customer data privacy (demonstrated on the Aster & Row sample catalog).
 
 The Language Model (LLM) is strictly restricted to linguistic phrasing of verified facts. It has **zero authority** to:
 1. Determine policy eligibility.
@@ -99,7 +99,7 @@ The Language Model (LLM) is strictly restricted to linguistic phrasing of verifi
 ---
 
 ## Vulnerability Reporting
-If you discover a security vulnerability in Aster & Row:
+If you discover a security vulnerability in CometChat:
 1. Please report it privately to `security@aster-row.example.com`.
 2. Do not open public GitHub issues for security vulnerabilities.
 3. Reports will be acknowledged within 24 hours with remediation updates.

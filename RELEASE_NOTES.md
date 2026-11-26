@@ -1,4 +1,4 @@
-# Release Notes - Aster & Row v2.0.0
+# Release Notes - CometChat v2.0.0
 
 **Release Tag**: `v2.0.0`  
 **Date**: November 26, 2026  
@@ -7,7 +7,7 @@
 ---
 
 ## Executive Summary
-Aster & Row v2.0.0 represents a major architectural upgrade transitioning the support agent from a prototype chatbot into a production-grade, deterministic-first autonomous support platform. This release introduces comprehensive observability, optimistic-concurrency human-in-the-loop (HITL) approval workflows, a fully accessible WCAG 2.1 AA customer and reviewer frontend, pre-retrieval prompt injection security defenses, containerization, and automated regression evaluation gates.
+CometChat v2.0.0 represents a major architectural upgrade transitioning the AI support agent (demonstrated on the Aster & Row sample catalog) from a prototype chatbot into a production-grade, deterministic-first autonomous support platform. This release introduces comprehensive observability, optimistic-concurrency human-in-the-loop (HITL) approval workflows, a fully accessible WCAG 2.1 AA customer and reviewer frontend, pre-retrieval prompt injection security defenses, containerization, and automated regression evaluation gates.
 
 ---
 
