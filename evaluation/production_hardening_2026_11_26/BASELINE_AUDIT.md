@@ -11,20 +11,15 @@
 
 ---
 
-## 1. Executive Baseline & Frozen Metrics
+## 1. Single Unified Baseline (Commit `f0bd93b`)
 
-The following metrics represent the frozen baseline established in the previous evaluation phase (`evaluation/complete_customer_journey_2026_11_26/`). These figures are preserved as historical benchmarks to be validated, stress-tested, and defended under real multi-user and PostgreSQL transactional conditions:
+The single authoritative pre-hardening baseline is taken directly from `docs/archive/testing/coverage.json` at the starting commit `f0bd93b`:
 
-| Metric Category | Target Dimension | Frozen Baseline Value | Source Artifact |
+| Metric Category | Target Dimension | Baseline Value (Commit `f0bd93b`) | Source Artifact |
 |---|---|---|---|
-| **Test Quality** | Automated pytest suite pass count | **351 / 351 passed (100%)** | `pytest --cov=src` in 74.01s |
-| **Code Coverage** | Python statement coverage | **86.41%** (2,937 / 3,399 lines) | `coverage.json` |
-| **Adversarial Security**| Negative & adversarial matrix pass rate | **24 / 24 scenarios (100%)** | `SCENARIO_MATRIX.csv` |
-| **Frontend A11y** | Axe-core serious/critical violations | **0 violations** across 9 states | `accessibility_results.json` |
-| **Frontend A11y** | Lighthouse accessibility score | **100 / 100** | `@lhci/cli` |
-| **Pipeline Latency** | Mock engine latency p50 (C=1) | **6.63 ms** | `performance_results.json` |
-| **System Throughput** | Unthrottled throughput at C=25 | **194.10 req/s** (0.0% error) | `performance_results.json` |
-| **Local LLM Latency** | Llama 3.1:8b generation latency p50 | **5,903.99 ms** (17.77 tok/s) | `performance_results.json` |
+| **Test Quality** | Automated pytest suite pass count | **358 passed (100%)** | `pytest tests/` |
+| **Code Coverage** | Python statement coverage | **87.88%** (2,081 / 2,368 statements) | `docs/archive/testing/coverage.json` |
+| **Missing Lines** | Uncovered statements | **287 missing lines** | `docs/archive/testing/coverage.json` |
 
 ---
 

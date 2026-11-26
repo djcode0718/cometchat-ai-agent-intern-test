@@ -1,38 +1,39 @@
 # Phase 9 — Multi-Concurrency Performance Load Evaluation Report
 
-**Evaluation Timestamp**: 2026-11-26T04:26:08Z  
+**Evaluation Timestamp**: 2026-11-26T08:04:01.331196+00:00  
+**Verified Git Commit**: `13859eadc43d982ee7a0b0d606513b7cebcde32e`  
 **Harness**: `tests/test_performance_load_benchmarks.py` (`ThreadPoolExecutor` + FastAPI `TestClient`)  
 **Raw Benchmark Artifact**: `evaluation/production_hardening_2026_11_26/performance_results.json`  
-**Concurrency Levels Evaluated**: C=1, C=5, C=10, C=25, C=50 (250 total requests across real conversational turns)  
+**Evaluation Scope**: Concurrency levels C=1, C=5, C=10, C=25, C=50 evaluated at **N=500 requests per tier** (2500 total requests evaluated).  
 
 ---
 
 ## 1. Executive Summary
 
-To evaluate Aster & Row under sustained multi-user load, we conducted a rigorous multi-concurrency benchmark testing knowledge synthesis, order status retrieval, and transactional HITL approval creation across 5 concurrency tiers.
+To evaluate Aster & Row under multi-user concurrency, we conducted a multi-concurrency benchmark testing knowledge synthesis, order status retrieval, and transactional HITL approval creation across 5 concurrency tiers. Each tier ran a dedicated batch of N=500 requests.
 
-### Key Performance Summary
-| Concurrency (C) | Total Requests | Wall Time (s) | Throughput (req/s) | Mean Latency (ms) | p50 Latency (ms) | p95 Latency (ms) | p99 Latency (ms) | Error Rate (%) |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **C=1** | 50 | 13.67 s | 3.66 req/s | 273.37 ms | 168.56 ms | 925.59 ms | 2,680.43 ms | **0.00%** (0 / 50) |
-| **C=5** | 50 | 1.89 s | 26.43 req/s | 177.21 ms | 176.17 ms | 202.52 ms | 380.99 ms | **0.00%** (0 / 50) |
-| **C=10** | 50 | 1.26 s | 39.70 req/s | 229.98 ms | 218.61 ms | 279.01 ms | 698.39 ms | **0.00%** (0 / 50) |
-| **C=25** | 50 | 1.24 s | 40.34 req/s | 548.16 ms | 575.56 ms | 762.95 ms | 782.26 ms | **0.00%** (0 / 50) |
-| **C=50** | 50 | 1.20 s | **41.55 req/s** | 882.33 ms | 997.10 ms | 1,125.44 ms | 1,156.98 ms | **0.00%** (0 / 50) |
+### Key Performance Summary by Concurrency Tier (N=500 requests per tier)
+| Concurrency (C) | Requests (N) | Run Duration (s) | Throughput (req/s) | Mean Latency (ms) | p50 Latency (ms) | p90 Latency (ms) | p95 Latency (ms) | p99 Latency (ms) | Error Rate (%) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **C=1** | 500 | 2.92 s | **170.97 req/s** | 5.84 ms | 7.01 ms | 8.96 ms | 10.64 ms | 12.30 ms | **0.00%** |
+| **C=5** | 500 | 3.22 s | **155.35 req/s** | 32.08 ms | 37.95 ms | 51.74 ms | 65.71 ms | 217.91 ms | **0.00%** |
+| **C=10** | 500 | 4.17 s | **119.96 req/s** | 82.76 ms | 82.74 ms | 152.21 ms | 195.50 ms | 358.46 ms | **0.00%** |
+| **C=25** | 500 | 2.98 s | **167.91 req/s** | 146.39 ms | 174.69 ms | 315.82 ms | 336.33 ms | 428.83 ms | **0.00%** |
+| **C=50** | 500 | 5.11 s | **97.80 req/s** | 497.33 ms | 518.96 ms | 976.62 ms | 1027.13 ms | 1135.27 ms | **0.00%** |
+
+*Note on Run Duration*: Each tier ran a short-burst batch of 500 requests (taking between 2.9s and 5.1s per tier) under TestClient thread pool execution to measure concurrency scaling without artificial server saturation.
 
 ---
 
 ## 2. Analysis of Concurrency Scaling & Resiliency
 
-### 1. Throughput Plateau & Saturation
-Throughput scales smoothly from **3.66 req/s at C=1** to **26.43 req/s at C=5** and saturates at **~41.55 req/s at C=50**. Under local ASGI single-worker testing, the system demonstrates optimal CPU thread scheduling between embedding generation, BM25 retrieval, and SQL connection pools.
+### 1. Throughput Distribution Across Tiers
+Peak throughput of **170.97 req/s** occurred at concurrency **C=1**, where single-threaded execution avoids Python GIL and connection pool contention. Under multi-threaded concurrency (C=5 to C=25), throughput remained between 119.96 and 167.91 req/s, and at C=50 settled at 97.80 req/s.
 
 ### 2. Latency Predictability
-- At normal operational loads (**C=1 to C=10**), median response times remain below **220 ms**.
-- Even at peak stress (**C=50**), **p95 latency is bounded at 1.12 seconds**, and **p99 remains at 1.16 seconds**, well within acceptable interactive customer support SLA thresholds (< 3.0s).
+- Low concurrency (C=1 to C=5): Median response times remained under 40 ms.
+- Medium concurrency (C=10 to C=25): Median response times scaled from 82.74 ms to 174.69 ms.
+- High concurrency (C=50): Median response time was 518.96 ms, with p95 at 1,027.13 ms and p99 at 1,135.27 ms.
 
-### 3. Graceful Fallback Under Upstream Saturation
-During high-concurrency bursts when remote LLM rate limiters returned HTTP 429, Aster & Row's dual-engine orchestrator activated its deterministic fallback generator in `160–200 ms`. Rather than dropping client requests with HTTP 500 or crashing workers, **100% of requests (250 / 250) completed with HTTP 200**, returning grounded answers and valid approval tickets.
-
-### 4. Zero Memory Leaks or Resource Exhaustion
-Over the entire 250-request concurrent evaluation, zero database connection timeouts, zero unhandled thread exceptions, and zero memory leaks occurred. The PostgreSQL connection pool recycled sessions safely across concurrent threads.
+### 3. Zero Error Rate Under Load
+Across all 5 concurrency tiers (2500 total requests), **error rate was strictly 0.00% (0 failures)**.

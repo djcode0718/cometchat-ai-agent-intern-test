@@ -63,6 +63,10 @@ jobs:
         run: |
           PYTHONPATH=. python evaluation/run_suite.py --output-name ci_eval_run --check-thresholds
 
+      - name: Validate evaluation report consistency guard
+        run: |
+          PYTHONPATH=. pytest tests/test_report_consistency.py -v
+
   frontend-accessibility:
     runs-on: ubuntu-latest
     defaults:

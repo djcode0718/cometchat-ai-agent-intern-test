@@ -14,7 +14,7 @@ The journey validates Aster & Row's stateful, secure action lifecycle from custo
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Customer as Customer (CUST-401)
+    actor Customer as Customer (CUST-001)
     participant API as FastAPI Gateway
     participant Guard as Pre-Retrieval Security Guard
     participant Router as Intent Router
@@ -25,7 +25,7 @@ sequenceDiagram
 
     Customer->>API: POST /chat ("Cancel order ORD-1001", X-Request-ID: req_01)
     API->>Guard: evaluate_input_guard()
-    Note over Guard: Scans regex in 9.88 µs. Clean.
+    Note over Guard: Scans regex in sub-millisecond time. Clean.
     Guard->>Router: classify_route()
     Router-->>API: RouteType.ORDER (Intent: CANCEL)
     API->>DB: Fetch order ORD-1001 & status
@@ -38,7 +38,7 @@ sequenceDiagram
     API->>Approvals: approve(proposal_id, expected_version)
     Approvals->>DB: SELECT * FROM proposed_actions WHERE id = {id} FOR UPDATE
     Approvals->>DB: SELECT * FROM orders WHERE order_id = ORD-1001 FOR UPDATE
-    Note over Approvals: Revalidates order state: still 'pending' and eligible.
+    Note over Approvals: Revalidates order state: still 'pending' and within 30-minute window.
     Approvals->>DB: UPDATE orders SET status = 'cancelled'
     Approvals->>DB: UPDATE proposed_actions SET status = 'EXECUTED'
     Approvals->>Audit: record(action: execute_success, decided_by: reviewer)
@@ -53,12 +53,12 @@ Every scenario in `SCENARIO_MATRIX.csv` was verified in `tests/test_journey_expa
 
 | Scenario ID | Journey Name | Initial State | Transition & Trigger | Final State | Mutated? | Result |
 | :---: | :--- | :--- | :--- | :--- | :---: | :---: |
-| **J01** | Happy Path Cancellation | `pending` | Customer cancels -> Reviewer approves | `cancelled` / `EXECUTED` | Yes (1x) | **PASSED** |
+| **J01** | Eligible Cancellation Happy Path | `pending` | Customer cancels -> Reviewer approves | `cancelled` / `EXECUTED` | Yes (1x) | **PASSED** |
 | **J02** | Shipped Ineligibility | `shipped` | Customer cancels -> Ineligible policy check | `shipped` / `REJECTED` | No | **PASSED** |
 | **J03** | Delivered Ineligibility | `delivered` | Customer cancels -> Ineligible policy check | `delivered` / `REJECTED` | No | **PASSED** |
-| **J04** | Final Sale Ineligibility | `pending` (final sale) | Customer cancels -> Policy rule exception | `pending` / `REJECTED` | No | **PASSED** |
+| **J04** | Processing Ineligibility | `processing` | Customer cancels -> Ineligible policy check | `processing` / `REJECTED` | No | **PASSED** |
 | **J05** | Already Cancelled | `cancelled` | Customer cancels -> Idempotent refusal | `cancelled` / `REJECTED` | No | **PASSED** |
-| **J06** | Cancellation Window Expired | `placed > 2h ago` | Customer cancels -> Time window check | `processing` / `REJECTED` | No | **PASSED** |
+| **J06** | Cancellation Window Expired | `placed > 30m ago` | Customer cancels -> 30-minute window check | `pending` / `REJECTED` | No | **PASSED** |
 | **J07** | Reviewer Explicit Rejection | `pending` | Reviewer rejects with explicit reason | `pending` / `REJECTED` | No | **PASSED** |
 | **J08** | Proposal TTL Expiry | `pending` | Proposal exceeds 24h TTL without action | `pending` / `EXPIRED` | No | **PASSED** |
 | **J09** | Shipping Address Update | `pending` | Customer updates address -> Reviewer approves | `updated` / `EXECUTED` | Yes (1x) | **PASSED** |

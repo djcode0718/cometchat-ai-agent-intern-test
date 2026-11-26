@@ -1,5 +1,5 @@
 {
-  "benchmark_timestamp": "2026-11-25T23:02:39.048264+00:00",
+  "benchmark_timestamp": "2026-11-26T08:03:40.999411+00:00",
   "total_test_cases": 12,
   "total_knowledge_chunks": 53,
   "strategies": {
@@ -8,7 +8,7 @@
       "recall_at_3": 0.9167,
       "recall_at_5": 0.9167,
       "mrr": 0.875,
-      "mean_latency_ms": 0.24,
+      "mean_latency_ms": 0.61,
       "citation_validity_rate": 1.0
     },
     "dense": {
@@ -16,7 +16,7 @@
       "recall_at_3": 1.0,
       "recall_at_5": 1.0,
       "mrr": 0.9167,
-      "mean_latency_ms": 6.63,
+      "mean_latency_ms": 7.21,
       "citation_validity_rate": 1.0
     },
     "hybrid": {
@@ -24,7 +24,7 @@
       "recall_at_3": 1.0,
       "recall_at_5": 1.0,
       "mrr": 0.9444,
-      "mean_latency_ms": 6.55,
+      "mean_latency_ms": 5.27,
       "citation_validity_rate": 1.0
     }
   }

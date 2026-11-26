@@ -11,13 +11,14 @@ import concurrent.futures
 import json
 import os
 import time
+from datetime import datetime, timezone
 import pytest
 from fastapi.testclient import TestClient
 
 from src.api import app
 
 CONCURRENCY_LEVELS = [1, 5, 10, 25, 50]
-REQUESTS_PER_CONCURRENCY = 50  # 50 requests per level
+REQUESTS_PER_CONCURRENCY = 500  # 500 requests per tier as required for statistically sound evaluation
 
 TEST_PAYLOADS = [
     {"message": "What is the return window for standard items?"},
@@ -104,7 +105,7 @@ def test_multi_concurrency_load_benchmark(client):
     with open(out_file, "w") as f:
         json.dump(
             {
-                "timestamp": "2026-11-26T04:25:00Z",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "harness": "pytest + ThreadPoolExecutor + TestClient(FastAPI)",
                 "concurrency_benchmarks": benchmark_results,
             },

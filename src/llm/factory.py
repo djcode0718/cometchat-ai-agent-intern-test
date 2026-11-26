@@ -70,6 +70,25 @@ def get_llm_provider(
         # Kept dormant/explicit for compatibility
         return GeminiLLMProvider(api_key=gemini_api_key)
 
+    if ptype in ("gemini_groq_openrouter", "live_chain", "multi_tier"):
+        gemini = GeminiLLMProvider(
+            api_key=gemini_api_key or settings.gemini_api_key,
+            model_name=primary_model or settings.gemini_llm_model,
+        )
+        groq = GrokLLMProvider(
+            api_key=groq_api_key or grok_api_key or settings.groq_api_key,
+            model_name=fallback_model or settings.groq_llm_model,
+        )
+        openrouter = OpenRouterLLMProvider(
+            api_key=openrouter_api_key or settings.openrouter_api_key,
+            model_name=tertiary_model or settings.openrouter_primary_model,
+            enable_cache=True,
+        )
+        return FallbackChainLLMProvider(
+            providers=[gemini, groq, openrouter],
+            deterministic_fallback_on_error=True,
+        )
+
     if ptype in ("flexible", "openai"):
         return FlexibleLLMProvider(api_key=groq_api_key or gemini_api_key)
 
