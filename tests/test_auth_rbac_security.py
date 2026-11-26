@@ -42,6 +42,8 @@ def configure_test_reviewer_keys(monkeypatch):
     )
     monkeypatch.setenv("REVIEWER_KEYS", test_keys)
     parse_reviewer_keys(test_keys)
+    from src.approvals.seed import seed_database
+    seed_database()
 
 
 # ===========================================================================

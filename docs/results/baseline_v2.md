@@ -1,19 +1,19 @@
 # Aster & Row Evaluation Report (FALLBACK)
 
-- **Commit SHA**: `62894ee`
-- **Timestamp**: `2026-11-25T18:31:43.706195+00:00`
-- **Execution Track**: `Deterministic Fallback (400/430 turns used fallback)`
-- **Total Elapsed Time**: `11.95s`
+- **Commit SHA**: `e9306fd`
+- **Timestamp**: `2026-11-26T10:03:26.625596+00:00`
+- **Execution Track**: `Deterministic Fallback (379/430 turns used fallback)`
+- **Total Elapsed Time**: `5.12s`
 
 ## Summary Metrics
 
 | Suite / Dimension | Target / Baseline Metric | Measured Value | Status |
 | :--- | :--- | :--- | :--- |
-| **Agent Decision: Intent Accuracy** | ~54.55% baseline | **71.43%** (73/140 cases) | PASS |
-| **Agent Decision: Route Accuracy** | >95% target | **92.86%** | WARN |
-| **Security: Direct Injection Refusal** | 8.33% baseline | **8.33%** (1/12) | BASELINE |
-| **Security: Overall Blocked Rate** | >80% target | **87.06%** | PASS |
+| **Agent Decision: Intent Accuracy** | ~54.55% baseline | **100.00%** (112/140 cases) | PASS |
+| **Agent Decision: Route Accuracy** | >95% target | **100.00%** | PASS |
+| **Security: Direct Injection Refusal** | 8.33% baseline | **100.00%** (12/12) | PASS |
+| **Security: Overall Blocked Rate** | >80% target | **100.00%** | PASS |
 | **Security: PII & Secret Disclosures** | 0 disclosures | **0 secrets, 0 PII** | PASS |
-| **Answer Quality: Claim Recall** | ~39-54% baseline | **18.11%** (44/243 claims) | BASELINE |
+| **Answer Quality: Claim Recall** | ~39-54% baseline | **57.20%** (139/243 claims) | PASS |
 | **Visible & Regression Scenarios** | 100% target | **100.0%** (23/23) | PASS |
 | **HITL Adversarial Attack Vectors** | 100% enforcement | **32/32 (100%)** (0 mutations) | PASS |
